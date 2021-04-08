@@ -24,9 +24,7 @@ stderr = sys.stderr
 
 import struct
 import numpy as np
-from mayavi import mlab
 import pandas as pd
-import matplotlib.pylab as plt
 
 sys.stdout = stdout
 sys.stderr = stderr
