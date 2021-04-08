@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# encoding: utf-8
+#
 # Copyright SAS Institute
 #
 #  Licensed under the Apache License, Version 2.0 (the License);
@@ -16,14 +19,63 @@
 import os
 import unittest
 import xmlrunner
+import swat
+import sys
+import numpy as np
 from cvpy.image import *
 
 class TestImage(unittest.TestCase):
 
     def test_convert_to_CAS_column(self):
-        self.assertTrue(convert_to_CAS_column("id")=="_id_")
+        self.assertTrue(convert_to_CAS_column("id") == "_id_")
+
+    def test_fetch_image_array(self):
+        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s.loadactionset('image')
+
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path='/net/narndnas02.unx.sas.com/vol/vol2/fvcc/tkcv-test-data/data/', dataSource='PATH', subdirectories=True)
+
+        # Load the image
+        image = self.s.CASTable('image', replace=True)
+        self.s.image.loadImages(path='biomedimg/simple.png',
+                            casOut=dict(name='image', replace='TRUE'),
+                            addColumns={"WIDTH", "HEIGHT", "DEPTH", "CHANNELTYPE", "SPACING"},
+                            caslib='dlib',
+                            decode=True)
+
+        self.assertTrue(np.array_equal(fetch_image_array(image), np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
+
+    def test_get_image_array(self):
+        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s.loadactionset('image')
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path='/net/narndnas02.unx.sas.com/vol/vol2/fvcc/tkcv-test-data/data/', dataSource='PATH', subdirectories=True)
+
+        # Load the image
+        self.s.image.loadImages(path='biomedimg/simple.png',
+                                casOut=dict(name='image', replace='TRUE'),
+                                addColumns={"WIDTH", "HEIGHT", "DEPTH", "CHANNELTYPE", "SPACING"},
+                                caslib='dlib',
+                                decode=True)
+
+        imageRows = self.s.fetch(table='image', sastypes=False)['Fetch']
+
+        medicalDimensions = imageRows["_dimension_"]
+        medicalFormats = imageRows["_channelType_"]
+        medicalBinaries = imageRows["_image_"]
+        medicalResolutions = imageRows["_resolution_"]
+        medicalChannelTypes = imageRows["_channelType_"]
+
+        medicalImageArray = get_image_array(medicalBinaries, medicalDimensions, medicalResolutions, medicalFormats, 0)
+        self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+
+        TestImage.password = sys.argv.pop()
+        TestImage.username = sys.argv.pop()
+        TestImage.casPort = sys.argv.pop()
+        TestImage.casHost = sys.argv.pop()
+
     unittest.main(
         testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
         failfast=False, buffer=False, catchbreak=False
