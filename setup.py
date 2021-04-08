@@ -29,7 +29,7 @@ def get_file(fname):
         return infile.read()
 
 setup(
-    name='sas-cvpy',
+    name='cvpy',
     version='1.0.0',
     description='SAS Computer Vision Interface',
     long_description=get_file('README.md'),
@@ -41,9 +41,12 @@ setup(
     packages=find_packages(),
     install_requires=[
         'swat >= 1.5.0',
+        'VTK == 8.1.2',
+        'traits == 5.1.2',
+        'mayavi == 4.7.1',
+        'PyQt5',
         'pandas >= 0.16.0',
         'numpy',
-        'pandas',
         'matplotlib',
     ],
     classifiers=[
