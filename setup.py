@@ -43,7 +43,6 @@ setup(
         'swat >= 1.5.0',
         'pandas >= 0.16.0',
         'numpy',
-        'mayavi',
         'pandas',
         'matplotlib',
     ],
