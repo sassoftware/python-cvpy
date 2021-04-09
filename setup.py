@@ -41,11 +41,13 @@ setup(
     packages=find_packages(),
     install_requires=[
         'swat',
+        'VTK=8.1.2'
+        'traits=5.1.2',
+        'mayavi',
         'PyQt5',
-        'pandas',
         'numpy',
         'matplotlib',
-        'mayavi'
+        'pandas'
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
