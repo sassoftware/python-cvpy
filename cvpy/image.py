@@ -24,7 +24,6 @@ stderr = sys.stderr
 
 import struct
 import numpy as np
-import pandas as pd
 
 sys.stdout = stdout
 sys.stderr = stderr
@@ -57,20 +56,20 @@ def get_image_array_from_row(image_binary, dimension, resolution, myformat, chan
 
     Parameters
     ----------
-    image_binary : pandas.Series
+    image_binary : bytes
         Specifies the image binary.
-    dimension : pandas.Series
+    dimension : int
         Specifies the dimension of the image.
-    resolution : pandas.Series
+    resolution : numpy.ndarray
         Specifies the resolution of the image.
-    myformat : pandas.Series
+    myformat : str
         Specifies the format of the image.
-    channel_count : int
+    channel_count : int, optional
         Specifies the channel count of the image.
 
     Returns
     -------
-    :numpy.Array
+    :numpy.ndarray
     '''
 
     num_cells = np.prod(resolution)
