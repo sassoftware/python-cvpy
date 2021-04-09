@@ -30,7 +30,7 @@ def get_file(fname):
 
 setup(
     name='cvpy',
-    version='1.0.0',
+    version='0.1.0',
     description='SAS Computer Vision Interface',
     long_description=get_file('README.md'),
     long_description_content_type='text/markdown',
