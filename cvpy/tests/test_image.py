@@ -63,9 +63,37 @@ class TestImage(unittest.TestCase):
         medicalFormats = imageRows["_channelType_"]
         medicalBinaries = imageRows["_image_"]
         medicalResolutions = imageRows["_resolution_"]
-        medicalChannelTypes = imageRows["_channelType_"]
 
         medicalImageArray = get_image_array(medicalBinaries, medicalDimensions, medicalResolutions, medicalFormats, 0)
+        self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
+
+    def test_get_image_array_from_row(self):
+        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s.loadactionset('image')
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path='/net/narndnas02.unx.sas.com/vol/vol2/fvcc/tkcv-test-data/data/', dataSource='PATH', subdirectories=True)
+
+        # Load the image
+        self.s.image.loadImages(path='biomedimg/simple.png',
+                                casOut=dict(name='image', replace='TRUE'),
+                                addColumns={"WIDTH", "HEIGHT", "DEPTH", "CHANNELTYPE", "SPACING"},
+                                caslib='dlib',
+                                decode=True)
+
+        imageRows = self.s.fetch(table='image', sastypes=False)['Fetch']
+
+        medicalDimensions = imageRows["_dimension_"]
+        medicalFormats = imageRows["_channelType_"]
+        medicalBinaries = imageRows["_image_"]
+        medicalResolutions = imageRows["_resolution_"]
+
+        n=0
+        dimension = int(medicalDimensions[n])
+        resolution = np.array(struct.unpack('=%sq' % dimension, medicalResolutions[n][0:dimension * 8]))
+        resolution = resolution[::-1]
+        myformat = medicalFormats[n]
+        num_cells = np.prod(resolution)
+        medicalImageArray = get_image_array_from_row(medicalBinaries[n], dimension, resolution, myformat, 1)
+        
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
 if __name__ == '__main__':
