@@ -35,14 +35,14 @@ def __reverse(a, axis=0):
 
     Parameters
     ----------
-    a : numpy.Array
+    a : numpy.ndarray
         Specifies the array to be reversed.
     axis : int
         Specifies the axis.
 
     Returns
     -------
-    :numpy.Array
+    :numpy.ndarray
     '''
 
     idx = [slice(None)] * len(a.shape)
