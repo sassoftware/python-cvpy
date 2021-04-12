@@ -29,8 +29,8 @@ def get_file(fname):
         return infile.read()
 
 setup(
-    name='cvpy',
-    version='0.1.0',
+    name='sas-cvpy',
+    version='1.0.0',
     description='SAS Computer Vision Interface',
     long_description=get_file('README.md'),
     long_description_content_type='text/markdown',
@@ -42,6 +42,8 @@ setup(
     install_requires=[
         'swat>=1.6.1',
         'VTK==8.1.2',
+        'importlib-metadata==1.6.0',
+        'colorama>=0.4.3',
         'docutils==0.16',
         'pyface==6.1.2',
         'bleach==3.1.4',
