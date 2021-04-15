@@ -33,7 +33,7 @@ class TestImage(unittest.TestCase):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
         self.s.loadactionset('image')
 
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path='/net/narndnas02.unx.sas.com/vol/vol2/fvcc/tkcv-test-data/data/', dataSource='PATH', subdirectories=True)
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
 
         # Load the image
         image = self.s.CASTable('image', replace=True)
@@ -48,7 +48,7 @@ class TestImage(unittest.TestCase):
     def test_get_image_array(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
         self.s.loadactionset('image')
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path='/net/narndnas02.unx.sas.com/vol/vol2/fvcc/tkcv-test-data/data/', dataSource='PATH', subdirectories=True)
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
 
         # Load the image
         self.s.image.loadImages(path='biomedimg/simple.png',
@@ -70,7 +70,7 @@ class TestImage(unittest.TestCase):
     def test_get_image_array_from_row(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
         self.s.loadactionset('image')
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path='/net/narndnas02.unx.sas.com/vol/vol2/fvcc/tkcv-test-data/data/', dataSource='PATH', subdirectories=True)
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
 
         # Load the image
         self.s.image.loadImages(path='biomedimg/simple.png',
@@ -99,6 +99,7 @@ class TestImage(unittest.TestCase):
 if __name__ == '__main__':
     if len(sys.argv) > 1:
 
+        TestImage.dataPath = sys.argv.pop()
         TestImage.password = sys.argv.pop()
         TestImage.username = sys.argv.pop()
         TestImage.casPort = sys.argv.pop()
