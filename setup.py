@@ -36,16 +36,16 @@ setup(
     long_description_content_type='text/markdown',
     author='SAS',
     author_email='support@sas.com',
-    url='https://gitlab.sas.com/coambr/python-cvpy/',
+    url='https://github.com/sassoftware/python-cvpy',
     license='Apache 2.0',
     packages=find_packages(),
     install_requires=[
-        'swat >= 1.5.0',
-        'pandas >= 0.16.0',
-        'numpy',
-        'mayavi',
+        'swat',
+        'PyQt5',
         'pandas',
+        'numpy',
         'matplotlib',
+        'mayavi'
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
