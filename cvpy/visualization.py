@@ -172,10 +172,10 @@ def display_3D_surface(surfaces, vdata, fdata, hold=False, color=(1, 0, 0), op=1
     sid = surfaces.iloc[0]['Surface Identifier']
     fetchv = vdata.query('_surfaceId_='+str(sid)).sort_values('_id_').to_frame()
     fetchf = fdata.query('_surfaceId_='+str(sid)).to_frame()
-    sx = fetchv.ix[:, ["_x_"]]
-    sy = fetchv.ix[:, ["_y_"]]
-    sz = fetchv.ix[:, ["_z_"]]
-    sflist = fetchf.ix[:, ["_v1_", "_v2_", "_v3_"]]
+    sx = fetchv.loc[:, ["_x_"]]
+    sy = fetchv.loc[:, ["_y_"]]
+    sz = fetchv.loc[:, ["_z_"]]
+    sflist = fetchf.loc[:, ["_v1_", "_v2_", "_v3_"]]
     mlab.triangular_mesh(sx, sy, sz, sflist, color=color, opacity=op)
     if (not hold):
         mlab.show()
