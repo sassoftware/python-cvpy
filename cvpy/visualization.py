@@ -121,8 +121,7 @@ def display_image_slice(images, dims, ress, fmts, poss, oris, scas, perm, image_
             mlab.quiver3d(pos[0], pos[1], pos[2], ori[0, i], ori[1, i], ori[2, i],
                           line_width=5, scale_factor=50*sca[i, i], color=clr, mode='arrow')
 
-
-def display_3D_image_slices(array, hold=False):
+def display_3D_image_slices_from_array(array, hold=False, slice_index_x=0, slice_index_y=0, slice_index_z=0):
 
     '''
     Display 3D image slices in 3D.
@@ -133,19 +132,45 @@ def display_3D_image_slices(array, hold=False):
         Specifies the array to be displayed.
     hold : boolean
         Specifies whether or not to hold the display.
-
-    Returns
-    -------
-    :numpy.Array
     
     '''
 
     sf = mlab.pipeline.scalar_field(array)
-    mlab.pipeline.image_plane_widget(sf, plane_orientation='x_axes', slice_index=50, colormap='gray', vmax=400, vmin=-100)
-    mlab.pipeline.image_plane_widget(sf, plane_orientation='y_axes', slice_index=100, colormap='gray', vmax=400, vmin=-100)
-    mlab.pipeline.image_plane_widget(sf, plane_orientation='z_axes', slice_index=100, colormap='gray', vmax=400, vmin=-100)
+    mlab.pipeline.image_plane_widget(sf, plane_orientation="x_axes", slice_index=slice_index_x, colormap="gray", vmax=400, vmin=-100)
+    mlab.pipeline.image_plane_widget(sf, plane_orientation="y_axes", slice_index=slice_index_y, colormap="gray", vmax=400, vmin=-100)
+    mlab.pipeline.image_plane_widget(sf, plane_orientation="z_axes", slice_index=slice_index_z, colormap="gray", vmax=400, vmin=-100)
     if (not hold):
         mlab.show()
+
+def display_3D_image_slices(self, image, hold=False, slice_index_x=0, slice_index_y=0, slice_index_z=0):
+
+    '''
+    Display 3D image slices in 3D.
+
+    Parameters
+    ----------
+    self : swat.cas.connection.CAS
+        Specifies the SWAT connection.
+    image : str
+        Specifies the image to be displayed.
+    hold : boolean
+        Specifies whether or not to hold the display.
+    slice_index_x : int
+        Specifies the slice index to be displayed on the x axis.
+    slice_index_y : int
+        Specifies the slice index to be displayed on the y axis.
+    slice_index_z : int
+        Specifies the slice index to be displayed on the z axis.
+
+    '''
+
+    rows=self.fetch(table=image, sastypes=False)['Fetch']
+    dimensions = rows["_dimension_"]
+    formats = rows["_channelType_"]
+    binaries = rows["_image_"]
+    resolutions = rows["_resolution_"]
+    image_array = get_image_array( binaries, dimensions, resolutions, formats, 0)
+    display_3D_image_slices_from_array(image_array, hold=False, slice_index_x=0, slice_index_y=0, slice_index_z=0)
 
 def display_3D_surface(surfaces, vdata, fdata, hold=False, color=(1, 0, 0), op=1):
 
