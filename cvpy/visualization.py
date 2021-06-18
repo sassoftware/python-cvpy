@@ -136,9 +136,9 @@ def display_3D_image_slices_from_array(array, hold=False, slice_index_x=0, slice
     '''
 
     sf = mlab.pipeline.scalar_field(array)
-    mlab.pipeline.image_plane_widget(sf, plane_orientation="x_axes", slice_index=slice_index_x, colormap="gray", vmax=400, vmin=-100)
-    mlab.pipeline.image_plane_widget(sf, plane_orientation="y_axes", slice_index=slice_index_y, colormap="gray", vmax=400, vmin=-100)
-    mlab.pipeline.image_plane_widget(sf, plane_orientation="z_axes", slice_index=slice_index_z, colormap="gray", vmax=400, vmin=-100)
+    mlab.pipeline.image_plane_widget(sf, plane_orientation="x_axes", slice_index=slice_index_x, colormap="gray")
+    mlab.pipeline.image_plane_widget(sf, plane_orientation="y_axes", slice_index=slice_index_y, colormap="gray")
+    mlab.pipeline.image_plane_widget(sf, plane_orientation="z_axes", slice_index=slice_index_z, colormap="gray")
     if (not hold):
         mlab.show()
 
