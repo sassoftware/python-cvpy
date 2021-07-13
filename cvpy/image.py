@@ -196,3 +196,39 @@ def fetch_image_array(imdata, n=0, qry='', image='_image_', dim='_dimension_', r
     medical_resolutions = example_rows[res]
     return get_image_array(medical_binaries, medical_dimensions, medical_resolutions, medical_formats, n, ccount)
 
+def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orientation_', spaCol='_spacing_', dimCol='_dimension_'):
+
+    '''
+    Fetch geometry information from a CAS table.
+
+    Parameters
+    ----------
+    imdata : CASTable
+        Specifies the SWAT CASTable that contains the image.
+    n : int
+        Specifies the number of images.
+    qry : string
+        Specifies the query.
+    posCol : string
+        Specifies the position column.
+    oriCol : string
+        Specifies the orientation column.
+    spaCol : string
+        Specifies the spacing column.
+    dimCol : string
+        Specifies the dimension column.
+
+    Returns
+    -------
+    :tuple, tuple, tuple
+    '''
+
+    if (qry != ''):
+        example_rows = imdata[[dimCol, posCol, oriCol, spaCol]].query(qry).to_frame(to=n)
+    else:
+        example_rows = imdata[[dimCol, posCol, oriCol, spaCol]].to_frame(to=n)
+    dim = example_rows[dimCol][0]
+    pos = struct.unpack('=%sd'%dim, example_rows[posCol][0][0:dim*8])
+    ori = struct.unpack('=%sd'%(dim*dim), example_rows[oriCol][0][0:dim*dim*8])
+    spa = struct.unpack('=%sd'%dim, example_rows[spaCol][0][0:dim*8])
+    return pos, ori, spa

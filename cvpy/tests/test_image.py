@@ -93,8 +93,26 @@ class TestImage(unittest.TestCase):
         myformat = medicalFormats[n]
         num_cells = np.prod(resolution)
         medicalImageArray = get_image_array_from_row(medicalBinaries[n], dimension, resolution, myformat, 1)
-        
+
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
+
+    def test_fetch_geometry_info(self):
+        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s.loadactionset('image')
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
+
+        # Load an image with geometry data
+        imgray = self.s.CASTable("imgray", replace=True)
+        self.s.image.loadimages(
+            path="dicomdata/ExpertSegScans/CAESAR007/1",
+            recurse=True,
+            casout=imgray,
+            decode=True,
+            caslib="dlib",
+            addcolumns={"position", "orientation", "spacing"},
+        )
+
+        self.assertTrue(fetch_geometry_info(imgray) == ((-173.63671875, -290.63671875, -775.5), (1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0),(0.7265625, 0.7265625, 3.0)))
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
