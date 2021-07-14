@@ -74,35 +74,35 @@ def get_image_array_from_row(image_binary, dimension, resolution, myformat, chan
 
     num_cells = np.prod(resolution)
     if (myformat == '32S'):
-        image_array = np.array(struct.unpack('=%si' % num_cells, image_binary[0:4 * num_cells]))
+        image_array = np.array(struct.unpack('=%si' % num_cells, image_binary[0:4 * num_cells])).astype(np.int32)
         image_array = np.reshape(image_array, resolution)
     elif myformat == '32F':
-        image_array = np.array(struct.unpack('=%sf' % num_cells, image_binary[0:4 * num_cells]))
+        image_array = np.array(struct.unpack('=%sf' % num_cells, image_binary[0:4 * num_cells])).astype(np.float32)
         image_array = np.reshape(image_array, resolution)
     elif myformat == '64F':
-        image_array = np.array(struct.unpack('=%sd' % num_cells, image_binary[0:8 * num_cells]))
+        image_array = np.array(struct.unpack('=%sd' % num_cells, image_binary[0:8 * num_cells])).astype(np.float64)
         image_array = np.reshape(image_array, resolution)
     elif myformat == '64U':
-        image_array = np.array(struct.unpack('=%sQ' % num_cells, image_binary[0:8 * num_cells]))
+        image_array = np.array(struct.unpack('=%sQ' % num_cells, image_binary[0:8 * num_cells])).astype(np.uint64)
         image_array = np.reshape(image_array, resolution)
     elif myformat == '16S':
-        image_array = np.array(struct.unpack('=%sh' % num_cells, image_binary[0:2 * num_cells]))
+        image_array = np.array(struct.unpack('=%sh' % num_cells, image_binary[0:2 * num_cells])).astype(np.int16)
         image_array = np.reshape(image_array, resolution)
     elif myformat == '16U':
-        image_array = np.array(struct.unpack('=%sH' % num_cells, image_binary[0:2 * num_cells]))
+        image_array = np.array(struct.unpack('=%sH' % num_cells, image_binary[0:2 * num_cells])).astype(np.uint16)
         image_array = np.reshape(image_array, resolution)
     elif myformat == '8U' and channel_count==3:
-        image_array = np.array(bytearray(image_binary[0:(num_cells*3)]))
+        image_array = np.array(bytearray(image_binary[0:(num_cells*3)])).astype(np.uint8)
         image_array = np.reshape(image_array, (resolution[0], resolution[1], 3))[:, :, 0:3]
         image_array = __reverse(image_array, 2)
     elif myformat == '8S':
-        image_array = np.array(struct.unpack('=%sb' % num_cells, image_binary[0:num_cells]))
+        image_array = np.array(struct.unpack('=%sb' % num_cells, image_binary[0:num_cells])).astype(np.int8)
         image_array = np.reshape(image_array, resolution)
     elif myformat == '8U':
-        image_array = np.array(struct.unpack('=%sB' % num_cells, image_binary[0:num_cells]))
+        image_array = np.array(struct.unpack('=%sB' % num_cells, image_binary[0:num_cells])).astype(np.uint8)
         image_array = np.reshape(image_array, resolution)
     else:
-        image_array = np.array(bytearray(image_binary))
+        image_array = np.array(bytearray(image_binary)).astype(np.uint8)
         image_array = np.reshape(image_array, (resolution[0], resolution[1], 3))
         image_array = __reverse(image_array, 2)
     return image_array
@@ -136,7 +136,6 @@ def get_image_array(image_binaries, dimensions, resolutions, formats, n, channel
     resolution = np.array(struct.unpack('=%sq' % dimension, resolutions[n][0:dimension * 8]))
     resolution = resolution[::-1]
     myformat = formats[n]
-    num_cells = np.prod(resolution)
     return get_image_array_from_row(image_binaries[n], dimension, resolution, myformat, channel_count)
 
 def convert_to_CAS_column(s):
@@ -222,6 +221,10 @@ def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orien
     -------
     :tuple, tuple, tuple
     '''
+
+    # Check if geometry info exists in CAS table query before fetching
+    if not {'_position_', '_spacing_', '_orientation_'}.issubset(imdata.columns):
+        return ((), (), ())
 
     if (qry != ''):
         example_rows = imdata[[dimCol, posCol, oriCol, spaCol]].query(qry).to_frame(to=n)
