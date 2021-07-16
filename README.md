@@ -22,12 +22,6 @@ Install VTK, a critical dependency for Mayavi.
 
 Note that a specific version of is VTK used. You can download the wheel file from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#vtk).
 
-Install traits, another critical dependency for Mayavi.
-
-`pip install traits‑5.1.2‑cp37‑cp37m‑win_amd64.whl`
-
-Note that a specific version of traits is used. You can download the wheel file from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#traits).
-
 Install Mayavi
 
 `pip install mayavi`
