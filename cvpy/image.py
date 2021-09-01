@@ -235,3 +235,34 @@ def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orien
     ori = struct.unpack('=%sd'%(dim*dim), example_rows[oriCol][0][0:dim*dim*8])
     spa = struct.unpack('=%sd'%dim, example_rows[spaCol][0][0:dim*8])
     return pos, ori, spa
+
+def get_image_array_const_component_type(image_binaries, dimensions, resolutions, ctype, n, channel_count=1):
+    
+    '''
+    Get an image array with a constant component type from CAS table.
+
+    Parameters
+    ----------
+    image_binaries : pandas.Series
+        Specifies the image binaries.
+    dimensions : pandas.Series
+        Specifies the dimensions of the images.
+    resolutions : pandas.Series
+        Specifies the resolutions of the images.
+    ctype : string
+        Specifies the channel type of the image.
+    n : int
+        Specifies the dimension index.
+    channel_count : int
+        Specifies the channel count of the image.
+
+    Returns
+    -------
+    :numpy.Array
+    '''
+    dimension = int(dimensions[n])
+    resolution = np.array(struct.unpack('=%sq' % dimension, resolutions[n][0:dimension * 8]))
+    resolution = resolution[::-1]
+    num_cells = np.prod(resolution)
+    
+    return get_image_array_from_row(image_binaries[n], dimension, resolution, ctype, channel_count)

@@ -25,6 +25,12 @@ import numpy as np
 from cvpy.image import *
 
 
+'''
+Only for test the new function, you can remove this part
+sys.path.append('../')
+from image import get_image_array_const_component_type
+'''
+
 class TestImage(unittest.TestCase):
 
     def test_convert_to_CAS_column(self):
@@ -121,6 +127,7 @@ class TestImage(unittest.TestCase):
             test_pass = test_pass and (imageArray.dtype == np_dtype)
 
         self.assertTrue(test_pass)
+    
 
     def test_fetch_geometry_info_no_geometry(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -151,7 +158,53 @@ class TestImage(unittest.TestCase):
                                 )
 
         self.assertTrue(fetch_geometry_info(imgray) == ((0, 0), (1.0, 0.0, 0.0, 1.0), (1.0, 1.0)))
+    
+    
+    def test_get_image_array_const_component_type(self):
+        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s.loadactionset('image')
+        self.s.loadactionset('biomedimage')
+        self.s.loadactionset('fedsql')
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
+        
+        # Load the image
+        cdata = self.s.CASTable('cdata')
+        self.s.image.loadimages(path='biomedimg/simple.png',
+                                casout=cdata,
+                                caslib='dlib',
+                                decode=True)
+        
+        # Process the image
+        pdata = self.s.CASTable('pdata')
+        self.s.image.processimages(imagetable=cdata,
+                                   steps=[dict(stepparameters=dict(
+                                       functiontype='rescale', type='to_8u', alpha=1, beta=0)),
+                                         ],
+                                   decode=True,
+                                   casout=pdata
+                                  )
+        
+        # Process biomedimages
+        idata = self.s.CASTable('idata')
+        self.s.biomedimage.processbiomedimages(images=dict(table=pdata),
+                                               steps=[
+                                                   dict(stepparameters=dict(steptype='import')),
+                                               ],
+                                               decode=True,
+                                               copyvars={'_path_'},
+                                               casout=idata
+                                              )
+        
+        example_rows = idata.to_frame()
+        medical_dimensions = example_rows['_dimension_']
+        medical_binaries = example_rows['_image_']
+        medical_resolutions = example_rows['_resolution_']
+        
+        image_array = get_image_array_const_component_type(medical_binaries, medical_dimensions, medical_resolutions,ctype='8U', n=0,channel_count=1)
+        
+        self.assertTrue(np.array_equal(image_array, np.array([[0, 0, 0, 0, 0],[0, 255, 0, 0, 0],[0, 255, 0, 150, 0],[0, 0, 0, 0, 50],[0, 0, 0, 0, 0]])))
 
+        
 if __name__ == '__main__':
     if len(sys.argv) > 1:
 
@@ -160,6 +213,7 @@ if __name__ == '__main__':
         TestImage.username = sys.argv.pop()
         TestImage.casPort = sys.argv.pop()
         TestImage.casHost = sys.argv.pop()
+        
 
     unittest.main(
         testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
