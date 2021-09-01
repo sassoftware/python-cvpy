@@ -25,12 +25,6 @@ import numpy as np
 from cvpy.image import *
 
 
-'''
-Only for test the new function, you can remove this part
-sys.path.append('../')
-from image import get_image_array_const_component_type
-'''
-
 class TestImage(unittest.TestCase):
 
     def test_convert_to_CAS_column(self):
@@ -174,28 +168,7 @@ class TestImage(unittest.TestCase):
                                 caslib='dlib',
                                 decode=True)
         
-        # Process the image
-        pdata = self.s.CASTable('pdata')
-        self.s.image.processimages(imagetable=cdata,
-                                   steps=[dict(stepparameters=dict(
-                                       functiontype='rescale', type='to_8u', alpha=1, beta=0)),
-                                         ],
-                                   decode=True,
-                                   casout=pdata
-                                  )
-        
-        # Process biomedimages
-        idata = self.s.CASTable('idata')
-        self.s.biomedimage.processbiomedimages(images=dict(table=pdata),
-                                               steps=[
-                                                   dict(stepparameters=dict(steptype='import')),
-                                               ],
-                                               decode=True,
-                                               copyvars={'_path_'},
-                                               casout=idata
-                                              )
-        
-        example_rows = idata.to_frame()
+        example_rows = cdata.to_frame()
         medical_dimensions = example_rows['_dimension_']
         medical_binaries = example_rows['_image_']
         medical_resolutions = example_rows['_resolution_']
