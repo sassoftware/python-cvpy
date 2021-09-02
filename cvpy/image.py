@@ -236,10 +236,10 @@ def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orien
     spa = struct.unpack('=%sd'%dim, example_rows[spaCol][0][0:dim*8])
     return pos, ori, spa
 
-def get_image_array_const_component_type(image_binaries, dimensions, resolutions, ctype, n, channel_count=1):
+def get_image_array_const_ctype(image_binaries, dimensions, resolutions, ctype, n, channel_count=1):
     
     '''
-    Get an image array with a constant component type from CAS table.
+    Get an image array with a constant component type from a CAS table.
 
     Parameters
     ----------
