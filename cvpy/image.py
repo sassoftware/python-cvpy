@@ -239,7 +239,7 @@ def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orien
 def get_image_array_const_ctype(image_binaries, dimensions, resolutions, ctype, n, channel_count=1):
     
     '''
-    Get an image array with a constant component type from a CAS table.
+    Get an image array with a constant channel type from a CAS table.
 
     Parameters
     ----------
