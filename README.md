@@ -16,9 +16,13 @@ This high-level Python library assists with the image and biomedimage action set
 
 Mayavi is a heavy, complex package that is required by CVPy. If you do not already have Mayavi installed, follow the steps below to install it.
 
-Install VTK, a critical dependency for Mayavi. 
+Install VTK, a critical dependency for Mayavi.
 
 `pip install VTK‑8.1.2‑cp37‑cp37m‑win_amd64.whl`
+
+or
+
+`pip install VTK==8.1.2`
 
 Note that a specific version of is VTK used. You can download the wheel file from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#vtk).
 
@@ -40,7 +44,7 @@ To install CVPy, use the following command:
 
 ## Contributing
 
-We welcome your contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to submit contributions to this project. 
+We welcome your contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to submit contributions to this project.
 
 ## License
 
