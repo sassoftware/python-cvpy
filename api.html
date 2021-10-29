@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference &mdash; CVPy 1.0.0-dev documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cvpy.image.get_image_array_from_row" href="generated/cvpy.image.get_image_array_from_row.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CVPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0-dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#image">Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.get_image_array_from_row.html">cvpy.image.get_image_array_from_row</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.get_image_array.html">cvpy.image.get_image_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.convert_to_CAS_column.html">cvpy.image.convert_to_CAS_column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.fetch_image_array.html">cvpy.image.fetch_image_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.fetch_geometry_info.html">cvpy.image.fetch_geometry_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.get_image_array_const_ctype.html">cvpy.image.get_image_array_const_ctype</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization-reference">Visualization Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_image_slice.html">cvpy.visualization.display_image_slice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices_from_array.html">cvpy.visualization.display_3D_image_slices_from_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices.html">cvpy.visualization.display_3D_image_slices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_surface.html">cvpy.visualization.display_3D_surface</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CVPy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="image">
+<h2>Image<a class="headerlink" href="#image" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.get_image_array_from_row.html#cvpy.image.get_image_array_from_row" title="cvpy.image.get_image_array_from_row"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_image_array_from_row</span></code></a>(image_binary, …)</p></td>
+<td><p>Get a 3D image from a row.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.get_image_array.html#cvpy.image.get_image_array" title="cvpy.image.get_image_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_image_array</span></code></a>(image_binaries, dimensions, …)</p></td>
+<td><p>Get an image from a fetched array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.convert_to_CAS_column.html#cvpy.image.convert_to_CAS_column" title="cvpy.image.convert_to_CAS_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_CAS_column</span></code></a>(s)</p></td>
+<td><p>Convert a string to CAS column name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.fetch_image_array.html#cvpy.image.fetch_image_array" title="cvpy.image.fetch_image_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_image_array</span></code></a>(imdata[, n, qry, image, …])</p></td>
+<td><p>Fetch image array from a CAS table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.fetch_geometry_info.html#cvpy.image.fetch_geometry_info" title="cvpy.image.fetch_geometry_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_geometry_info</span></code></a>(imdata[, n, qry, …])</p></td>
+<td><p>Fetch geometry information from a CAS table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.get_image_array_const_ctype.html#cvpy.image.get_image_array_const_ctype" title="cvpy.image.get_image_array_const_ctype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_image_array_const_ctype</span></code></a>(image_binaries, …)</p></td>
+<td><p>Get an image array with a constant channel type from a CAS table.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="visualization-reference">
+<h2>Visualization Reference<a class="headerlink" href="#visualization-reference" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_image_slice.html#cvpy.visualization.display_image_slice" title="cvpy.visualization.display_image_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_image_slice</span></code></a>(images, dims, ress, …)</p></td>
+<td><p>Display an image slice in 3D.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices_from_array.html#cvpy.visualization.display_3D_image_slices_from_array" title="cvpy.visualization.display_3D_image_slices_from_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_3D_image_slices_from_array</span></code></a>(array[, …])</p></td>
+<td><p>Display 3D image slices in 3D.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices.html#cvpy.visualization.display_3D_image_slices" title="cvpy.visualization.display_3D_image_slices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_3D_image_slices</span></code></a>(self, image[, hold, …])</p></td>
+<td><p>Display 3D image slices in 3D.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_3D_surface.html#cvpy.visualization.display_3D_surface" title="cvpy.visualization.display_3D_surface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">display_3D_surface</span></code></a>(surfaces, vdata, fdata[, …])</p></td>
+<td><p>Display the surfaces of an image.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generated/cvpy.image.get_image_array_from_row.html" class="btn btn-neutral float-right" title="cvpy.image.get_image_array_from_row" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021 SAS Institute Inc. All Rights Reserved.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

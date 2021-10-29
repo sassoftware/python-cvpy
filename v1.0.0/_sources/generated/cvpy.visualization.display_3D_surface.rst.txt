@@ -1,0 +1,6 @@
+﻿cvpy.visualization.display\_3D\_surface
+=======================================
+
+.. currentmodule:: cvpy.visualization
+
+.. autofunction:: display_3D_surface

@@ -1,0 +1,6 @@
+﻿cvpy.image.fetch\_geometry\_info
+================================
+
+.. currentmodule:: cvpy.image
+
+.. autofunction:: fetch_geometry_info
