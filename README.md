@@ -52,5 +52,5 @@ This project is licensed under the [Apache 2.0 License](LICENSE).
 
 ## Additional Resources
 
-* Biomedimage action set https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_biomedimage_toc.htm
-* Image action set https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_image_toc.htm
+* [Biomedimage action set](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_biomedimage_toc.htm)
+* [Image action set](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_image_toc.htm)
