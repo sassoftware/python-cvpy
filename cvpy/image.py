@@ -35,14 +35,14 @@ def __reverse(a, axis=0):
 
     Parameters
     ----------
-    a : numpy.ndarray
+    a : :class:`numpy.ndarray`
         Specifies the array to be reversed.
     axis : int
-        Specifies the axis.
+        Specifies the axis along which the array should be reversed.
 
     Returns
     -------
-    :numpy.ndarray
+    :class:`numpy.ndarray`
     '''
 
     idx = [slice(None)] * len(a.shape)
@@ -56,20 +56,20 @@ def get_image_array_from_row(image_binary, dimension, resolution, myformat, chan
 
     Parameters
     ----------
-    image_binary : bytes
+    image_binary : :class:`bytes`
         Specifies the image binary.
-    dimension : int
+    dimension : :class:`int`
         Specifies the dimension of the image.
-    resolution : numpy.ndarray
+    resolution : :class:`numpy.ndarray`
         Specifies the resolution of the image.
-    myformat : str
+    myformat : :class:`str`
         Specifies the format of the image.
-    channel_count : int, optional
-        Specifies the channel count of the image.
+    channel_count : :class:`int`, optional
+        Specifies the number of channels that the image has.
 
     Returns
     -------
-    :numpy.ndarray
+    :class:`numpy.ndarray`
     '''
 
     num_cells = np.prod(resolution)
@@ -114,22 +114,22 @@ def get_image_array(image_binaries, dimensions, resolutions, formats, n, channel
 
     Parameters
     ----------
-    image_binaries : pandas.Series
+    image_binaries : :class:`pandas.Series`
         Specifies the image binaries
-    dimensions : pandas.Series
+    dimensions : :class:`pandas.Series`
         Specifies the dimensions of the images.
-    resolutions : pandas.Series
+    resolutions : :class:`pandas.Series`
         Specifies the resolutions of the images.
-    formats : pandas.Series
+    formats : :class:`pandas.Series`
         Specifies the image formats.
-    n : int
+    n : :class:`int`
         Specifies the dimension index.
-    channel_count : int, optional
-        Specifies the channel count of the image.
+    channel_count : :class:`int`, optional
+        Specifies the number of channels that the image has.
 
     Returns
     -------
-    :numpy.Array
+    :class:`numpy.ndarray`
     '''
 
     dimension = int(dimensions[n])
@@ -145,12 +145,12 @@ def convert_to_CAS_column(s):
 
     Parameters
     ----------
-    s : string
+    s : :class:`str`
         Specifies the column name to be converted.
 
     Returns
     -------
-    : string
+    :class:`str`
     '''
 
     s = str.replace(str.replace(s, '{', '_'), '}', '_')
@@ -163,26 +163,26 @@ def fetch_image_array(imdata, n=0, qry='', image='_image_', dim='_dimension_', r
 
     Parameters
     ----------
-    imdata : string
+    imdata : :class:`str`
         Specifies the image data.
-    n : int
+    n : :class:`int`
         Specifies the number of additional images.
-    qry : string
+    qry : :class:`str`
         Specifies the query.
-    image : string
+    image : :class:`str`
         Specifies the image format.
-    dim : string
+    dim : :class:`str`
         Specifies the image dimension.
-    res : string
+    res : :class:`str`
         Specifies the image resolution.
-    ctype : string
+    ctype : :class:`str`
         Specifies the channel type.
-    ccount : int
-        Specifies the channel count of the image.
+    ccount : :class:`int`
+        Specifies the number of channels of the image.
 
     Returns
     -------
-    :numpy.Array
+    :class:`numpy.ndarray`
     '''
 
     if (qry != ''):
@@ -202,24 +202,24 @@ def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orien
 
     Parameters
     ----------
-    imdata : CASTable
-        Specifies the SWAT CASTable that contains the image.
-    n : int
+    imdata : :class:`swat.CASTable <swat.cas.table.CASTable>`
+        Specifies the CASTable that contains the image.
+    n : :class:`int`
         Specifies the number of images.
-    qry : string
+    qry : :class:`str`
         Specifies the query.
-    posCol : string
+    posCol : :class:`str`
         Specifies the position column.
-    oriCol : string
+    oriCol : :class:`str`
         Specifies the orientation column.
-    spaCol : string
+    spaCol : :class:`str`
         Specifies the spacing column.
-    dimCol : string
+    dimCol : :class:`str`
         Specifies the dimension column.
 
     Returns
     -------
-    :tuple, tuple, tuple
+    :class:`tuple`, (position, orientation, spacing)
     '''
 
     # Check if geometry info exists in CAS table query before fetching
@@ -243,22 +243,22 @@ def get_image_array_const_ctype(image_binaries, dimensions, resolutions, ctype, 
 
     Parameters
     ----------
-    image_binaries : pandas.Series
+    image_binaries : :class:`pandas.Series`
         Specifies the image binaries.
-    dimensions : pandas.Series
+    dimensions : :class:`pandas.Series`
         Specifies the dimensions of the images.
-    resolutions : pandas.Series
+    resolutions : :class:`pandas.Series`
         Specifies the resolutions of the images.
-    ctype : string
+    ctype : :class:`str`
         Specifies the channel type of the image.
-    n : int
+    n : :class:`int`
         Specifies the dimension index.
-    channel_count : int
+    channel_count : :class:`int`
         Specifies the channel count of the image.
 
     Returns
     -------
-    :numpy.Array
+    :class:`numpy.ndarray`
     '''
     dimension = int(dimensions[n])
     resolution = np.array(struct.unpack('=%sq' % dimension, resolutions[n][0:dimension * 8]))

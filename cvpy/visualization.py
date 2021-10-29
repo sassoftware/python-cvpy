@@ -39,12 +39,12 @@ def __mapping(val):
 
     Parameters
     ----------
-    val : int
+    val : :class:`int`
         Specifies value to be mapped.
 
     Returns
     -------
-    :int
+    :class:`int`
 
     '''    
     
@@ -62,31 +62,31 @@ def display_image_slice(images, dims, ress, fmts, poss, oris, scas, perm, image_
 
     Parameters
     ----------
-    images : string
+    images : :class:`str`
         Specifies the images.
-    dims : pandas.Series
+    dims : :class:`pandas.Series`
         Specifies the dimensions of the image.
-    ress : pandas.Series
+    ress : :class:`pandas.Series`
         Specifies the resolutions of the image.
-    fmts : pandas.Series
+    fmts : :class:`pandas.Series`
         Specifies the image formats.
-    poss : pandas.Series
+    poss : :class:`pandas.Series`
         Specifies the positions of the image.
-    oris : pandas.Series
+    oris : :class:`pandas.Series`
         Specifies the image format orientations of the image.
-    scas : pandas.Series
+    scas : :class:`pandas.Series`
         Specifies the scaling of the image.
-    perm : pandas.Series
+    perm : :class:`pandas.Series`
         Specifies the permissions of the image.
-    image_index : pandas.Series
+    image_index : :class:`pandas.Series`
         Specifies the image index.
-    slice_index : tuple
+    slice_index : :class:`tuple`
         Specifies the slice_index.
-    imin : int
+    imin : :class:`int`
         Specifies the input minimum.
-    imax : int
+    imax : :class:`int`
         Specifies the input maximum.
-    additive : int
+    additive : :class:`int`
         Specifies the additive.
 
     '''
@@ -128,10 +128,10 @@ def display_3D_image_slices_from_array(array, hold=False, slice_index_x=0, slice
 
     Parameters
     ----------
-    array : numpy.Array
+    array : :class:`numpy.ndarray`
         Specifies the array to be displayed.
-    hold : boolean
-        Specifies whether or not to hold the display.
+    hold : :class:`bool`
+        When set to True, the display is held.
     
     '''
 
@@ -149,17 +149,17 @@ def display_3D_image_slices(self, image, hold=False, slice_index_x=0, slice_inde
 
     Parameters
     ----------
-    self : swat.cas.connection.CAS
+    self : :class:`swat.CAS <swat.cas.connection.CAS>`
         Specifies the SWAT connection.
-    image : str
+    image : :class:`str`
         Specifies the image to be displayed.
-    hold : boolean
-        Specifies whether or not to hold the display.
-    slice_index_x : int
+    hold : :class:`bool`
+        When set to True, the display is held.
+    slice_index_x : :class:`int`
         Specifies the slice index to be displayed on the x axis.
-    slice_index_y : int
+    slice_index_y : :class:`int`
         Specifies the slice index to be displayed on the y axis.
-    slice_index_z : int
+    slice_index_z : :class:`int`
         Specifies the slice index to be displayed on the z axis.
 
     '''
@@ -179,17 +179,17 @@ def display_3D_surface(surfaces, vdata, fdata, hold=False, color=(1, 0, 0), op=1
 
     Parameters
     ----------
-    surfaces : swat.dataframe.SASDataFrame
+    surfaces : :class:`swat.SASDataFrame <swat.dataframe.SASDataFrame>`
         Specifies the surfaces to be displayed.
-    vdata : swat.dataframe.SASDataFrame
+    vdata : :class:`swat.SASDataFrame <swat.dataframe.SASDataFrame>`
         Specifies the fetched vertices.
-    fdata : swat.dataframe.SASDataFrame
+    fdata : :class:`swat.SASDataFrame <swat.dataframe.SASDataFrame>`
         Specifies the fetched faces.
-    hold : boolean
-        Specifies whether or not to hold the display.
-    color : tuple
+    hold : :class:`bool`
+        When set to True, the display is held.
+    color : :class:`tuple`
         Specifies color of the surface.
-    op : float
+    op : :class:`float`
         Specifies the opacity of the surface.
 
     '''
