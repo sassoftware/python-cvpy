@@ -1,0 +1,6 @@
+﻿cvpy.image.fetch\_image\_array
+==============================
+
+.. currentmodule:: cvpy.image
+
+.. autofunction:: fetch_image_array

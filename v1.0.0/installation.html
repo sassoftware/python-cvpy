@@ -1,0 +1,255 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; CVPy 1.0.0-dev documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="SAS Viya Computer Vision API for Python" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CVPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0-dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mayavi-installation">Mayavi Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cvpy-installation">CVPy Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CVPy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>To access the full capabilities of CVPy, you need the following:</p>
+<ul class="simple">
+<li><p>Python version 3 or greater (You can install the <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda</a>
+distribution or another distribution of your choice.)</p></li>
+<li><p><a class="reference external" href="https://github.com/sassoftware/python-swat">SAS Scripting Wrapper for Analytics Transfer</a> (SWAT) package for Python</p></li>
+<li><p><a class="reference external" href="https://www.sas.com/en_us/software/viya.html">SAS Viya 3.5+</a> with an active
+<a class="reference external" href="https://www.sas.com/en_us/software/visual-data-mining-machine-learning.html">Visual Data Mining and Machine Learning</a> (VDMML) license</p></li>
+<li><p><a class="reference external" href="https://docs.enthought.com/mayavi/mayavi/">Mayavi</a> for scientific data visualization in Python.</p></li>
+</ul>
+<p>You also need valid user credentials to access the SAS Viya backend. See your system administrator for details if you do not have a SAS Viya account.</p>
+<p>The examples in the repository are written using Jupyter notebooks. If you wish to run the notebooks in your own environment, you must also
+have <a class="reference external" href="https://jupyter.org/">Jupyter</a> installed. If you do not wish to install Jupyter, you can still view the examples in your browser on the
+<a class="reference external" href="https://github.com/sassoftware/python-cvpy/tree/main/examples">GitHub</a> website.</p>
+</div>
+<div class="section" id="mayavi-installation">
+<h2>Mayavi Installation<a class="headerlink" href="#mayavi-installation" title="Permalink to this headline">¶</a></h2>
+<p>Mayavi is a heavy, complex package that is required by CVPy. If you do not already have Mayavi installed, follow the steps below to install it.</p>
+<ol class="arabic simple">
+<li><p>Install VTK, a critical dependency for Mayavi.</p></li>
+</ol>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">VTK‑8.1.2‑cp37‑cp37m‑win_amd64.whl</span></code></p>
+<p>or</p>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">VTK==8.1.2</span></code></p>
+<p>Note that a specific version of is VTK used. You can download the wheel file from <a class="reference external" href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#vtk">here</a>.</p>
+<ol class="arabic simple" start="2">
+<li><p>Install Mayavi</p></li>
+</ol>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">mayavi</span></code></p>
+<p>You may see an error message about numpy, like “Numpy is required to build Mayavi correctly, please install it first.” Ignore that message.</p>
+<ol class="arabic simple" start="3">
+<li><p>Install PyQt, a GUI toolkit needed to run Mayavi</p></li>
+</ol>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">PyQt5</span></code></p>
+</div>
+<div class="section" id="cvpy-installation">
+<h2>CVPy Installation<a class="headerlink" href="#cvpy-installation" title="Permalink to this headline">¶</a></h2>
+<p>To install CVPy, use the following command:</p>
+<p><code class="code docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/sassoftware/python-cvpy.git</span></code></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="SAS Viya Computer Vision API for Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021 SAS Institute Inc. All Rights Reserved.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

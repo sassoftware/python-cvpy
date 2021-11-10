@@ -1,0 +1,6 @@
+﻿cvpy.visualization.display\_image\_slice
+========================================
+
+.. currentmodule:: cvpy.visualization
+
+.. autofunction:: display_image_slice
