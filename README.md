@@ -2,7 +2,9 @@
 
 ## Overview
 
-This high-level Python library assists with the image and biomedimage action sets by providing helpful visualization APIs. These APIs allow users to easily be able to move images out of CAS and into common open source tools such as Mayavi and Matplotlib. This streamlines the visualization of image data fetched from a CAS table and allows for further image analysis.
+CVPy is a Python package that makes SAS image analytics more accessible to Python users in a variety of different ways. This high-level Python library provides helpful APIs that assist with the processing, analyzing, and visualization of images. This allows users of the image and biomedimage action set in SAS Viya to have more flexibilty when working in Python.
+
+Currently available within CVPy are visualization APIs that allow users to easily be able to move images out of CAS and into common open source tools such as Mayavi and Matplotlib. These APIs streamline the visualization of image data fetched from a CAS table and can assist with further image analysis.
 
 ### Prerequisites
 
