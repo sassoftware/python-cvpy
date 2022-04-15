@@ -42,7 +42,7 @@ Install PyQt, a GUI toolkit needed to run Mayavi
 
 To install CVPy, use the following command:
 
-`pip install git+https://github.com/sassoftware/python-cvpy.git`
+`pip install sas-cvpy`
 
 ## Contributing
 
