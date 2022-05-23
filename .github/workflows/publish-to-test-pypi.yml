@@ -27,3 +27,5 @@ jobs:
       run: |
         python setup.py sdist bdist_wheel
         twine upload --repository testpypi dist/*
+        __token__
+        ${{ secrets.TEST_PYPI_API_TOKEN }}
