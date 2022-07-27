@@ -2,7 +2,9 @@
 
 ## Overview
 
-This high-level Python library assists with the image and biomedimage action sets by providing helpful visualization APIs. These APIs allow users to easily be able to move images out of CAS and into common open source tools such as Mayavi and Matplotlib. This streamlines the visualization of image data fetched from a CAS table and allows for further image analysis.
+CVPy is a Python package that makes SAS image analytics more accessible to Python users in a variety of different ways. This high-level Python library provides helpful APIs that assist with the processing, analyzing, and visualization of images. This allows users of the image and biomedimage action set in SAS Viya to have more flexibilty when working in Python.
+
+Currently available within CVPy are visualization APIs that allow users to easily be able to move images out of CAS and into common open source tools such as Mayavi and Matplotlib. These APIs streamline the visualization of image data fetched from a CAS table and can assist with further image analysis.
 
 ### Prerequisites
 
@@ -40,7 +42,7 @@ Install PyQt, a GUI toolkit needed to run Mayavi
 
 To install CVPy, use the following command:
 
-`pip install git+https://github.com/sassoftware/python-cvpy.git`
+`pip install sas-cvpy`
 
 ## Contributing
 
@@ -52,5 +54,6 @@ This project is licensed under the [Apache 2.0 License](LICENSE).
 
 ## Additional Resources
 
-* Biomedimage action set https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=9.4_3.5&docsetId=casactml&docsetTarget=casactml_biomedimage_toc.htm&locale=en
-* Image action set https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=9.4_3.5&docsetId=casactml&docsetTarget=casactml_image_toc.htm&locale=en
+* [Python-CVPy API Documentation](https://sassoftware.github.io/python-cvpy/)
+* [Biomedimage action set](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_biomedimage_toc.htm)
+* [Image action set](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_image_toc.htm)
