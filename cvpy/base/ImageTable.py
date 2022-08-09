@@ -37,7 +37,7 @@ class ImageTable(object):
                  imageFormat: str = None, path: str = None, label: str = None, id: str = None, size: str = None,
                  type: str = None):
         '''
-
+        Constructor for ImageTable class
         :param table: specifies the input table that contains image data.
         :param image: specifies the name of the column that contains image binaries.
         :param dimension: specifies the name of the column that contains dimensions of images.
