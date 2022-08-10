@@ -47,7 +47,7 @@ class TestImageTable(unittest.TestCase):
     def test_imagetable_constructor_default_columns(self):
         # Load the images in a CAS Table
         cdata_decoded = self.s.CASTable('cdata_decoded')
-        self.s.image.loadimages(path='data/images',
+        self.s.image.loadimages(path='images',
                                 labellevels=5,
                                 casout=cdata_decoded,
                                 caslib='dlib',
@@ -68,7 +68,7 @@ class TestImageTable(unittest.TestCase):
     # Create an imagetable object with custom column names
     def test_imagetable_constructor_custom_columns(self):
         cdata_decoded = self.s.CASTable('cdata_decoded')
-        self.s.image.loadimages(path='data/images',
+        self.s.image.loadimages(path='images',
                                 labellevels=5,
                                 casout=cdata_decoded,
                                 caslib='dlib',
@@ -98,7 +98,7 @@ class TestImageTable(unittest.TestCase):
     # Create imagetable object with a CAS table containing decoded images and call has_decoded_images
     def test_imagetable_decoded(self):
         cdata_decoded = self.s.CASTable('cdata_decoded')
-        self.s.image.loadimages(path='data/images',
+        self.s.image.loadimages(path='images',
                                 labellevels=5,
                                 casout=cdata_decoded,
                                 caslib='dlib',
@@ -110,7 +110,7 @@ class TestImageTable(unittest.TestCase):
     # Create imagetable object with a CAS table containing encoded images and call has_decoded_images
     def test_imagetable_encoded(self):
         cdata_encoded = self.s.CASTable('cdata_encoded')
-        self.s.image.loadimages(path='data/images',
+        self.s.image.loadimages(path='images',
                                 labellevels=5,
                                 casout=cdata_encoded,
                                 caslib='dlib',
@@ -122,7 +122,7 @@ class TestImageTable(unittest.TestCase):
     # Call processImages action using imagetable.as_dict() function
     def test_imagetable_with_process_images(self):
         cdata_encoded = self.s.CASTable('cdata_encoded')
-        self.s.image.loadimages(path='data/images',
+        self.s.image.loadimages(path='images',
                                 labellevels=5,
                                 casout=cdata_encoded,
                                 caslib='dlib',
