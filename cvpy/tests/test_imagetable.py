@@ -35,7 +35,7 @@ class TestImageTable(unittest.TestCase):
 
     def setUp(self) -> None:
         self.s = CAS(TestImageTable.CAS_HOST, TestImageTable.CAS_PORT, TestImageTable.USERNAME,
-                     TestImageTable.PASSWORD, protocol='http')
+                     TestImageTable.PASSWORD)
         self.s.loadactionset('image')
         self.s.addcaslib(name='dlib', activeOnAdd=False, path=TestImageTable.DATAPATH, dataSource='PATH',
                          subdirectories=True)
