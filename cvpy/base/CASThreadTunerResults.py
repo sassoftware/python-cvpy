@@ -12,7 +12,7 @@ from cvpy.base.Statistic import Statistic
 
 class CASThreadTunerResults(object):
     '''
-    This is a base class for results in CAS thread optimization tool.
+    This is a class for results in CAS thread optimization tool.
     '''
 
     def __init__(self, cas_server_mode: CASServerMode = None,

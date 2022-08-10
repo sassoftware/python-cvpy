@@ -60,11 +60,10 @@ class TestCASThreadTuner(unittest.TestCase):
         image_table = s.CASTable('image_table', replace=True)
 
         response = s.image.loadImages(path='images',
-                                           casout=image_table,
-                                           caslib='dlib',
-
-                                           nControllerThreads=c_threads,
-                                           nThreads=w_threads)
+                                      casout=image_table,
+                                      caslib='dlib',
+                                      nControllerThreads=c_threads,
+                                      nThreads=w_threads)
 
         return response.performance.elapsed_time
 
