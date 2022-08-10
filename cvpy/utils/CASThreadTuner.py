@@ -86,9 +86,12 @@ class CASThreadTuner(object):
 
                     # perf_array stores the performance statistic
                     perf_array[Statistic.MEAN.value, c_thread_idx, w_thread_idx] = round(float(np.mean(perf_record)), 4)
-                    perf_array[Statistic.MEDIAN.value, c_thread_idx, w_thread_idx] = round(float(np.median(perf_record)), 4)
-                    perf_array[Statistic.MINIMUM.value, c_thread_idx, w_thread_idx] = round(float(np.amin(perf_record)), 4)
-                    perf_array[Statistic.MAXIMUM.value, c_thread_idx, w_thread_idx] = round(float(np.amax(perf_record)), 4)
+                    perf_array[Statistic.MEDIAN.value, c_thread_idx, w_thread_idx] = round(
+                        float(np.median(perf_record)), 4)
+                    perf_array[Statistic.MINIMUM.value, c_thread_idx, w_thread_idx] = round(float(np.amin(perf_record)),
+                                                                                            4)
+                    perf_array[Statistic.MAXIMUM.value, c_thread_idx, w_thread_idx] = round(float(np.amax(perf_record)),
+                                                                                            4)
                     perf_array[Statistic.STDEV.value, c_thread_idx, w_thread_idx] = round(float(np.std(perf_record)), 4)
 
         # Teardown function

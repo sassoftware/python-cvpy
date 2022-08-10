@@ -44,10 +44,10 @@ class TestCASThreadTuner(unittest.TestCase):
         s.loadactionset('image')
 
         s.addcaslib(name='dlib',
-                         activeOnAdd=False,
-                         path=TestCASThreadTuner.DATAPATH,
-                         datasource='PATH',
-                         subdirectories=True)
+                    activeOnAdd=False,
+                    path=TestCASThreadTuner.DATAPATH,
+                    datasource='PATH',
+                    subdirectories=True)
 
         return s
 
@@ -91,7 +91,7 @@ class TestCASThreadTuner(unittest.TestCase):
             self.assertEqual(tuner_results._worker_thread_range, range(32, 65, 8))
             self.assertIsNotNone(tuner_results._worker_optimal_thread_count)
 
-        fig = tuner_results.plot_exec_times()
+        fig = tuner_results.plot_exec_times(fig_width=5, fig_height=5)
         self.assertIsNotNone(fig)
 
     def test_casthreadtuner_optional_parameters_not_specified(self):
@@ -114,13 +114,12 @@ class TestCASThreadTuner(unittest.TestCase):
             self.assertEqual(tuner_results._worker_thread_range, range(4, 65, 4))
             self.assertIsNotNone(tuner_results._worker_optimal_thread_count)
 
-        fig = tuner_results.plot_exec_times()
+        fig = tuner_results.plot_exec_times(fig_width=5, fig_height=5)
         self.assertIsNotNone(fig)
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-
         TestCASThreadTuner.CAS_HOST = sys.argv.pop(1)
         TestCASThreadTuner.CAS_PORT = sys.argv.pop(1)
         TestCASThreadTuner.USERNAME = sys.argv.pop(1)

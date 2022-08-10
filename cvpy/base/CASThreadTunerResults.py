@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
 from matplotlib.figure import Figure
-from scipy.interpolate import make_interp_spline
 
 from cvpy.base.CASServerMode import CASServerMode
 from cvpy.base.Statistic import Statistic
@@ -31,7 +30,7 @@ class CASThreadTunerResults(object):
         Constructor for CASThreadTunerResults class
         :param cas_server_mode: CAS server architecture
         :param controller_thread_range: range of threads on controller node
-        :param worker_thread_range: range of threads on controller node
+        :param worker_thread_range: range of threads on worker node
         :param objective_measure: objective measure for performance over given iterations
         :param controller_optimal_thread_count: optimal thread count on controller node
         :param worker_optimal_thread_count: optimal thread count on worker node
@@ -142,7 +141,7 @@ class CASThreadTunerResults(object):
     def stdev_exec_times(self, stdev_exec_times) -> None:
         self._sd_exec_times = stdev_exec_times
 
-    def plot_exec_times(self) -> Figure:
+    def plot_exec_times(self, fig_width: float, fig_height: float) -> Figure:
         '''
         Plots performance for given CAS thread tuner results.
 
@@ -164,28 +163,25 @@ class CASThreadTunerResults(object):
 
         if self.cas_server_mode == CASServerMode.SMP:
             # Line plot
-            fig = plt.figure(figsize=(7, 7))
+            fig = plt.figure(figsize=(fig_width, fig_height))
             x = list(self.controller_thread_range)
             y = opt_array
-            model = make_interp_spline(x, y)
-            x_ = np.linspace(np.amin(x), np.amax(x), 50)
-            y_ = model(x_)
-            plt.xlabel('Threads on Controller')
+            plt.xlabel('Controller Thread Count')
             plt.ylabel('Runtime (sec)')
             plt.title('Performance of loadImages in SMP')
-            plt.plot(x_, y_)
+            plt.plot(x, y)
             return fig
 
         else:
             # Surface plot
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-            fig.set_figheight(11)
-            fig.set_figwidth(11)
+            fig.set_figheight(fig_height)
+            fig.set_figwidth(fig_width)
             x, y = np.meshgrid(self.controller_thread_range, self.worker_thread_range)
             surf = ax.plot_surface(x, y, np.transpose(opt_array), cmap=cm.coolwarm, linewidth=0, antialiased=False)
             fig.colorbar(surf, shrink=0.5, aspect=5)
-            ax.set_xlabel('Threads on Controller')
-            ax.set_ylabel('Threads on Worker')
+            ax.set_xlabel('Controller Thread Count')
+            ax.set_ylabel('Worker Thread Count')
             ax.set_zlabel('Runtime (sec)')
             ax.set_title('Performance of loadImages in MPP')
             return fig

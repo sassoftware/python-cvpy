@@ -28,6 +28,7 @@ def get_file(fname):
                  encoding='utf8') as infile:
         return infile.read()
 
+
 setup(
     name='sas-cvpy',
     version='1.0.2-dev',
@@ -45,8 +46,7 @@ setup(
         'pandas',
         'numpy',
         'matplotlib',
-        'mayavi',
-        'scipy'
+        'mayavi'
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -57,8 +57,7 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.7'
         'Topic :: Scientific/Engineering',
     ],
 )
