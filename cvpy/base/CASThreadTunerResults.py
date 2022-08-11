@@ -1,6 +1,6 @@
 from typing import List
 
-import matplotlib.pyplot as plt
+import matplotlib.pylab as plt
 import numpy as np
 from matplotlib import cm
 from matplotlib.figure import Figure
