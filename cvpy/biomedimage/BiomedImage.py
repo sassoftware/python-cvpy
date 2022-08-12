@@ -25,19 +25,23 @@ from typing import List
 from warnings import warn
 from swat import CAS, CASTable
 
-# from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
+from biomedimage.LabelConnectivity import LabelConnectivity
 
 class BiomedImage(object):
     '''
-    This is the biomedimage class, with several biomedimage-related functions implemented under it. 
+    This class implements biomedical image processing functions. 
     '''
 
     def __init__(self, cas_session: CAS = None) -> None:
         '''
-        Constructor for project class
+        Constructor for BiomedImage class
         :param cas_session: the CAS session for this project
         '''
         self._cas_session = cas_session
+        ## Load the actionsets
+        self._cas_session.loadactionset('image')
+        self._cas_session.loadactionset('biomedimage')
+        self._cas_session.loadactionset('fedsql')
     
     @property
     def cas_session(self) -> CAS:
@@ -49,22 +53,22 @@ class BiomedImage(object):
 
 
     def quantify_sphericity(self, image_table: CASTable, use_spacing: bool, input_background: float,
-                            label_connectivity: str, sphericity: CASTable) ->None:
+                            label_connectivity: LabelConnectivity, sphericity: CASTable) -> None:
         ''''
         Quantify the sphericity for the given component from a CAS table. 
         Parameters:
         ----------
         image_table: CAS table
              CAS table image includes the image binaries 
-        use_spacing: Bool
+        use_spacing: bool
              Specifies whether use spacing for the sphericity
         input_background: float
              Specifies the background value in input images.
-        label_connectivity:
+        label_connectivity: LabelConnectivity
              Specifies the level of connectivity for connected components: LabelConnectivity.FACE or LabelConnectivity.VERTEX
         sphericity: CASTable
              CAS Output table
-        
+
         Examples
         --------
         >>> ## Import classes
@@ -76,34 +80,35 @@ class BiomedImage(object):
         >>> biomed = BiomedImage(s)
         >>> ## Construct tables that are paramters to the quantify_sphericity API
         >>> image_table = s.CASTable(...)
+        >>> input_table = ImageTable(image_table)
         >>> output_table = s.CASTable(...)
         >>> ## Call the API
-        >>> BiomedImage.quantify_sphericity(image_table,....,output_table)
+        >>> BiomedImage.quantify_sphericity(input_table.table,....,output_table)
 
         '''
         conn = self._cas_session
-       
-        ## Load the actionsets
-        conn.loadactionset('image')
-        conn.loadactionset('biomedimage')
-        conn.loadactionset('fedsql')
-        
+
         ## Quantify the volume and perimeter of the given component.
         conn.biomedimage.quantifybiomedimages(images= dict(table= image_table),
-                                              copyvars=["_path_"],
-                                              region="COMPONENT",
+                                              copyvars=['_path_'],
+                                              region='COMPONENT',
                                               quantities=[dict(quantityparameters=dict(quantitytype="perimeter")),
                                               dict(quantityparameters=dict(quantitytype="content",useSpacing = use_spacing))
                                               ],
-                                              labelparameters=dict(labelType="basic",connectivity=label_connectivity),
+                                              labelparameters=dict(labelType="basic",connectivity=label_connectivity.name), 
                                               inputbackground=input_background,
                                               casout=dict(name='quantify', replace=True),
                                               )
 
         ## Compute sphericity based on perimeter and volume of the lesion
-        conn.fedsql.execdirect(
-            "create table sphericity {option replace=true} as "
-            "select _path_,_perimeter_,_content_, (power(pi(), 1.0/3.0) * power(6*_content_, 2.0/3.0))/_perimeter_ as "
-            "sphericity from quantify"
-            )
+        conn.fedsql.execdirect('''
+            create table sphericity {option replace=true} as 
+            select _path_,_perimeter_,_content_, (power(pi(), 1.0/3.0) * power(6*_content_, 2.0/3.0))/_perimeter_ as 
+            sphericity from quantify
+            ''')
+        
+        ## Delete the quantify table
+        conn.table.dropTable(name='quantify')
+
+
     

@@ -17,56 +17,101 @@
 #
 
 import os
-import unittest
-import xmlrunner
-import swat
 import sys
-import numpy as np
-from cvpy.biomedimage.BiomedImage import BiomedImage
-# from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
+import unittest
 
-class TestBiomedimage(unittest.TestCase):
+import xmlrunner
+from swat import CAS
 
-    def setUp(self):
+from base.ImageTable import ImageTable
+from biomedimage.BiomedImage import BiomedImage
+
+from biomedimage.LabelConnectivity import LabelConnectivity
+
+class TestBiomedImage(unittest.TestCase):
+    CAS_HOST = None
+    CAS_PORT = None
+    USERNAME = None
+    PASSWORD = None
+    DATAPATH = None
+
+    def setUp(self) -> None:
         ## Set up CAS connection
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s = CAS(TestBiomedImage.CAS_HOST, TestBiomedImage.CAS_PORT, TestBiomedImage.USERNAME,
+                     TestBiomedImage.PASSWORD)
         self.s.loadactionset("image")
-        
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=TestBiomedImage.DATAPATH, dataSource='PATH',
+                         subdirectories=True)
+    
+    def tearDown(self) -> None:
+        self.s.close()
+    
+    # Load a biomed image and quantify sphericity use default input background, use spacing, and FACE for label connectivity.
     def test_quantify_sphericity_from_casTable(self):
 
         # Load the input image
         input = self.s.CASTable('input', replace=True)
-        self.s.image.loadimages(casout=dict(name='input', replace='TRUE'),
+        self.s.image.loadimages(casout = input,
                                 path = 'biomedimg/Prostate3T-01-0001.nii',
-                                caslib='dlib',
-                                decode=True)
-        ## Create the output table
-        output_sph = self.s.CASTable('output_sph', replace=True)
+                                caslib = 'dlib',
+                                decode = True)
+
+        input_table = ImageTable(input)
 
         # Construct Biomed object
         biomed = BiomedImage(cas_session=self.s)
 
         # Compute the sphericity
-        biomed.quantify_sphericity(image_table = input, 
+        output_sph = self.s.CASTable('output_sph', replace=True)
+        biomed.quantify_sphericity(image_table = input_table.table, 
                                    use_spacing = True, 
-                                   input_background = 0, 
-                                   label_connectivity = 'FACE', 
-                                #    label_connectivity = LabelConnectivity.FACE, 
-                                   sphericity= output_sph)
+                                   input_background = 0,  
+                                   label_connectivity = LabelConnectivity.FACE,
+                                   sphericity = output_sph)
 
+        imageRows = self.s.fetch(table='sphericity')['Fetch']
+        
+        ## Assert the sphericity result
         self.assertTrue(output_sph is not None)
+        self.assertEqual(imageRows['SPHERICITY'][0], 0.55423453301011)
+    
+    # Load a biomed image and quantify sphericity using custom input background of -20. 
+    def test_quantify_sphericity_from_casTable_custom_input_background(self):
+
+        # Load the input image
+        input = self.s.CASTable('input', replace=True)
+        self.s.image.loadimages(casout = input,
+                                path = 'biomedimg/Prostate3T-01-0001.nii',
+                                caslib = 'dlib',
+                                decode = True)
+
+        input_table = ImageTable(input)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Compute the sphericity
+        output_sph = self.s.CASTable('output_sph', replace=True)
+        biomed.quantify_sphericity(image_table = input_table.table, 
+                                   use_spacing = True, 
+                                   input_background = -20,  
+                                   label_connectivity = LabelConnectivity.FACE,
+                                   sphericity = output_sph)
+
+        imageRows = self.s.fetch(table='sphericity')['Fetch']
+        
+        ## Assert the sphericity result
+        self.assertTrue(output_sph is not None)
+        self.assertEqual(imageRows['SPHERICITY'][0], 0.31121426716017)
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-
-        TestBiomedimage.dataPath = sys.argv.pop()
-        TestBiomedimage.password = sys.argv.pop()
-        TestBiomedimage.username = sys.argv.pop()
-        TestBiomedimage.casPort = sys.argv.pop()
-        TestBiomedimage.casHost = sys.argv.pop()
+        TestBiomedImage.DATAPATH = sys.argv.pop()
+        TestBiomedImage.PASSWORD = sys.argv.pop()
+        TestBiomedImage.USERNAME = sys.argv.pop()
+        TestBiomedImage.CAS_PORT = sys.argv.pop()
+        TestBiomedImage.CAS_HOST = sys.argv.pop()
 
     unittest.main(
         testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
