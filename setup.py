@@ -28,6 +28,7 @@ def get_file(fname):
                  encoding='utf8') as infile:
         return infile.read()
 
+
 setup(
     name='sas-cvpy',
     version='1.0.2-dev',
