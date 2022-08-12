@@ -1,7 +1,7 @@
 from typing import List
 
-import matplotlib.pylab as plt
 import numpy as np
+import matplotlib.pylab as plt
 from matplotlib import cm
 from matplotlib.figure import Figure
 
