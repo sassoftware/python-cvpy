@@ -69,7 +69,7 @@ class TestBiomedImage(unittest.TestCase):
                                    label_connectivity = LabelConnectivity.FACE,
                                    sphericity = output_sph)
 
-        imageRows = self.s.fetch(table='sphericity')['Fetch']
+        imageRows = self.s.fetch(table='output_sph')['Fetch']
         
         ## Assert the sphericity result
         self.assertTrue(output_sph is not None)
@@ -98,7 +98,7 @@ class TestBiomedImage(unittest.TestCase):
                                    label_connectivity = LabelConnectivity.FACE,
                                    sphericity = output_sph)
 
-        imageRows = self.s.fetch(table='sphericity')['Fetch']
+        imageRows = self.s.fetch(table='output_sph')['Fetch']
         
         ## Assert the sphericity result
         self.assertTrue(output_sph is not None)

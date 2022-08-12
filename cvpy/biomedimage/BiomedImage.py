@@ -101,8 +101,8 @@ class BiomedImage(object):
                                               )
 
         ## Compute sphericity based on perimeter and volume of the lesion
-        conn.fedsql.execdirect('''
-            create table sphericity {option replace=true} as 
+        conn.fedsql.execdirect(f'''
+            create table {sphericity.name} {{option replace=true}} as 
             select _path_,_perimeter_,_content_, (power(pi(), 1.0/3.0) * power(6*_content_, 2.0/3.0))/_perimeter_ as 
             sphericity from quantify
             ''')
