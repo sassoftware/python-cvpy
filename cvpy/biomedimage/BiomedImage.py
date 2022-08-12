@@ -25,7 +25,7 @@ from typing import List
 from warnings import warn
 from swat import CAS, CASTable
 
-from biomedimage.LabelConnectivity import LabelConnectivity
+from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 
 class BiomedImage(object):
     '''

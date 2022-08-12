@@ -23,10 +23,10 @@ import unittest
 import xmlrunner
 from swat import CAS
 
-from base.ImageTable import ImageTable
-from biomedimage.BiomedImage import BiomedImage
+from cvpy.base.ImageTable import ImageTable
+from cvpy.biomedimage.BiomedImage import BiomedImage
 
-from biomedimage.LabelConnectivity import LabelConnectivity
+from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 
 class TestBiomedImage(unittest.TestCase):
     CAS_HOST = None
