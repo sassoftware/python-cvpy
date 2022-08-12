@@ -1,9 +1,9 @@
 from typing import List
 
-# import matplotlib.pylab as plt
+import matplotlib.pylab as plt
 import numpy as np
-# from matplotlib import cm
-# from matplotlib.figure import Figure
+from matplotlib import cm
+from matplotlib.figure import Figure
 
 from cvpy.base.CASServerMode import CASServerMode
 from cvpy.base.Statistic import Statistic
@@ -141,47 +141,47 @@ class CASThreadTunerResults(object):
     def stdev_exec_times(self, stdev_exec_times) -> None:
         self._sd_exec_times = stdev_exec_times
 
-    # def plot_exec_times(self, fig_width: float, fig_height: float) -> Figure:
-    #     '''
-    #     Plots performance for given CAS thread tuner results.
-    #
-    #     Returns
-    #     -------
-    #     :class: 'matplotlib.figure.Figure'
-    #
-    #     '''
-    #     if self.objective_measure == Statistic.MEAN:
-    #         opt_array = self.mean_exec_times
-    #     elif self.objective_measure == Statistic.MEDIAN:
-    #         opt_array = self.median_exec_times
-    #     elif self.objective_measure == Statistic.MINIMUM:
-    #         opt_array = self.minimum_exec_times
-    #     elif self.objective_measure == Statistic.MAXIMUM:
-    #         opt_array = self.maximum_exec_times
-    #     else:
-    #         opt_array = self.stdev_exec_times
-    #
-    #     if self.cas_server_mode == CASServerMode.SMP:
-    #         # Line plot
-    #         fig = plt.figure(figsize=(fig_width, fig_height))
-    #         x = list(self.controller_thread_range)
-    #         y = opt_array
-    #         plt.xlabel('Controller Thread Count')
-    #         plt.ylabel('Runtime (sec)')
-    #         plt.title('Performance of loadImages in SMP')
-    #         plt.plot(x, y)
-    #         return fig
-    #
-    #     else:
-    #         # Surface plot
-    #         fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-    #         fig.set_figheight(fig_height)
-    #         fig.set_figwidth(fig_width)
-    #         x, y = np.meshgrid(self.controller_thread_range, self.worker_thread_range)
-    #         surf = ax.plot_surface(x, y, np.transpose(opt_array), cmap=cm.coolwarm, linewidth=0, antialiased=False)
-    #         fig.colorbar(surf, shrink=0.5, aspect=5)
-    #         ax.set_xlabel('Controller Thread Count')
-    #         ax.set_ylabel('Worker Thread Count')
-    #         ax.set_zlabel('Runtime (sec)')
-    #         ax.set_title('Performance of loadImages in MPP')
-    #         return fig
+    def plot_exec_times(self, fig_width: float, fig_height: float) -> Figure:
+        '''
+        Plots performance for given CAS thread tuner results.
+
+        Returns
+        -------
+        :class: 'matplotlib.figure.Figure'
+
+        '''
+        if self.objective_measure == Statistic.MEAN:
+            opt_array = self.mean_exec_times
+        elif self.objective_measure == Statistic.MEDIAN:
+            opt_array = self.median_exec_times
+        elif self.objective_measure == Statistic.MINIMUM:
+            opt_array = self.minimum_exec_times
+        elif self.objective_measure == Statistic.MAXIMUM:
+            opt_array = self.maximum_exec_times
+        else:
+            opt_array = self.stdev_exec_times
+
+        if self.cas_server_mode == CASServerMode.SMP:
+            # Line plot
+            fig = plt.figure(figsize=(fig_width, fig_height))
+            x = list(self.controller_thread_range)
+            y = opt_array
+            plt.xlabel('Controller Thread Count')
+            plt.ylabel('Runtime (sec)')
+            plt.title('Performance of loadImages in SMP')
+            plt.plot(x, y)
+            return fig
+
+        else:
+            # Surface plot
+            fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+            fig.set_figheight(fig_height)
+            fig.set_figwidth(fig_width)
+            x, y = np.meshgrid(self.controller_thread_range, self.worker_thread_range)
+            surf = ax.plot_surface(x, y, np.transpose(opt_array), cmap=cm.coolwarm, linewidth=0, antialiased=False)
+            fig.colorbar(surf, shrink=0.5, aspect=5)
+            ax.set_xlabel('Controller Thread Count')
+            ax.set_ylabel('Worker Thread Count')
+            ax.set_zlabel('Runtime (sec)')
+            ax.set_title('Performance of loadImages in MPP')
+            return fig
