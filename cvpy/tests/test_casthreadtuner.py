@@ -114,8 +114,8 @@ class TestCASThreadTuner(unittest.TestCase):
             self.assertEqual(tuner_results._worker_thread_range, range(4, 65, 4))
             self.assertIsNotNone(tuner_results._worker_optimal_thread_count)
 
-        # fig = tuner_results.plot_exec_times(fig_width=5, fig_height=5)
-        # self.assertIsNotNone(fig)
+        fig = tuner_results.plot_exec_times(fig_width=5, fig_height=5)
+        self.assertIsNotNone(fig)
 
 
 if __name__ == '__main__':
