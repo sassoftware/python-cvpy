@@ -25,6 +25,7 @@ from typing import List
 from warnings import warn
 from swat import CAS, CASTable
 
+from cvpy.base.ImageTable import ImageTable
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 
 class BiomedImage(object):
@@ -52,13 +53,13 @@ class BiomedImage(object):
         self._cas_session = cas_session
 
 
-    def quantify_sphericity(self, image_table: CASTable, use_spacing: bool, input_background: float,
+    def quantify_sphericity(self, image_table: ImageTable, use_spacing: bool, input_background: float,
                             label_connectivity: LabelConnectivity, sphericity: CASTable) -> None:
         ''''
         Quantify the sphericity for the given component from a CAS table. 
         Parameters:
         ----------
-        image_table: CAS table
+        image_table: ImageTable
              CAS table image includes the image binaries 
         use_spacing: bool
              Specifies whether use spacing for the sphericity
@@ -72,8 +73,10 @@ class BiomedImage(object):
         Examples
         --------
         >>> ## Import classes
-        >>> from swat import CAS, CASTable
+        >>> from swat import CAS
+        >>> from cvpy.base.ImageTable import ImageTable
         >>> from cvpy.biomedimage.BiomedImage import BiomedImage
+        >>> from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
         >>> ## Connect to CAS
         >>> s = swat.CAS("example.com", 5570)
         >>> ## Construct Biomed object
@@ -89,26 +92,25 @@ class BiomedImage(object):
         conn = self._cas_session
 
         ## Quantify the volume and perimeter of the given component.
-        conn.biomedimage.quantifybiomedimages(images= dict(table= image_table),
+        conn.biomedimage.quantifybiomedimages(images=dict(table= image_table.table),
                                               copyvars=['_path_'],
                                               region='COMPONENT',
-                                              quantities=[dict(quantityparameters=dict(quantitytype="perimeter")),
-                                              dict(quantityparameters=dict(quantitytype="content",useSpacing = use_spacing))
+                                              quantities=[dict(quantityparameters=dict(quantitytype='perimeter')),
+                                              dict(quantityparameters=dict(quantitytype='content',useSpacing = use_spacing))
                                               ],
-                                              labelparameters=dict(labelType="basic",connectivity=label_connectivity.name), 
+                                              labelparameters=dict(labelType='basic',connectivity=label_connectivity.name), 
                                               inputbackground=input_background,
-                                              casout=dict(name='quantify', replace=True),
+                                              casout=dict(name='quantify'),
                                               )
 
         ## Compute sphericity based on perimeter and volume of the lesion
         conn.fedsql.execdirect(f'''
-            create table {sphericity.name} {{option replace=true}} as 
+            create table {sphericity.name} as 
             select _path_,_perimeter_,_content_, (power(pi(), 1.0/3.0) * power(6*_content_, 2.0/3.0))/_perimeter_ as 
             sphericity from quantify
             ''')
         
         ## Delete the quantify table
         conn.table.dropTable(name='quantify')
-
 
     
