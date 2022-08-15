@@ -21,12 +21,13 @@ import sys
 import unittest
 
 import xmlrunner
-from swat import CAS
+from swat import CAS, CASTable
 
 from cvpy.base.ImageTable import ImageTable
-from cvpy.biomedimage.BiomedImage import BiomedImage
 
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
+from cvpy.biomedimage.BiomedImage import BiomedImage
+
 
 class TestBiomedImage(unittest.TestCase):
     CAS_HOST = None
@@ -50,7 +51,7 @@ class TestBiomedImage(unittest.TestCase):
     def test_quantify_sphericity_from_casTable(self):
 
         # Load the input image
-        input = self.s.CASTable('input', replace=True)
+        input = self.s.CASTable('input')
         self.s.image.loadimages(casout = input,
                                 path = 'biomedimg/Prostate3T-01-0001.nii',
                                 caslib = 'dlib',
@@ -62,8 +63,8 @@ class TestBiomedImage(unittest.TestCase):
         biomed = BiomedImage(cas_session=self.s)
 
         # Compute the sphericity
-        output_sph = self.s.CASTable('output_sph', replace=True)
-        biomed.quantify_sphericity(image_table = input_table.table, 
+        output_sph = self.s.CASTable('output_sph')
+        biomed.quantify_sphericity(image_table = input_table, 
                                    use_spacing = True, 
                                    input_background = 0,  
                                    label_connectivity = LabelConnectivity.FACE,
@@ -79,7 +80,7 @@ class TestBiomedImage(unittest.TestCase):
     def test_quantify_sphericity_from_casTable_custom_input_background(self):
 
         # Load the input image
-        input = self.s.CASTable('input', replace=True)
+        input = self.s.CASTable('input')
         self.s.image.loadimages(casout = input,
                                 path = 'biomedimg/Prostate3T-01-0001.nii',
                                 caslib = 'dlib',
@@ -91,8 +92,8 @@ class TestBiomedImage(unittest.TestCase):
         biomed = BiomedImage(cas_session=self.s)
 
         # Compute the sphericity
-        output_sph = self.s.CASTable('output_sph', replace=True)
-        biomed.quantify_sphericity(image_table = input_table.table, 
+        output_sph = self.s.CASTable('output_sph')
+        biomed.quantify_sphericity(image_table = input_table, 
                                    use_spacing = True, 
                                    input_background = -20,  
                                    label_connectivity = LabelConnectivity.FACE,
