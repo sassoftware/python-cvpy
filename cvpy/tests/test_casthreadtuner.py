@@ -72,8 +72,8 @@ class TestCASThreadTuner(unittest.TestCase):
         tuner_results = CASThreadTuner.tune_thread_count(action_function=TestCASThreadTuner.load_images,
                                                          setup_function=TestCASThreadTuner.set_up,
                                                          teardown_function=TestCASThreadTuner.tear_down,
-                                                         iterations=3, controller_thread_range=range(8, 65, 8),
-                                                         worker_thread_range=range(32, 65, 8),
+                                                         iterations=2, controller_thread_range=range(16, 65, 16),
+                                                         worker_thread_range=range(32, 65, 32),
                                                          objective_measure=Statistic.MEDIAN)
 
         self.assertTrue(tuner_results._cas_server_mode == CASServerMode.SMP or

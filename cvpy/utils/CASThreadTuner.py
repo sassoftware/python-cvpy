@@ -31,7 +31,7 @@ class CASThreadTuner(object):
             Specifies a user defined function to terminate the CAS session.
         iterations : int
             Specifies number of iterations to call action_function for each combination of threads.
-        controller_thread_range : :clas:'range'
+        controller_thread_range : :class:'range'
             Specifies range of threads on controller node.
         worker_thread_range : :class:'range'
             Specifies range of threads on worker node.
