@@ -74,7 +74,7 @@ class TestBiomedImage(unittest.TestCase):
         
         ## Assert the sphericity result
         self.assertTrue(output_sph is not None)
-        self.assertEqual(imageRows['SPHERICITY'][0], 0.55423453301011)
+        self.assertEqual(imageRows['SPHERICITY'][0], 0.5542345330101192)
     
     # Load a biomed image and quantify sphericity using custom input background of -20. 
     def test_quantify_sphericity_from_casTable_custom_input_background(self):
@@ -103,7 +103,7 @@ class TestBiomedImage(unittest.TestCase):
         
         ## Assert the sphericity result
         self.assertTrue(output_sph is not None)
-        self.assertEqual(imageRows['SPHERICITY'][0], 0.31121426716017)
+        self.assertEqual(imageRows['SPHERICITY'][0], 0.31121426716017353)
 
 
 if __name__ == '__main__':
