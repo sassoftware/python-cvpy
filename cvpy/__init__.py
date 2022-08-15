@@ -18,5 +18,5 @@
 
 ''' SAS Computer Vision '''
 
-__version__ = '1.0.2-dev'
+__version__ = '1.0.2'
 __dev__ = False
