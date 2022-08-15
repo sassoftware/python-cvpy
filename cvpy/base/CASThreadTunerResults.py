@@ -141,9 +141,16 @@ class CASThreadTunerResults(object):
     def stdev_exec_times(self, stdev_exec_times) -> None:
         self._sd_exec_times = stdev_exec_times
 
-    def plot_exec_times(self, fig_width: float, fig_height: float) -> Figure:
+    def plot_exec_times(self, fig_width: float = 8, fig_height: float = 8) -> Figure:
         '''
         Plots performance for given CAS thread tuner results.
+
+        Parameters
+        ----------
+        fig_width : :class:'float'
+            Specifies width of the plot.
+        fig_height : :class:'float'
+            Specifies height of the plot.
 
         Returns
         -------

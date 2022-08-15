@@ -29,7 +29,7 @@ class CASThreadTuner(object):
             Specifies a user defined function to set up CAS environment
         teardown_function : :class:'function'
             Specifies a user defined function to terminate the CAS session.
-        iterations : int
+        iterations : :class:'int'
             Specifies number of iterations to call action_function for each combination of threads.
         controller_thread_range : :class:'range'
             Specifies range of threads on controller node.
