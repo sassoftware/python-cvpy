@@ -152,6 +152,13 @@ class CASThreadTunerResults(object):
         fig_height : :class:'float'
             Specifies height of the plot.
 
+        Parameters
+        ----------
+        fig_width : :class:'float'
+            Specifies width of the plot.
+        fig_height : :class:'float'
+            Specifies height of the plot.
+
         Returns
         -------
         :class: 'matplotlib.figure.Figure'
