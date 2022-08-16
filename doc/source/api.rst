@@ -36,3 +36,14 @@ Visualization Reference
     display_3D_image_slices_from_array
     display_3D_image_slices
     display_3D_surface
+
+Biomedical Images
+-----------------
+
+.. currentmodule:: cvpy.biomedimage.BiomedImage
+    
+.. autosummary::
+    :toctree: generated/
+
+    BiomedImage
+    BiomedImage.quantify_sphericity
