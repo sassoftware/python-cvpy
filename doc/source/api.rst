@@ -23,6 +23,18 @@ Image
     fetch_geometry_info
     get_image_array_const_ctype
 
+ImageTable
+----------
+
+.. currentmodule:: cvpy.base.ImageTable
+
+.. autosummary::
+    :toctree: generated/
+
+    ImageTable
+    ImageTable.as_dict
+    ImageTable.has_decoded_images
+
 
 Visualization Reference
 -----------------------
@@ -56,6 +68,7 @@ CAS Thread Tuner
 .. autosummary::
     :toctree: generated/
 
+    CASThreadTuner
     CASThreadTuner.tune_thread_count
 
 
