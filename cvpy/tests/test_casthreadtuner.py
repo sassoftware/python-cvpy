@@ -72,13 +72,13 @@ class TestCASThreadTuner(unittest.TestCase):
         tuner_results = CASThreadTuner.tune_thread_count(action_function=TestCASThreadTuner.load_images,
                                                          setup_function=TestCASThreadTuner.set_up,
                                                          teardown_function=TestCASThreadTuner.tear_down,
-                                                         iterations=3, controller_thread_range=range(8, 65, 8),
-                                                         worker_thread_range=range(32, 65, 8),
+                                                         iterations=2, controller_thread_range=range(16, 65, 16),
+                                                         worker_thread_range=range(32, 65, 32),
                                                          objective_measure=Statistic.MEDIAN)
 
         self.assertTrue(tuner_results._cas_server_mode == CASServerMode.SMP or
                         tuner_results._cas_server_mode == CASServerMode.MPP)
-        self.assertEqual(tuner_results._controller_thread_range, range(8, 65, 8))
+        self.assertEqual(tuner_results._controller_thread_range, range(16, 65, 16))
         self.assertEqual(tuner_results._objective_measure, Statistic.MEDIAN)
         self.assertIsNotNone(tuner_results.controller_optimal_thread_count)
         self.assertIsNotNone(tuner_results._mean_exec_times)
@@ -88,7 +88,7 @@ class TestCASThreadTuner(unittest.TestCase):
         self.assertIsNotNone(tuner_results._stdev_exec_times)
 
         if tuner_results._cas_server_mode == CASServerMode.MPP:
-            self.assertEqual(tuner_results._worker_thread_range, range(32, 65, 8))
+            self.assertEqual(tuner_results._worker_thread_range, range(32, 65, 32))
             self.assertIsNotNone(tuner_results._worker_optimal_thread_count)
 
         fig = tuner_results.plot_exec_times(fig_width=5, fig_height=5)
@@ -114,7 +114,7 @@ class TestCASThreadTuner(unittest.TestCase):
             self.assertEqual(tuner_results._worker_thread_range, range(4, 65, 4))
             self.assertIsNotNone(tuner_results._worker_optimal_thread_count)
 
-        fig = tuner_results.plot_exec_times(fig_width=5, fig_height=5)
+        fig = tuner_results.plot_exec_times()
         self.assertIsNotNone(fig)
 
 

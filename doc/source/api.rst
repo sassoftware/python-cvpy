@@ -47,3 +47,24 @@ Biomedical Images
 
     BiomedImage
     BiomedImage.quantify_sphericity
+
+CAS Thread Tuner
+----------------
+
+.. currentmodule:: cvpy.utils.CASThreadTuner
+
+.. autosummary::
+    :toctree: generated/
+
+    tune_thread_count
+
+
+CAS Thread Tuner Results
+------------------------
+
+.. currentmodule:: cvpy.base.CASThreadTunerResults
+
+.. autosummary::
+    :toctree: generated/
+
+    plot_exec_times
