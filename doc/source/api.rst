@@ -56,7 +56,7 @@ CAS Thread Tuner
 .. autosummary::
     :toctree: generated/
 
-    tune_thread_count
+    CASThreadTuner.tune_thread_count
 
 
 CAS Thread Tuner Results
@@ -67,4 +67,5 @@ CAS Thread Tuner Results
 .. autosummary::
     :toctree: generated/
 
-    plot_exec_times
+    CASThreadTunerResults
+    CASThreadTunerResults.plot_exec_times

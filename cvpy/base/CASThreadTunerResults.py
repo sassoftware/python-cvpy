@@ -11,7 +11,33 @@ from cvpy.base.Statistic import Statistic
 
 class CASThreadTunerResults(object):
     '''
-    This is a class for results in CAS thread optimization tool.
+    Store and present results for the CAS thread optimization tool.
+        
+    Parameters
+    ----------
+    cas_server_mode: 
+        Specifies the CAS server architecture.
+    controller_thread_range: 
+        Specifies the range of threads on the controller node.
+    worker_thread_range: 
+        Specifies the range of threads on each worker node.
+    objective_measure: 
+        Specifies the objective measure of performance over given iterations.
+    controller_optimal_thread_count: 
+        Specifies the optimal thread count on the controller node.
+    worker_optimal_thread_count: 
+        Specifies the optimal thread count on the worker node.
+    mean_exec_times: 
+        Specifies the mean of recorded execution times over the specified iterations.
+    median_exec_times:
+        Specifies the median of recorded execution times over specified iterations.
+    minimum_exec_times: 
+        Specifies the minimum of recorded execution times over specified iterations.
+    maximum_exec_times: 
+        Specifies the maximum of recorded execution times over specified iterations.
+    stdev_exec_times: 
+        Specifies the standard deviation of recorded execution times over specified iterations.
+    
     '''
 
     def __init__(self, cas_server_mode: CASServerMode = None,
@@ -26,20 +52,7 @@ class CASThreadTunerResults(object):
                  maximum_exec_times: List[List[int]] = None,
                  stdev_exec_times: List[List[int]] = None):
 
-        '''
-        Constructor for CASThreadTunerResults class
-        :param cas_server_mode: CAS server architecture
-        :param controller_thread_range: range of threads on controller node
-        :param worker_thread_range: range of threads on worker node
-        :param objective_measure: objective measure for performance over given iterations
-        :param controller_optimal_thread_count: optimal thread count on controller node
-        :param worker_optimal_thread_count: optimal thread count on worker node
-        :param mean_exec_times: mean of recorded execution times over specified iterations
-        :param median_exec_times: median of recorded execution times over specified iterations
-        :param minimum_exec_times: minimum of recorded execution times over specified iterations
-        :param maximum_exec_times: maximum of recorded execution times over specified iterations
-        :param stdev_exec_times: standard deviation of recorded execution times over specified iterations
-        '''
+        ''' Constructs the CASThreadTunerResults class '''
 
         self._cas_server_mode = cas_server_mode
         self._controller_thread_range = controller_thread_range
@@ -144,13 +157,6 @@ class CASThreadTunerResults(object):
     def plot_exec_times(self, fig_width: float = 8, fig_height: float = 8) -> Figure:
         '''
         Plot performance for given CAS thread tuner results.
-
-        Parameters
-        ----------
-        fig_width : :class:'float'
-            Specifies width of the plot.
-        fig_height : :class:'float'
-            Specifies height of the plot.
 
         Parameters
         ----------

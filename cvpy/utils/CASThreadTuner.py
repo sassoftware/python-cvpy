@@ -39,24 +39,24 @@ class CASThreadTuner(object):
                           worker_thread_range: range = range(4, 65, 4),
                           objective_measure: Statistic = Statistic.MEAN) -> CASThreadTunerResults:
         '''
-        Compute optimal thread count for given image action.
+        Compute the optimal thread count for a given image action.
 
         Parameters
         ----------
         action_function : :class:'function'
-            Specifies a user defined function that calls an image action.
+            Specifies a user-defined function that calls an image action.
         setup_function : :class:'function'
             Specifies a user defined function to set up CAS environment
         teardown_function : :class:'function'
             Specifies a user defined function to terminate the CAS session.
         iterations : :class:'int'
-            Specifies number of iterations to call action_function for each combination of threads.
+            Specifies the number of iterations to call action_function for each combination of threads.
         controller_thread_range : :class:'range'
-            Specifies range of threads on controller node.
+            Specifies the range of threads on controller node.
         worker_thread_range : :class:'range'
-            Specifies range of threads on worker node.
+            Specifies the range of threads on each worker node.
         objective_measure : :class:'enum.EnumMeta'
-            Specifies objective measure for performance over given iterations - mean, median, minimum, maximum, stdev.
+            Specifies the objective measure for performance over the given iterations - mean, median, minimum, maximum, stdev.
 
         Returns
         -------
