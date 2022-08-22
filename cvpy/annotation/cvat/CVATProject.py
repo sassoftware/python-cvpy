@@ -12,6 +12,22 @@ from cvpy.annotation.base.Project import Project
 
 
 class CVATProject(Project):
+    """ Defines a class to interact with with a CVAT Project.
+    
+    Parameters
+    ----------
+    cas_connection: 
+        Specifies the CAS connection for this project.
+    url: 
+        Specifies the url of the CVAT server for calling the REST APIs.
+    credentials: 
+        Specifies the login credentials to connect to the CVAT server.
+    project_name: 
+        Specifies name of the project.
+    annotation_type: 
+        Specifies the type of the annotation project.
+    labels: 
+        Specifies a list of AnnotationLabel objects."""
 
     def __init__(self, cas_connection: CAS = None, url: str = None, credentials: Credentials = None,
                  project_name: str = None, annotation_type: AnnotationType = None,
@@ -64,38 +80,59 @@ class CVATProject(Project):
 
     def post_images(self, image_table: CASTable) -> None:
         '''
-        Create a CVAT task under the project and upload images from a CAS table to that task
-        :param image_table: the input CAS table containing encoded images to be uploaded
-        :return:
+        Create a CVAT task under the project and upload images from a CAS table to that task.
+
+        Parameters
+        ----------
+        image_table: 
+            Specifies the input CAS table that contains encoded images to be uploaded.
+        
         '''
         pass
 
     def get_annotations(self, annotated_table: CASTable, image_table: CASTable) -> None:
         '''
-        Fetches annotations from CVAT corresponding to the images in a CAS table
-        :param annotated_table: the output CAS table where the images and the corresponding annotations will be stored
-        :param image_table: the input CAS table containing encoded images that was used in a call to post_images()
-                            on this CVATProject object.
-        :return:
+        Fetch annotations from CVAT corresponding to the images in a CAS table.
+
+        Parameters
+        ----------
+        annotated_table: 
+            Specifies the output CAS table where the images and the corresponding annotations will be stored.
+        image_table: 
+            Specifies the input CAS table containing encoded images that was used in a call to post_images()
+            on this CVATProject object.
+        
         '''
         pass
 
     def save(self, caslib: str, relative_path: str) -> None:
         '''
-        Saves an annotation session
-        :param caslib: the caslib under which the CAS tables are saved
-        :param relative_path: the path relative to the caslib where the project will be saved
-        :return:
+        Saves an annotation session.
+
+        Parameters
+        ----------
+        caslib: 
+            Specifies the caslib under which the CAS tables are saved.
+        relative_path: 
+            Specifies the path relative to the caslib where the project will be saved.
+
         '''
         pass
 
     def resume(self, cas_connection: CAS, caslib: str, relative_path: str, credentials: Credentials) -> None:
         '''
-        Resumes an annotation session
-        :param cas_connection: the CAS connection in which the project will be resumed
-        :param caslib: the caslib under which CAS tables were saved
-        :param relative_path: the path relative to caslib where project was saved
-        :param credentials: the credentials to connect to CVAT server
-        :return: None
+        Resumes an annotation session.
+
+        Parameters
+        ----------
+        cas_connection: 
+            Specifies the CAS connection in which the project will be resumed.
+        caslib: 
+            SPecifies the caslib under which CAS tables were saved.
+        relative_path: 
+            Specifies the path relative to caslib where project was saved.
+        credentials: 
+            Specifies the credentials to connect to CVAT server.
+        
         '''
         pass
