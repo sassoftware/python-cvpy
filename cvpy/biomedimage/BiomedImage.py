@@ -30,14 +30,19 @@ from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 
 class BiomedImage(object):
     '''
-    This class implements biomedical image processing functions. 
+    Implement biomedical image processing functions. 
+
+     Parameters
+     ----------
+     cas_session
+          Specifies the CAS session.
+
+     Returns
+     -------
+     :class:`BiomedImage`
     '''
 
     def __init__(self, cas_session: CAS = None) -> None:
-        '''
-        Constructor for BiomedImage class
-        :param cas_session: the CAS session for this project
-        '''
         self._cas_session = cas_session
         ## Load the actionsets
         self._cas_session.loadactionset('image')
@@ -55,20 +60,21 @@ class BiomedImage(object):
 
     def quantify_sphericity(self, image_table: ImageTable, use_spacing: bool, input_background: float,
                             label_connectivity: LabelConnectivity, sphericity: CASTable) -> None:
-        ''''
+        '''
         Quantify the sphericity for the given component from a CAS table. 
-        Parameters:
-        ----------
+
+        Parameters
+        -----------
         image_table: ImageTable
-             CAS table image includes the image binaries 
+             Specifies the CAS table that contains the image binaries.
         use_spacing: bool
-             Specifies whether use spacing for the sphericity
+             When set to True, use image spacing in the sphericity calculation.
         input_background: float
              Specifies the background value in input images.
-        label_connectivity: LabelConnectivity
+        label_connectivity: LabelConnectivity.FACE | LabelConnectivity.VERTEX
              Specifies the level of connectivity for connected components: LabelConnectivity.FACE or LabelConnectivity.VERTEX
         sphericity: CASTable
-             CAS Output table
+             Specifies the output CAS table.
 
         Examples
         --------

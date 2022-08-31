@@ -20,7 +20,29 @@ from swat import CASTable
 
 class ImageTable(object):
     '''
-    A class for the images table.
+    Interface with a CASTable of images.
+        
+    table: 
+        Specifies the input table that contains image data.
+    image: 
+        Specifies the name of the column that contains image binaries.
+    dimension: 
+        Specifies the name of the column that contains dimensions of images.
+    resolution: 
+        Specifies the name of the column that contains resolutions of images.
+    imageFormat: 
+        Specifies the name of the column that contains formats of image binaries.
+    path: 
+        Specifies the name of the column that contains file paths.
+    label: 
+        Specifies the name of the column that contains labels of images.
+    id: 
+        Specifies the name of the variable that identifies each image.
+    size: 
+        Specifies the name of the column that contains byte lengths of image binaries.
+    type: 
+        Specifies the name of the column that contains the image type.
+    
     '''
 
     IMAGE_COL = '_image_'
@@ -36,19 +58,8 @@ class ImageTable(object):
     def __init__(self, table: CASTable, image: str = None, dimension: str = None, resolution: str = None,
                  imageFormat: str = None, path: str = None, label: str = None, id: str = None, size: str = None,
                  type: str = None):
-        '''
-        Constructor for ImageTable class
-        :param table: specifies the input table that contains image data.
-        :param image: specifies the name of the column that contains image binaries.
-        :param dimension: specifies the name of the column that contains dimensions of images.
-        :param resolution: specifies the name of the column that contains resolutions of images.
-        :param imageFormat: specifies the name of the column that contains formats of image binaries.
-        :param path: specifies the name of the column that contains file paths.
-        :param label: specifies the name of the column that contains labels of images.
-        :param id: specifies the name of the variable that identifies each image.
-        :param size: specifies the name of the column that contains byte lengths of image binaries.
-        :param type: specifies the name of the column that contains the image type.
-        '''
+        ''' Constructor for ImageTable class '''
+
         self._table = table
 
         # Set various columns if specified, or set them to their default values
@@ -206,8 +217,12 @@ class ImageTable(object):
 
     def as_dict(self) -> dict:
         '''
-        Creates a dictionary representation of this object.
-        :return: A dictionary with all of the properties as keys and the property values as values
+        Create a dictionary representation of this object.
+
+        Returns
+        -------
+        d: :class:`dict`
+            Contains all of the properties as keys and the property values as values
         '''
         d = {}
         for k, v in vars(self).items():
@@ -216,7 +231,11 @@ class ImageTable(object):
 
     def has_decoded_images(self) -> bool:
         '''
-        Checks if this table contains decoded images or encoded images
-        :return: True if the table contains decoded images, false otherwise
+        Check if this table contains decoded images or encoded images.
+        
+        Returns
+        -------
+        b: :class:`bool`: 
+            Returns True if the table contains decoded images. Otherwise, returns False.
         '''
         return (self.dimension is not None) and (self.resolution is not None) and (self.imageFormat is not None)
