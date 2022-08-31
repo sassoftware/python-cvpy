@@ -4,18 +4,26 @@ from pathlib import PosixPath
 
 
 class Credentials(object):
+    """ 
+    Construct an object that contains authentication information. 
+    
+    The auth_file with a token is recommended for a higher level of security.
+    This auth file must not be readable or writable by the group or others. The file should have a single line with
+    either a token, or comma-separated user and password. If auth_file parameter is not provided, this
+    constructor reads the default auth file ~/.annotation_auth.
+
+    Parameters
+    ----------
+    username: 
+        Specifies the annotation server user name.
+    password: 
+        Specifies the annotation server password.
+    auth_file: 
+        Specifies the path to a file with comma separated annotation server user name and password.
+
+    """
 
     def __init__(self, username: str = None, password: str = None, token: str = None, auth_file: str = None) -> None:
-        '''
-        Constructs a Credentials object. The auth_file with a token is recommended for a higher level of security.
-        This auth file must not be readable or writable by the group or others. The file should have a single line with
-        either a token, or comma-separated user and password. If auth_file parameter is not provided, this
-        constructor reads the default auth file ~/.annotation_auth.
-
-        :param username: the annotation server user name
-        :param password: the annotation server password
-        :param auth_file: the path to a file with comma separated annotation server user name and password
-        '''
         self._username = username
         self._password = password
         self._auth_file = auth_file
