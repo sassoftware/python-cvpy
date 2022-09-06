@@ -7,6 +7,39 @@ API Reference
 
 .. currentmodule:: cvpy
 
+Biomedical Images
+-----------------
+
+.. currentmodule:: cvpy.biomedimage.BiomedImage
+    
+.. autosummary::
+    :toctree: generated/
+
+    BiomedImage
+    BiomedImage.quantify_sphericity
+
+CAS Thread Tuner
+----------------
+
+.. currentmodule:: cvpy.utils.CASThreadTuner
+
+.. autosummary::
+    :toctree: generated/
+
+    CASThreadTuner
+    CASThreadTuner.tune_thread_count
+
+
+CAS Thread Tuner Results
+------------------------
+
+.. currentmodule:: cvpy.base.CASThreadTunerResults
+
+.. autosummary::
+    :toctree: generated/
+
+    CASThreadTunerResults
+    CASThreadTunerResults.plot_exec_times
 
 Image
 -----
@@ -22,6 +55,18 @@ Image
     fetch_image_array
     fetch_geometry_info
     get_image_array_const_ctype
+
+ImageTable
+----------
+
+.. currentmodule:: cvpy.base.ImageTable
+
+.. autosummary::
+    :toctree: generated/
+
+    ImageTable
+    ImageTable.as_dict
+    ImageTable.has_decoded_images
 
 
 Visualization Reference

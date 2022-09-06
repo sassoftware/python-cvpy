@@ -28,9 +28,10 @@ def get_file(fname):
                  encoding='utf8') as infile:
         return infile.read()
 
+
 setup(
     name='sas-cvpy',
-    version='1.0.1',
+    version='1.0.3-dev',
     description='SAS Computer Vision Interface',
     long_description=get_file('README.md'),
     long_description_content_type='text/markdown',
