@@ -266,5 +266,3 @@ class Image(object):
         num_cells = np.prod(resolution)
 
         return Image.get_image_array_from_row(image_binaries[n], dimension, resolution, ctype, channel_count)
-
-
