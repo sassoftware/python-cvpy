@@ -19,16 +19,18 @@
 import os
 import unittest
 import xmlrunner
+import struct
 import swat
 import sys
 import numpy as np
-from cvpy.image import *
+
+from cvpy.image.Image import Image
 
 
 class TestImage(unittest.TestCase):
 
     def test_convert_to_CAS_column(self):
-        self.assertTrue(convert_to_CAS_column("id") == "_id_")
+        self.assertTrue(Image.convert_to_CAS_column("id") == "_id_")
 
     def test_fetch_image_array(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -44,7 +46,7 @@ class TestImage(unittest.TestCase):
                             caslib='dlib',
                             decode=True)
 
-        self.assertTrue(np.array_equal(fetch_image_array(image), np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
+        self.assertTrue(np.array_equal(Image.fetch_image_array(image), np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
     def test_get_image_array(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -65,7 +67,7 @@ class TestImage(unittest.TestCase):
         medicalBinaries = imageRows["_image_"]
         medicalResolutions = imageRows["_resolution_"]
 
-        medicalImageArray = get_image_array(medicalBinaries, medicalDimensions, medicalResolutions, medicalFormats, 0)
+        medicalImageArray = Image.get_image_array(medicalBinaries, medicalDimensions, medicalResolutions, medicalFormats, 0)
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
     def test_get_image_array_from_row(self):
@@ -92,7 +94,7 @@ class TestImage(unittest.TestCase):
         resolution = np.array(struct.unpack('=%sq' % dimension, medicalResolutions[n][0:dimension * 8]))
         resolution = resolution[::-1]
         myformat = medicalFormats[n]
-        medicalImageArray = get_image_array_from_row(medicalBinaries[n], dimension, resolution, myformat, 1)
+        medicalImageArray = Image.get_image_array_from_row(medicalBinaries[n], dimension, resolution, myformat, 1)
 
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
@@ -106,7 +108,7 @@ class TestImage(unittest.TestCase):
         for (img_dtype, np_dtype) in zip(img_dtypes, np_dtypes):
             image = np.arange(0,width*width).reshape([width,width]).astype(np_dtype)
             resolution = image.shape[:2]
-            imageArray = get_image_array_from_row(bytes(image), 2, resolution, img_dtype, 1)
+            imageArray = Image.get_image_array_from_row(bytes(image), 2, resolution, img_dtype, 1)
             test_pass = test_pass and np.array_equal(image, imageArray)
             test_pass = test_pass and (imageArray.dtype == np_dtype)
 
@@ -116,7 +118,7 @@ class TestImage(unittest.TestCase):
         for (img_dtype, np_dtype) in zip(img_dtypes, np_dtypes):
             image = np.arange(0,width*width*3).reshape([width,width,3]).astype(np_dtype)
             resolution = image.shape[:2]
-            imageArray = get_image_array_from_row(bytes(np.flip(image, 2)), 2, resolution, img_dtype, 3)
+            imageArray = Image.get_image_array_from_row(bytes(np.flip(image, 2)), 2, resolution, img_dtype, 3)
             test_pass = test_pass and np.array_equal(image, imageArray)
             test_pass = test_pass and (imageArray.dtype == np_dtype)
 
@@ -134,7 +136,7 @@ class TestImage(unittest.TestCase):
                                 caslib='dlib',
                                 decode=True)
 
-        self.assertTrue(fetch_geometry_info(image) == ((),(),()))
+        self.assertTrue(Image.fetch_geometry_info(image) == ((),(),()))
 
     def test_fetch_geometry_info(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -150,7 +152,7 @@ class TestImage(unittest.TestCase):
                                 addcolumns={"position", "orientation", "spacing"},
                                 )
 
-        self.assertTrue(fetch_geometry_info(imgray) == ((0, 0), (1.0, 0.0, 0.0, 1.0), (1.0, 1.0)))
+        self.assertTrue(Image.fetch_geometry_info(imgray) == ((0, 0), (1.0, 0.0, 0.0, 1.0), (1.0, 1.0)))
     
     def test_get_image_array_const_ctype(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -170,7 +172,7 @@ class TestImage(unittest.TestCase):
         medical_binaries = example_rows['_image_']
         medical_resolutions = example_rows['_resolution_']
         
-        image_array = get_image_array_const_ctype(medical_binaries, medical_dimensions, medical_resolutions, ctype='8U', n=0, channel_count=1)
+        image_array = Image.get_image_array_const_ctype(medical_binaries, medical_dimensions, medical_resolutions, ctype='8U', n=0, channel_count=1)
         
         self.assertTrue(np.array_equal(image_array, np.array([[0, 0, 0, 0, 0],[0, 255, 0, 0, 0],[0, 255, 0, 150, 0],[0, 0, 0, 0, 50],[0, 0, 0, 0, 0]])))
         
