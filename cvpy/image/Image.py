@@ -24,6 +24,7 @@ import numpy as np
 from typing import List
 from warnings import warn
 from swat import CAS, CASTable
+from cvpy.base.ImageDataType import ImageDataType
 
 class Image(object):
 
@@ -266,3 +267,35 @@ class Image(object):
         num_cells = np.prod(resolution)
 
         return Image.get_image_array_from_row(image_binaries[n], dimension, resolution, ctype, channel_count)
+
+    @staticmethod
+    def convert_wide_to_numpy(wide_image) -> np.ndarray:
+
+        ''''
+        Convert a wide image to a numpy image array.
+
+        Parameters:
+        ----------
+        wide_image: bytes
+             Specifies the wide byte image array
+
+        Returns:
+        ----------
+        numpy.ndarray
+
+        '''
+
+        # Get the width and height from the input array
+        width = np.frombuffer(wide_image[8:2*8], dtype=np.int64)[0]
+        height = np.frombuffer(wide_image[2*8:3*8], dtype=np.int64)[0]
+        data_type = np.frombuffer(wide_image[3*8:4*8], dtype=np.int64)[0]
+
+        # Set the number of channels to 1 if the image type is cv2.CV_8UC1
+        if data_type == ImageDataType.CV_8UC1.value:
+            num_channels = 1
+        # Set the number of channels to 3 if the image type is cv2.CV_8UC3
+        elif data_type == ImageDataType.CV_8UC3.value:
+            num_channels = 3
+
+        # Return the numpy array
+        return np.frombuffer(wide_image[4*8:], dtype=np.uint8).reshape(height, width, num_channels)

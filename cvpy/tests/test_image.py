@@ -25,6 +25,7 @@ import sys
 import numpy as np
 
 from cvpy.image.Image import Image
+from cvpy.base.ImageDataType import ImageDataType
 
 
 class TestImage(unittest.TestCase):
@@ -175,7 +176,79 @@ class TestImage(unittest.TestCase):
         image_array = Image.get_image_array_const_ctype(medical_binaries, medical_dimensions, medical_resolutions, ctype='8U', n=0, channel_count=1)
         
         self.assertTrue(np.array_equal(image_array, np.array([[0, 0, 0, 0, 0],[0, 255, 0, 0, 0],[0, 255, 0, 150, 0],[0, 0, 0, 0, 50],[0, 0, 0, 0, 0]])))
-        
+
+    def test_convert_wide_to_numpy_3_channel(self):
+        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s.loadactionset('image')
+
+        # Add caslib
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
+
+        # Load the image
+        image = self.s.CASTable('image', replace=True)
+        self.s.image.loadImages(path='images/Sas_c.jpg',
+                                casOut=dict(name='image', replace='TRUE'),
+                                addColumns={"WIDTH", "HEIGHT"},
+                                caslib='dlib',
+                                decode=True)
+
+        # Get the image data
+        image_rows = image.to_frame()
+        image_binary = image_rows['_image_'][0]
+        width = image_rows['_width_'][0]
+        height = image_rows['_height_'][0]
+        num_channels = 3
+
+        # Create the original numpy image array
+        image_array = np.array(bytearray(image_binary[0:(width * height * num_channels)])).astype(np.uint8)
+        numpy_image_array = np.reshape(image_array, (width, height, num_channels))
+
+        # Convert the numpy image to a wide image
+        wide_prefix = np.array([-1, height, width, ImageDataType.CV_8UC3.value], dtype=np.int64)
+        wide_byte_array = wide_prefix.tobytes() + numpy_image_array.tobytes()
+
+        # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
+        output_array = Image.convert_wide_to_numpy(wide_byte_array)
+
+        # Compare these arrays to make sure they are equal
+        self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+    def test_convert_wide_to_numpy_1_channel(self):
+        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+        self.s.loadactionset('image')
+
+        # Add caslib
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
+
+        # Load the image
+        image = self.s.CASTable('image', replace=True)
+        self.s.image.loadImages(path='unittest/gray_3x3.png',
+                                casOut=dict(name='image', replace='TRUE'),
+                                addColumns={"WIDTH", "HEIGHT"},
+                                caslib='dlib',
+                                decode=True)
+
+        # Get the image data
+        image_rows = image.to_frame()
+        image_binary = image_rows['_image_'][0]
+        width = image_rows['_width_'][0]
+        height = image_rows['_height_'][0]
+        num_channels = 1
+
+        # Create the original numpy image array
+        image_array = np.array(bytearray(image_binary[0:(width * height * num_channels)])).astype(np.uint8)
+        numpy_image_array = np.reshape(image_array, (width, height, num_channels))
+
+        # Convert the numpy image to a wide image
+        wide_prefix = np.array([-1, height, width, ImageDataType.CV_8UC1.value], dtype=np.int64)
+        wide_byte_array = wide_prefix.tobytes() + numpy_image_array.tobytes()
+
+        # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
+        output_array = Image.convert_wide_to_numpy(wide_byte_array)
+
+        # Compare these arrays to make sure they are equal
+        self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
 if __name__ == '__main__':
     if len(sys.argv) > 1:
 
