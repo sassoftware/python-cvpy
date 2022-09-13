@@ -50,6 +50,7 @@ class Image(object):
         idx[axis] = slice(None, None, -1)
         return a[idx]
 
+    @staticmethod
     def get_image_array_from_row(image_binary, dimension, resolution, myformat, channel_count=1):
 
         '''
@@ -108,6 +109,7 @@ class Image(object):
             image_array = Image.__reverse(image_array, 2)
         return image_array
 
+    @staticmethod
     def get_image_array(image_binaries, dimensions, resolutions, formats, n, channel_count=1):
 
         '''
@@ -139,6 +141,7 @@ class Image(object):
         myformat = formats[n]
         return Image.get_image_array_from_row(image_binaries[n], dimension, resolution, myformat, channel_count)
 
+    @staticmethod
     def convert_to_CAS_column(s):
 
         '''
@@ -157,6 +160,7 @@ class Image(object):
         s = str.replace(str.replace(s, '{', '_'), '}', '_')
         return '_'+s+'_'
 
+    @staticmethod
     def fetch_image_array(imdata, n=0, qry='', image='_image_', dim='_dimension_', res='_resolution_', ctype='_channelType_', ccount=1):
 
         '''
@@ -196,6 +200,7 @@ class Image(object):
         medical_resolutions = example_rows[res]
         return Image.get_image_array(medical_binaries, medical_dimensions, medical_resolutions, medical_formats, n, ccount)
 
+    @staticmethod
     def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orientation_', spaCol='_spacing_', dimCol='_dimension_'):
 
         '''
@@ -237,6 +242,7 @@ class Image(object):
         spa = struct.unpack('=%sd'%dim, example_rows[spaCol][0][0:dim*8])
         return pos, ori, spa
 
+    @staticmethod
     def get_image_array_const_ctype(image_binaries, dimensions, resolutions, ctype, n, channel_count=1):
 
         '''
@@ -276,8 +282,8 @@ class Image(object):
 
         Parameters:
         ----------
-        wide_image: bytes
-             Specifies the wide byte image array
+        wide_image: bytes buffer
+             Specifies the wide image byte buffer
 
         Returns:
         ----------
@@ -285,7 +291,7 @@ class Image(object):
 
         '''
 
-        # Get the width and height from the input array
+        # Get the width and height from the input buffer
         width = np.frombuffer(wide_image[8:2*8], dtype=np.int64)[0]
         height = np.frombuffer(wide_image[2*8:3*8], dtype=np.int64)[0]
         data_type = np.frombuffer(wide_image[3*8:4*8], dtype=np.int64)[0]
