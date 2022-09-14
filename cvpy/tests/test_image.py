@@ -72,7 +72,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(np.array_equal(Image.fetch_image_array(image), np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
 
     def test_get_image_array(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -97,7 +97,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
 
     def test_get_image_array_from_row(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -128,7 +128,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
 
     def test_get_image_array_from_row_dtypes(self):
         test_pass = True
@@ -171,7 +171,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(Image.fetch_geometry_info(image) == ((),(),()))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
 
     def test_fetch_geometry_info(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -190,7 +190,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(Image.fetch_geometry_info(imgray) == ((0, 0), (1.0, 0.0, 0.0, 1.0), (1.0, 1.0)))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
     
     def test_get_image_array_const_ctype(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -215,7 +215,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(np.array_equal(image_array, np.array([[0, 0, 0, 0, 0],[0, 255, 0, 0, 0],[0, 255, 0, 150, 0],[0, 0, 0, 0, 50],[0, 0, 0, 0, 0]])))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
 
     def test_convert_wide_to_numpy_3_channel(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -242,7 +242,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
 
     def test_convert_wide_to_numpy_1_channel(self):
         self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
@@ -269,7 +269,7 @@ class TestImage(unittest.TestCase):
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Close the connection
-        swat.CAS.close(self.s)
+        self.s.close()
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
