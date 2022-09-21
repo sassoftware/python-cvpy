@@ -1,0 +1,58 @@
+# This workflow updates the documentation.
+# It is intended for two purposes:
+#  1.) Create a preview of the doc that can be reviewed before a pull request.
+#  2.) Keep the documentation in sync with the package at PyPI.
+#
+# To enable a Preview, a contributor must have their fork of CVPy configured to
+# host documentation from their gh-pages branch. For information about that, see
+# https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-from-a-branch
+
+name: Build and Deploy Documentation
+
+on:
+  push:
+    paths:
+      - doc/**
+  workflow_run:
+    workflows: [Publish Package to PyPI]
+    types:
+      - completed
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        # Remove PyQt to avoid Sphinx build error.
+        # I think removing PyQt resolves a conflict between
+        # pip-installed Qt and the Ubuntu VM.
+        run: |
+          python -m pip install --upgrade pip
+          pip install sphinx sphinx_rtd_theme numpydoc ipython
+          pip install .
+          pip uninstall -y PyQt5 PyQt5-Qt5 PyQt5-sip
+      - name: Build the doc
+        run: cd doc && make html && ls build/html && cd ..
+      - name: Commit documentation changes
+        run: |
+          git clone ${{ github.server_url }}/${{ github.repository }} --branch gh-pages --single-branch gh-pages
+          cp -r doc/build/html/* gh-pages/
+          cd gh-pages
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Update documentation" -a || true
+          # The above command will fail if no changes were present, so we ignore
+          # the return code.
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          directory: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
