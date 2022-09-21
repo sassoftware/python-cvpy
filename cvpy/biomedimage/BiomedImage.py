@@ -64,7 +64,7 @@ class BiomedImage(object):
         Quantify the sphericity for the given component from a CAS table. 
 
         Parameters
-        -----------
+        ----------
         image_table: ImageTable
              Specifies the CAS table that contains the image binaries.
         use_spacing: bool
