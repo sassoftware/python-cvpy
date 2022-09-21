@@ -44,17 +44,20 @@ CAS Thread Tuner Results
 Image
 -----
 
-.. currentmodule:: cvpy.image
+.. currentmodule:: cvpy.image.Image
 
 .. autosummary::
     :toctree: generated/
 
-    get_image_array_from_row
-    get_image_array
-    convert_to_CAS_column
-    fetch_image_array
-    fetch_geometry_info
-    get_image_array_const_ctype
+    Image
+    Image.convert_to_CAS_column
+    Image.convert_wide_to_numpy
+    Image.fetch_geometry_info
+    Image.fetch_image_array
+    Image.get_image_array_from_row
+    Image.get_image_array
+    Image.get_image_array_const_ctype
+
 
 ImageTable
 ----------

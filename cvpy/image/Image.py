@@ -280,13 +280,13 @@ class Image(object):
         ''''
         Convert a wide image to a numpy image array.
 
-        Parameters:
+        Parameters
         ----------
         wide_image: bytes buffer
              Specifies the wide image byte buffer
 
-        Returns:
-        ----------
+        Returns
+        -------
         numpy.ndarray
 
         '''
