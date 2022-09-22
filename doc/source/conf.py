@@ -145,9 +145,14 @@ import sphinx_rtd_theme  # noqa: E402
 
 html_theme = 'sphinx_rtd_theme'
 
-html_context = {
-    'css_files': ['_static/custom.css'],
-}
+## html_context is deprecated; use html_static_path & css_files instead.
+## https://stackoverflow.com/questions/73220398/sphinx-rtd-theme-not-formatting-correctly-missing-theme-css
+# html_context = {
+#     'css_files': ['_static/custom.css'],
+# }
+
+html_static_path = ['_static']
+html_css_files = ['theme.css']
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

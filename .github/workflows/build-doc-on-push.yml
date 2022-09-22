@@ -37,8 +37,9 @@ jobs:
           pip install sphinx sphinx_rtd_theme numpydoc ipython
           pip install .
           pip uninstall -y PyQt5 PyQt5-Qt5 PyQt5-sip
+          pip list
       - name: Build the doc
-        run: cd doc && make html && ls build/html && cd ..
+        run: cd doc && cat source/conf.py && make html && ls build/html && cd ..
       - name: Commit documentation changes
         run: |
           git clone ${{ github.server_url }}/${{ github.repository }} --branch gh-pages --single-branch gh-pages
