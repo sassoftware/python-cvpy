@@ -277,7 +277,7 @@ class Image(object):
     @staticmethod
     def convert_wide_to_numpy(wide_image) -> np.ndarray:
 
-        ''''
+        '''
         Convert a wide image to a numpy image array.
 
         Parameters
