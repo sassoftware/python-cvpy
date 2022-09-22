@@ -13,7 +13,7 @@ Biomedical Images
 .. currentmodule:: cvpy.biomedimage.BiomedImage
     
 .. autosummary::
-    :toctree: ../build/generated
+    :toctree: generated/
 
     BiomedImage
     BiomedImage.quantify_sphericity
@@ -24,7 +24,7 @@ CAS Thread Tuner
 .. currentmodule:: cvpy.utils.CASThreadTuner
 
 .. autosummary::
-    :toctree: ../build/generated
+    :toctree: generated/
 
     CASThreadTuner
     CASThreadTuner.tune_thread_count
@@ -36,7 +36,7 @@ CAS Thread Tuner Results
 .. currentmodule:: cvpy.base.CASThreadTunerResults
 
 .. autosummary::
-    :toctree: ../build/generated
+    :toctree: generated/
 
     CASThreadTunerResults
     CASThreadTunerResults.plot_exec_times
@@ -47,7 +47,7 @@ Image
 .. currentmodule:: cvpy.image.Image
 
 .. autosummary::
-    :toctree: ../build/generated
+    :toctree: generated/
 
     Image
     Image.convert_to_CAS_column
@@ -65,7 +65,7 @@ ImageTable
 .. currentmodule:: cvpy.base.ImageTable
 
 .. autosummary::
-    :toctree: ../build/generated
+    :toctree: generated/
 
     ImageTable
     ImageTable.as_dict
@@ -78,7 +78,7 @@ Visualization Reference
 .. currentmodule:: cvpy.visualization
 
 .. autosummary::
-    :toctree: ../build/generated
+    :toctree: generated/
 
     display_image_slice
     display_3D_image_slices_from_array
