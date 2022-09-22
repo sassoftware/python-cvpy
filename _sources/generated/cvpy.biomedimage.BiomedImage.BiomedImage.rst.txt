@@ -1,0 +1,29 @@
+﻿cvpy.biomedimage.BiomedImage.BiomedImage
+========================================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImage
+
+.. autoclass:: BiomedImage
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BiomedImage.__init__
+      ~BiomedImage.quantify_sphericity
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BiomedImage.cas_session
+   
+   

@@ -1,0 +1,23 @@
+﻿cvpy.utils.CASThreadTuner.CASThreadTuner
+========================================
+
+.. currentmodule:: cvpy.utils.CASThreadTuner
+
+.. autoclass:: CASThreadTuner
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CASThreadTuner.__init__
+      ~CASThreadTuner.tune_thread_count
+   
+   
+
+   
+   
+   

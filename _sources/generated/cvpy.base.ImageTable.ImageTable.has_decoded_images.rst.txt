@@ -1,0 +1,6 @@
+﻿cvpy.base.ImageTable.ImageTable.has\_decoded\_images
+====================================================
+
+.. currentmodule:: cvpy.base.ImageTable
+
+.. automethod:: ImageTable.has_decoded_images

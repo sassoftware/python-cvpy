@@ -5,7 +5,9 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API Reference &mdash; CVPy 1.1.1-dev documentation</title>
-      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -18,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="License" href="license.html" />
+    <link rel="next" title="cvpy.biomedimage.BiomedImage.BiomedImage" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -43,12 +45,45 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#biomedical-images">Biomedical Images</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#cas-thread-tuner">CAS Thread Tuner</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#cas-thread-tuner-results">CAS Thread Tuner Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#image">Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#imagetable">ImageTable</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#visualization-reference">Visualization Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#biomedical-images">Biomedical Images</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html">cvpy.biomedimage.BiomedImage.BiomedImage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html">cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cas-thread-tuner">CAS Thread Tuner</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.html">cvpy.utils.CASThreadTuner.CASThreadTuner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count.html">cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cas-thread-tuner-results">CAS Thread Tuner Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.html">cvpy.base.CASThreadTunerResults.CASThreadTunerResults</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times.html">cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#image">Image</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.html">cvpy.image.Image.Image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_to_CAS_column.html">cvpy.image.Image.Image.convert_to_CAS_column</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_wide_to_numpy.html">cvpy.image.Image.Image.convert_wide_to_numpy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_geometry_info.html">cvpy.image.Image.Image.fetch_geometry_info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_image_array.html">cvpy.image.Image.Image.fetch_image_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_from_row.html">cvpy.image.Image.Image.get_image_array_from_row</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array.html">cvpy.image.Image.Image.get_image_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_const_ctype.html">cvpy.image.Image.Image.get_image_array_const_ctype</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#imagetable">ImageTable</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.html">cvpy.base.ImageTable.ImageTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.as_dict.html">cvpy.base.ImageTable.ImageTable.as_dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.has_decoded_images.html">cvpy.base.ImageTable.ImageTable.has_decoded_images</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization-reference">Visualization Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_image_slice.html">cvpy.visualization.display_image_slice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices_from_array.html">cvpy.visualization.display_3D_image_slices_from_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices.html">cvpy.visualization.display_3D_image_slices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_surface.html">cvpy.visualization.display_3D_surface</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -88,10 +123,10 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>BiomedImage</strong>([cas_session])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html#cvpy.biomedimage.BiomedImage.BiomedImage" title="cvpy.biomedimage.BiomedImage.BiomedImage"><strong>BiomedImage</strong></a>([cas_session])</p></td>
 <td><p>Implement biomedical image processing functions.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>BiomedImage.quantify_sphericity</strong>(image_table, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html#cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity" title="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity"><strong>BiomedImage.quantify_sphericity</strong></a>(image_table, ...)</p></td>
 <td><p>Quantify the sphericity for the given component from a CAS table.</p></td>
 </tr>
 </tbody>
@@ -105,10 +140,10 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>CASThreadTuner</strong>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.html#cvpy.utils.CASThreadTuner.CASThreadTuner" title="cvpy.utils.CASThreadTuner.CASThreadTuner"><strong>CASThreadTuner</strong></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>CASThreadTuner.tune_thread_count</strong>(...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count.html#cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count" title="cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count"><strong>CASThreadTuner.tune_thread_count</strong></a>(...[, ...])</p></td>
 <td><p>Compute the optimal thread count for a given image action.</p></td>
 </tr>
 </tbody>
@@ -122,10 +157,10 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>CASThreadTunerResults</strong>([cas_server_mode, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.html#cvpy.base.CASThreadTunerResults.CASThreadTunerResults" title="cvpy.base.CASThreadTunerResults.CASThreadTunerResults"><strong>CASThreadTunerResults</strong></a>([cas_server_mode, ...])</p></td>
 <td><p>Store and present results for the CAS thread optimization tool.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>CASThreadTunerResults.plot_exec_times</strong>([...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times.html#cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times" title="cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times"><strong>CASThreadTunerResults.plot_exec_times</strong></a>([...])</p></td>
 <td><p>Plot performance for given CAS thread tuner results.</p></td>
 </tr>
 </tbody>
@@ -139,29 +174,28 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>Image</strong>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.html#cvpy.image.Image.Image" title="cvpy.image.Image.Image"><strong>Image</strong></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Image.convert_to_CAS_column</strong>(s)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_to_CAS_column.html#cvpy.image.Image.Image.convert_to_CAS_column" title="cvpy.image.Image.Image.convert_to_CAS_column"><strong>Image.convert_to_CAS_column</strong></a>(s)</p></td>
 <td><p>Convert a string to CAS column name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Image.convert_wide_to_numpy</strong>(wide_image)</p></td>
-<td><p><p>'</p>
-</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_wide_to_numpy.html#cvpy.image.Image.Image.convert_wide_to_numpy" title="cvpy.image.Image.Image.convert_wide_to_numpy"><strong>Image.convert_wide_to_numpy</strong></a>(wide_image)</p></td>
+<td><p>Convert a wide image to a numpy image array.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Image.fetch_geometry_info</strong>(imdata[, n, qry, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_geometry_info.html#cvpy.image.Image.Image.fetch_geometry_info" title="cvpy.image.Image.Image.fetch_geometry_info"><strong>Image.fetch_geometry_info</strong></a>(imdata[, n, qry, ...])</p></td>
 <td><p>Fetch geometry information from a CAS table.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Image.fetch_image_array</strong>(imdata[, n, qry, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_image_array.html#cvpy.image.Image.Image.fetch_image_array" title="cvpy.image.Image.Image.fetch_image_array"><strong>Image.fetch_image_array</strong></a>(imdata[, n, qry, ...])</p></td>
 <td><p>Fetch image array from a CAS table.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Image.get_image_array_from_row</strong>(image_binary, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_from_row.html#cvpy.image.Image.Image.get_image_array_from_row" title="cvpy.image.Image.Image.get_image_array_from_row"><strong>Image.get_image_array_from_row</strong></a>(image_binary, ...)</p></td>
 <td><p>Get a 3D image from a row.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>Image.get_image_array</strong>(image_binaries, ...[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array.html#cvpy.image.Image.Image.get_image_array" title="cvpy.image.Image.Image.get_image_array"><strong>Image.get_image_array</strong></a>(image_binaries, ...[, ...])</p></td>
 <td><p>Get an image from a fetched array.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>Image.get_image_array_const_ctype</strong>(...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_const_ctype.html#cvpy.image.Image.Image.get_image_array_const_ctype" title="cvpy.image.Image.Image.get_image_array_const_ctype"><strong>Image.get_image_array_const_ctype</strong></a>(...[, ...])</p></td>
 <td><p>Get an image array with a constant channel type from a CAS table.</p></td>
 </tr>
 </tbody>
@@ -175,13 +209,13 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>ImageTable</strong>(table[, image, dimension, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><strong>ImageTable</strong></a>(table[, image, dimension, ...])</p></td>
 <td><p>Interface with a CASTable of images.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>ImageTable.as_dict</strong>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.as_dict.html#cvpy.base.ImageTable.ImageTable.as_dict" title="cvpy.base.ImageTable.ImageTable.as_dict"><strong>ImageTable.as_dict</strong></a>()</p></td>
 <td><p>Create a dictionary representation of this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>ImageTable.has_decoded_images</strong>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.has_decoded_images.html#cvpy.base.ImageTable.ImageTable.has_decoded_images" title="cvpy.base.ImageTable.ImageTable.has_decoded_images"><strong>ImageTable.has_decoded_images</strong></a>()</p></td>
 <td><p>Check if this table contains decoded images or encoded images.</p></td>
 </tr>
 </tbody>
@@ -195,16 +229,16 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>display_image_slice</strong>(images, dims, ress, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_image_slice.html#cvpy.visualization.display_image_slice" title="cvpy.visualization.display_image_slice"><strong>display_image_slice</strong></a>(images, dims, ress, ...)</p></td>
 <td><p>Display an image slice in 3D.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>display_3D_image_slices_from_array</strong>(array[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices_from_array.html#cvpy.visualization.display_3D_image_slices_from_array" title="cvpy.visualization.display_3D_image_slices_from_array"><strong>display_3D_image_slices_from_array</strong></a>(array[, ...])</p></td>
 <td><p>Display 3D image slices in 3D.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>display_3D_image_slices</strong>(self, image[, hold, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices.html#cvpy.visualization.display_3D_image_slices" title="cvpy.visualization.display_3D_image_slices"><strong>display_3D_image_slices</strong></a>(self, image[, hold, ...])</p></td>
 <td><p>Display 3D image slices in 3D.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>display_3D_surface</strong>(surfaces, vdata, fdata[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_3D_surface.html#cvpy.visualization.display_3D_surface" title="cvpy.visualization.display_3D_surface"><strong>display_3D_surface</strong></a>(surfaces, vdata, fdata[, ...])</p></td>
 <td><p>Display the surfaces of an image.</p></td>
 </tr>
 </tbody>
@@ -217,7 +251,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html" class="btn btn-neutral float-right" title="cvpy.biomedimage.BiomedImage.BiomedImage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

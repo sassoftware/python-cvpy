@@ -1,0 +1,6 @@
+﻿cvpy.image.Image.Image.get\_image\_array
+========================================
+
+.. currentmodule:: cvpy.image.Image
+
+.. automethod:: Image.get_image_array

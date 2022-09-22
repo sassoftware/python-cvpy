@@ -1,0 +1,29 @@
+﻿cvpy.image.Image.Image
+======================
+
+.. currentmodule:: cvpy.image.Image
+
+.. autoclass:: Image
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Image.__init__
+      ~Image.convert_to_CAS_column
+      ~Image.convert_wide_to_numpy
+      ~Image.fetch_geometry_info
+      ~Image.fetch_image_array
+      ~Image.get_image_array
+      ~Image.get_image_array_const_ctype
+      ~Image.get_image_array_from_row
+   
+   
+
+   
+   
+   

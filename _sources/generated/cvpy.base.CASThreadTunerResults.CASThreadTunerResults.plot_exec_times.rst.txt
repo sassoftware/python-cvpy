@@ -1,0 +1,6 @@
+﻿cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot\_exec\_times
+=======================================================================
+
+.. currentmodule:: cvpy.base.CASThreadTunerResults
+
+.. automethod:: CASThreadTunerResults.plot_exec_times

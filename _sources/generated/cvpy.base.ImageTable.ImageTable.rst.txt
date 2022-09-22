@@ -1,0 +1,48 @@
+﻿cvpy.base.ImageTable.ImageTable
+===============================
+
+.. currentmodule:: cvpy.base.ImageTable
+
+.. autoclass:: ImageTable
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ImageTable.__init__
+      ~ImageTable.as_dict
+      ~ImageTable.has_decoded_images
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ImageTable.DIMENSION_COL
+      ~ImageTable.FORMAT_COL
+      ~ImageTable.ID_COL
+      ~ImageTable.IMAGE_COL
+      ~ImageTable.LABEL_COL
+      ~ImageTable.PATH_COL
+      ~ImageTable.RESOLUTION_COL
+      ~ImageTable.SIZE_COL
+      ~ImageTable.TYPE_COL
+      ~ImageTable.dimension
+      ~ImageTable.id
+      ~ImageTable.image
+      ~ImageTable.imageFormat
+      ~ImageTable.label
+      ~ImageTable.path
+      ~ImageTable.resolution
+      ~ImageTable.size
+      ~ImageTable.table
+      ~ImageTable.type
+   
+   

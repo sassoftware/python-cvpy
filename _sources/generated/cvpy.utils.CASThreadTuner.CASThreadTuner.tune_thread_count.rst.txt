@@ -1,0 +1,6 @@
+﻿cvpy.utils.CASThreadTuner.CASThreadTuner.tune\_thread\_count
+============================================================
+
+.. currentmodule:: cvpy.utils.CASThreadTuner
+
+.. automethod:: CASThreadTuner.tune_thread_count

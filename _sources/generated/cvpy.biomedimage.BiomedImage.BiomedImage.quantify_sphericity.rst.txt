@@ -1,0 +1,6 @@
+﻿cvpy.biomedimage.BiomedImage.BiomedImage.quantify\_sphericity
+=============================================================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImage
+
+.. automethod:: BiomedImage.quantify_sphericity

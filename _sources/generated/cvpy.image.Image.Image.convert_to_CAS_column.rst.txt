@@ -1,0 +1,6 @@
+﻿cvpy.image.Image.Image.convert\_to\_CAS\_column
+===============================================
+
+.. currentmodule:: cvpy.image.Image
+
+.. automethod:: Image.convert_to_CAS_column

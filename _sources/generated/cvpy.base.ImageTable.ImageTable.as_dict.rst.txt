@@ -1,0 +1,6 @@
+﻿cvpy.base.ImageTable.ImageTable.as\_dict
+========================================
+
+.. currentmodule:: cvpy.base.ImageTable
+
+.. automethod:: ImageTable.as_dict

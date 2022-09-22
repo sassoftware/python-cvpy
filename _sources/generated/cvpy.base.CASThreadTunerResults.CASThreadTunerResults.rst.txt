@@ -1,0 +1,39 @@
+﻿cvpy.base.CASThreadTunerResults.CASThreadTunerResults
+=====================================================
+
+.. currentmodule:: cvpy.base.CASThreadTunerResults
+
+.. autoclass:: CASThreadTunerResults
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CASThreadTunerResults.__init__
+      ~CASThreadTunerResults.plot_exec_times
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CASThreadTunerResults.cas_server_mode
+      ~CASThreadTunerResults.controller_optimal_thread_count
+      ~CASThreadTunerResults.controller_thread_range
+      ~CASThreadTunerResults.maximum_exec_times
+      ~CASThreadTunerResults.mean_exec_times
+      ~CASThreadTunerResults.median_exec_times
+      ~CASThreadTunerResults.minimum_exec_times
+      ~CASThreadTunerResults.objective_measure
+      ~CASThreadTunerResults.stdev_exec_times
+      ~CASThreadTunerResults.worker_optimal_thread_count
+      ~CASThreadTunerResults.worker_thread_range
+   
+   
