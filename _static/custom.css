@@ -1,5 +1,6 @@
-code.docutils > .pre { color: #505050 !important }
-
+code.docutils > .pre {
+    color: #505050 !important
+}
 .rst-content dl:not(.docutils) dl dt {
     border-width: 0px !important;
     background-color: transparent !important;
@@ -15,26 +16,20 @@ code.docutils > .pre { color: #505050 !important }
     font-style: italic;
     font-weight: normal;
 }
-.rst-content dl:not(.docutils) dl dt span:before {
-    content: ' ';
+.rst-content dl:not(.docutils) dl dt span.classifier:before {
+    content: ' (';
 }
-/*
-.rst-content dl:not(.docutils) dl dt span:after {
+.rst-content dl:not(.docutils) dl dt span.classifier:after {
     content: ')';
 }
-*/
 .rst-content dl:not(.docutils) dl dt span.optional,
 .rst-content dl:not(.docutils) dl dt span.opt-sep {
     font-weight: normal;
 }
-.rst-content dl:not(.docutils) dl dt span.optional:before,
-.rst-content dl:not(.docutils) dl dt span.opt-sep:before {
-    content: '';
-}
-.rst-content dl:not(.docutils) dl dt span.optional:after,
-.rst-content dl:not(.docutils) dl dt span.opt-sep:after {
-    content: '';
-}
 .rst-content dl:not(.docutils) dl dt .classifier-delimiter {
     display: none;
+}
+.rst-content dl:not(.docutils) dl dd strong {
+    font-weight: bold;
+    font-size: smaller;
 }
