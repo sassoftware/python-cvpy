@@ -1,6 +1,4 @@
-import os
-import stat
-from pathlib import PosixPath
+from pathlib import Path
 
 
 class Credentials(object):
@@ -23,46 +21,43 @@ class Credentials(object):
 
     """
 
+    DEFAULT_ANNOTATION_AUTH_FILE = '.annotation_auth'
+
     def __init__(self, username: str = None, password: str = None, token: str = None, auth_file: str = None) -> None:
         self._username = username
         self._password = password
         self._auth_file = auth_file
         self._token = token
 
-        # If (username and password) or token is provided, then don't read auth_file (default or username-provided)
+        # If (username and password) or token is provided, then don't read auth_file (default or user provided)
         if (self._username and self._password) or (self._token):
             return
 
-        # Check if default .annotation_auth file is present
-        if not username and not password and not auth_file:
-            default_auth_file = PosixPath('~/.annotation_auth').expanduser()
-            if default_auth_file.is_file():
-                auth_file = default_auth_file.as_posix()
+        # Create a path object from auth_file if specified
+        if auth_file:
+            auth_file = Path(auth_file)
+        else:
+            # Check if default .annotation_auth file is present
+            if not username and not password and not auth_file:
+                default_auth_file = Path(Path.home(), Credentials.DEFAULT_ANNOTATION_AUTH_FILE)
+                if default_auth_file.exists():
+                    auth_file = default_auth_file
 
         if auth_file:
-            # Expand shortcuts like ~, .., etc.
-            auth_file = PosixPath(auth_file).expanduser().as_posix()
-
-            # Raise an exception if the file is readable/writable by the group or others
-            mode = os.stat(auth_file).st_mode
-            if (mode & stat.S_IRGRP) or (mode & stat.S_IWGRP) or (mode & stat.S_IROTH) or (mode & stat.S_IWOTH):
-                raise Exception('Annotation server auth file must not be readable or writable by the group or others.')
-
             # Read the first line
-            auth_fh = open(auth_file, 'r')
-            auth_fields = auth_fh.readline().split(',')
-            auth_fh.close()
+            with auth_file.open(mode='r') as fh:
+                line = fh.readline()
 
-            if len(auth_fields) == 1:  # Set token
-                self._token = auth_fields[0].strip()
-            elif len(auth_fields) == 2:  # # Set username and password
-                self._username = auth_fields[0].strip()
-                self._password = auth_fields[1].strip()
-            else:
-                raise Exception('Invalid annotation server auth file')
+            if line:
+                auth_fields = line.split(',')
 
-        if not self._token and (not self._username or not self._password):
-            raise Exception('Either token or username and password must be provided as parameters or in the auth_file.')
+                if len(auth_fields) == 1:  # Set token
+                    self._token = auth_fields[0].strip()
+                elif len(auth_fields) == 2:  # # Set username and password
+                    self._username = auth_fields[0].strip()
+                    self._password = auth_fields[1].strip()
+                else:
+                    raise Exception(f'Invalid annotation server auth file: {auth_file}')
 
     @property
     def username(self) -> str:

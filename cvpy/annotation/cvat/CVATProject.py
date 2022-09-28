@@ -1,14 +1,13 @@
-import json
 from http import HTTPStatus
 from typing import List
 
 import requests
-from swat.cas import CAS, CASTable
-
 from cvpy.annotation.base.AnnotationLabel import AnnotationLabel
 from cvpy.annotation.base.AnnotationType import AnnotationType
 from cvpy.annotation.base.Credentials import Credentials
 from cvpy.annotation.base.Project import Project
+from cvpy.annotation.cvat.CVATAuthenticator import CVATAuthenticator
+from swat.cas import CAS, CASTable
 
 
 class CVATProject(Project):
@@ -46,22 +45,15 @@ class CVATProject(Project):
             return
 
         # Authenticates with the CVAT server and sets the token
-        response = requests.post(f'{self.url}/auth/login',
-                                 data=dict(username=self.credentials.username, password=self.credentials.password))
-
-        if response.status_code != HTTPStatus.OK:
-            response_json = json.loads(response.text)
-            if 'non_field_errors' in response_json:
-                message = response_json['non_field_errors']
-            else:
-                message = response.text
-            raise Exception(f'Unable to authenticate: {message}')
-
-        self.credentials.token = response.json()['key']
+        success, message, response = CVATAuthenticator.authenticate(self.url, self.credentials)
+        if success:
+            self.credentials.token = response.json()['key']
+        else:
+            raise Exception(message)
 
     def _create_project_in_cvat(self) -> None:
         # Creates a project in the CVAT server and sets the project_id
-        response = requests.post(f'{self.url}/projects',
+        response = requests.post(f'{self.url}/api/projects',
                                  headers=self.credentials.get_auth_header(),
                                  data=dict(name=self.project_name))
 
@@ -72,7 +64,7 @@ class CVATProject(Project):
 
     def _delete_project_in_cvat(self) -> None:
         # Deletes the project from the CVAT server
-        response = requests.delete(f'{self.url}/projects/{self.project_id}',
+        response = requests.delete(f'{self.url}/api/projects/{self.project_id}',
                                    headers=self.credentials.get_auth_header())
 
         if response.status_code != HTTPStatus.NO_CONTENT:

@@ -3,7 +3,6 @@ import unittest
 
 import swat
 import xmlrunner
-
 from cvpy.annotation.base.AnnotationLabel import AnnotationLabel
 from cvpy.annotation.base.AnnotationType import AnnotationType
 from cvpy.annotation.base.Credentials import Credentials
@@ -51,7 +50,7 @@ class TestCVATProject(unittest.TestCase):
         try:
             cvat_project = CVATProject(url=url, credentials=credentials)
         except Exception as e:
-            self.assertEqual(str(e), "Unable to authenticate: ['Unable to log in with provided credentials.']")
+            self.assertEqual(str(e), "Unable to log in with provided credentials.")
 
     # Add a task to a project
     def test_cvat_project_add_task(self):
