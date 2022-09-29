@@ -1,6 +1,6 @@
 import sys
 import unittest
-from pathlib import PosixPath
+from pathlib import PosixPath, Path
 
 import xmlrunner
 
@@ -41,27 +41,24 @@ class TestCredentials(unittest.TestCase):
 
     # Read credentials from the default file ~/.annotation_auth
     def test_credentials_default_authfile(self):
-        default_auth_file_path = PosixPath('~/.annotation_auth').expanduser()
-        self.assertTrue(default_auth_file_path.is_file(), 'The default file ~/.annotation_auth does not exist.')
+        default_auth_file_path = Path(Path.home(), Credentials.DEFAULT_ANNOTATION_AUTH_FILE)
+        self.assertTrue(default_auth_file_path.exists(), f'The default file {default_auth_file_path} does not exist.')
 
         credentials = Credentials()
-
         self.assertTrue(credentials.token or (credentials.username and credentials.password))
 
     # Read token from a user specified auth file
     def test_credentials_authfile_with_token(self):
-        auth_file_path = PosixPath(TestCredentials.auth_file_with_token).expanduser()
-        self.assertTrue(auth_file_path.is_file(),
-                        f'The file {TestCredentials.auth_file_with_token} does not exist.')
+        auth_file_path = Path(TestCredentials.auth_file_with_token)
+        self.assertTrue(auth_file_path.exists(), f'The file {auth_file_path} does not exist.')
 
         credentials = Credentials(auth_file=TestCredentials.auth_file_with_token)
         self.assertIsNotNone(credentials.token)
 
     # Read username and password from a user specified auth file
     def test_credentials_authfile_with_username_password(self):
-        auth_file_path = PosixPath(TestCredentials.auth_file_with_username_password).expanduser()
-        self.assertTrue(auth_file_path.is_file(),
-                        f'The file {TestCredentials.auth_file_with_username_password} does not exist.')
+        auth_file_path = Path(TestCredentials.auth_file_with_username_password)
+        self.assertTrue(auth_file_path.exists(), f'The file {auth_file_path} does not exist.')
 
         credentials = Credentials(auth_file=TestCredentials.auth_file_with_username_password)
         self.assertIsNotNone(credentials.username)
