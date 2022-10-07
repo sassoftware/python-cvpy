@@ -19,3 +19,13 @@ class AnnotationLabel(object):
     @color.setter
     def color(self, color) -> None:
         self._color = color
+        
+    def as_dict(self) -> dict:
+        '''
+        Creates a dictionary representation of this object.
+        :return: A dictionary with all of the properties as keys and the property values as values
+        '''
+        d = {}
+        for k, v in vars(self).items():
+            d[k[1:]] = v
+        return d

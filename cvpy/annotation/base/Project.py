@@ -36,13 +36,13 @@ class Project(object):
 
     def __init__(self, cas_connection: CAS = None, url: str = None, credentials: Credentials = None,
                  project_name: str = None, annotation_type: AnnotationType = None,
-                 lables: List[AnnotationLabel] = None) -> None:
+                 labels: List[AnnotationLabel] = None) -> None:
         self._cas_connection = cas_connection
         self._url = url
         self._credentials = credentials
         self._project_name = project_name
         self._annotation_type = annotation_type
-        self._labels = lables
+        self._labels = labels
         self._project_id = None
         self._tasks = []
 
