@@ -1,13 +1,17 @@
+import io
 from http import HTTPStatus
 from typing import List
 
 import requests
+
+from cvpy.base.ImageTable import ImageTable
 from cvpy.annotation.base.AnnotationLabel import AnnotationLabel
 from cvpy.annotation.base.AnnotationType import AnnotationType
 from cvpy.annotation.base.Credentials import Credentials
 from cvpy.annotation.base.Project import Project
 from cvpy.annotation.cvat.CVATAuthenticator import CVATAuthenticator
-from swat.cas import CAS, CASTable
+from cvpy.annotation.cvat.CVATTask import CVATTask
+from swat.cas import CAS
 
 
 class CVATProject(Project):
@@ -15,17 +19,17 @@ class CVATProject(Project):
     
     Parameters
     ----------
-    cas_connection: 
+    cas_connection:
         Specifies the CAS connection for this project.
-    url: 
+    url:
         Specifies the url of the CVAT server for calling the REST APIs.
-    credentials: 
+    credentials:
         Specifies the login credentials to connect to the CVAT server.
-    project_name: 
+    project_name:
         Specifies name of the project.
-    annotation_type: 
+    annotation_type:
         Specifies the type of the annotation project.
-    labels: 
+    labels:
         Specifies a list of AnnotationLabel objects."""
 
     def __init__(self, cas_connection: CAS = None, url: str = None, credentials: Credentials = None,
@@ -52,10 +56,17 @@ class CVATProject(Project):
             raise Exception(message)
 
     def _create_project_in_cvat(self) -> None:
+        if self.annotation_type == AnnotationType.OBJECT_DETECTION:
+            # Create a serializable list of labels used in this project.
+            labels = [label.as_dict() for label in self._labels]
+            payload = dict(name=self.project_name, labels=labels)
+        else:
+            payload = dict(name=self.project_name)
+
         # Creates a project in the CVAT server and sets the project_id
         response = requests.post(f'{self.url}/api/projects',
                                  headers=self.credentials.get_auth_header(),
-                                 data=dict(name=self.project_name))
+                                 json=payload)
 
         if response.status_code != HTTPStatus.CREATED:
             raise Exception(f'Unable to create the project in the CVAT server: {response.reason}')
@@ -70,28 +81,77 @@ class CVATProject(Project):
         if response.status_code != HTTPStatus.NO_CONTENT:
             raise Exception(f'Unable to delete the project in the CVAT server: {response.reason}')
 
-    def post_images(self, image_table: CASTable) -> None:
+    def post_images(self, image_table: ImageTable) -> None:
         '''
         Create a CVAT task under the project and upload images from a CAS table to that task.
 
         Parameters
         ----------
-        image_table: 
-            Specifies the input CAS table that contains encoded images to be uploaded.
+        image_table:
+            Specifies the input table that contains images to be uploaded.
         
         '''
-        pass
+        # Check that the image_table contains the required columns for posting images to CVAT.
+        if image_table.id is None:
+            raise Exception('Provided ImageTable is missing a required column: id')
+        if image_table.image is None:
+            raise Exception('Provided ImageTable is missing a required column: image')
+        if image_table.type is None:
+            raise Exception('Provided ImageTable is missing a required column: type')
 
-    def get_annotations(self, annotated_table: CASTable, image_table: CASTable) -> None:
+        # Fetch the image table that will be posted to CVAT.
+        image_table_fetched = image_table.table.fetchImages(fetchImagesVars=["_id_", "_type_"])
+
+        # Create a CVATTask for this set of images.
+        task = CVATTask(image_table, self)
+
+        # Build a dictionary of images to upload to CVAT.
+        # The dictionary keys are of the form: client_files[image_frame_number]
+        # where "client_files" is a CVAT REST API keyword and image_frame_number is an index
+        # within the range [task.start_image_id, task.end_image_id].
+        # The dictionary values are tuples: (image_name, image_bytes)
+        # where image_name is the _id_ column from the image CAS table and appended
+        # with the appropriate file extension, and image_bytes is the encoded image byte buffer.
+        cvat_image_dict = dict() 
+        for index, row in image_table_fetched['Images'].iterrows():
+            cvat_key = f"client_files[{index}]"
+
+            # Get the image buffer from the Pillow object. To access the bytes directly we must
+            # 'save' the image to an in-memory file object.
+            # Note 1: Pillow uses the key 'JPEG' and cannot interpret 'jpg'.
+            # Note 2: The image.fetchImages action applies JPEG encoding to all images in a
+            #         decoded image table regardless of the 'type' column (if it even exists).
+            image_bytes = io.BytesIO()
+            pillow_format = 'JPEG'
+            image_extension = 'jpg'
+            if not image_table.has_decoded_images() and (row['_type_'] != 'jpg'):
+                pillow_format = image_extension = row['_type_']
+
+            row['Image'].save(image_bytes, format=pillow_format)
+            cvat_image_dict[cvat_key] = (f"{row['_id_']}.{image_extension}", image_bytes.getbuffer())
+
+        # Post the images to CVAT.
+        response = requests.post(f'{self.url}/api/tasks/{task.task_id}/data', 
+                                 headers=self.credentials.get_auth_header(),
+                                 files=cvat_image_dict,
+                                 data=dict(image_quality=100, start_frame=task.start_image_id, stop_frame=task.end_image_id))
+
+        if response.status_code != HTTPStatus.ACCEPTED:
+            raise Exception(f'Unable to post images to the CVAT task: {response.reason}')
+
+        # Images successfully posted for this task, add it to the projects task list.
+        self.add_task(task)
+
+    def get_annotations(self, annotated_table: ImageTable, image_table: ImageTable) -> None:
         '''
         Fetch annotations from CVAT corresponding to the images in a CAS table.
 
         Parameters
         ----------
-        annotated_table: 
-            Specifies the output CAS table where the images and the corresponding annotations will be stored.
-        image_table: 
-            Specifies the input CAS table containing encoded images that was used in a call to post_images()
+        annotated_table:
+            Specifies the output table where the images and the corresponding annotations will be stored.
+        image_table:
+            Specifies the input table containing encoded images that was used in a call to post_images()
             on this CVATProject object.
         
         '''
@@ -103,9 +163,9 @@ class CVATProject(Project):
 
         Parameters
         ----------
-        caslib: 
+        caslib:
             Specifies the caslib under which the CAS tables are saved.
-        relative_path: 
+        relative_path:
             Specifies the path relative to the caslib where the project will be saved.
 
         '''
@@ -117,13 +177,13 @@ class CVATProject(Project):
 
         Parameters
         ----------
-        cas_connection: 
+        cas_connection:
             Specifies the CAS connection in which the project will be resumed.
-        caslib: 
+        caslib:
             SPecifies the caslib under which CAS tables were saved.
-        relative_path: 
+        relative_path:
             Specifies the path relative to caslib where project was saved.
-        credentials: 
+        credentials:
             Specifies the credentials to connect to CVAT server.
         
         '''
