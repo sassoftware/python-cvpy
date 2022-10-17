@@ -34,7 +34,7 @@ jobs:
         # pip-installed Qt and the Ubuntu VM.
         run: |
           python -m pip install --upgrade pip
-          pip install sphinx sphinx_rtd_theme numpydoc ipython
+          pip install sphinx sphinx_rtd_theme numpydoc ipython VTK==9.2.0rc2
           pip install .
           pip uninstall -y PyQt5 PyQt5-Qt5 PyQt5-sip
           pip list
