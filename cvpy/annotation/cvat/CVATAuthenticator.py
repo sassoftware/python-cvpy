@@ -24,11 +24,11 @@ class CVATAuthenticator(object):
 
         This function prompts the user to enter a CVAT server URL, username and password.
         In case of successful authentication, the function writes the token returned by CVAT
-        in a file named .cvatauth in the user's home directory.
+        in a file named .annotation_auth in the user's home directory.
         '''
 
         print('Enter the following details to generate and save a CVAT token. The token will be saved '
-              'in a file named .cvatauth under your home directory.')
+              'in a file named .annotation_auth under your home directory.')
 
         # Get cvat_url from user input; if invalid, prompt the user to enter it again
         cvat_url = None
@@ -37,15 +37,23 @@ class CVATAuthenticator(object):
         attempt = 0
         while not success and attempt < CVATAuthenticator.MAX_ATTEMPTS:
             cvat_url = input('Enter CVAT Application URL: ')
-            result = urlparse(cvat_url)
-            success = all([result.scheme, result.netloc])
+
+            try:
+                response = requests.get(cvat_url)
+                if 'Computer Vision Annotation Tool' in response.text:
+                    success = True
+            except Exception as e:
+                success = False
+
             if not success:
-                print('The URL you entered is invalid.')
+                print('The URL you entered is invalid.\n')
             attempt += 1
 
-        # Exit if URL is invalid
+        # Return if URL is still invalid
         if not success:
-            exit(0)
+            print('Giving up since maximum number of attempts has been exceeded.'
+                  ' You can retry running the generate_cvat_token function with a valid CVAT Application URL.\n')
+            return
 
         # Prompt user to enter username and password, and try to authenticate
         response = None
@@ -60,29 +68,36 @@ class CVATAuthenticator(object):
             del password
 
             if not success:
-                print(f'Authentication failed: {message}')
+                print(f'Authentication failed: {message}\n')
 
             attempt += 1
 
-        # Exit if authentication was not successful
+        # Return if authentication was not successful
         if not success:
-            exit(0)
+            print('Giving up since maximum number of attempts has been exceeded.'
+                  ' You can retry running the generate_cvat_token function with a valid CVAT username and password.\n')
+            return
 
         # Extract the CVAT token from the response
-        if response is not None:
-            token = response.json()['key']
-
-            # Write the token in .cvatauth file in the user's home directory
-            file = Path(Path.home(), Credentials.DEFAULT_ANNOTATION_AUTH_FILE)
-            with file.open("w", encoding="utf-8") as fh:
-                fh.write(token)
-
-            # Update file permissions to be read/write only by the user
-            file.chmod(stat.S_IRUSR | stat.S_IWUSR)
-
-            print(f'CVAT token successfully written to the file: {file}.')
-        else:
+        if response is None:
             print(f'An unknown error has occurred.')
+            return
+
+        if response is not None:
+            try:
+                token = response.json()['key']
+
+                # Write the token in .annotation_auth file in the user's home directory
+                file = Path(Path.home(), Credentials.DEFAULT_ANNOTATION_AUTH_FILE)
+                with file.open("w", encoding="utf-8") as fh:
+                    fh.write(token)
+
+                # Update file permissions to be read/write only by the user
+                file.chmod(stat.S_IRUSR | stat.S_IWUSR)
+
+                print(f'CVAT token successfully written to the file: {file}.\n')
+            except Exception as e:
+                print(f'An unknown error has occurred: {e}\n')
 
     @staticmethod
     def authenticate(url: str, credentials: Credentials):
@@ -95,10 +110,13 @@ class CVATAuthenticator(object):
         message = None
         if response.status_code != HTTPStatus.OK:
             success = False
-            response_json = json.loads(response.text)
-            if 'non_field_errors' in response_json:
-                message = ''.join(response_json['non_field_errors'])
-            else:
-                message = response.text
+            try:
+                response_json = json.loads(response.text)
+                if 'non_field_errors' in response_json:
+                    message = ''.join(response_json['non_field_errors'])
+                else:
+                    message = response.text
+            except Exception as e:
+                message = f'An unknown error has occurred: {e}'
 
         return success, message, response
