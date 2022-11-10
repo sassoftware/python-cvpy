@@ -27,28 +27,91 @@ import numpy as np
 from cvpy.image.Image import Image
 from cvpy.base.ImageDataType import ImageDataType
 
-def create_numpy_array_and_wide_image(image, num_channels):
+
+def load(self, path):
+    self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
+    self.s.loadactionset('image')
+
+    # Add caslib
+    self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
+
+    # Load the image
+    image = self.s.CASTable('image', replace=True)
+    self.s.image.loadImages(path=path,
+                            casOut=dict(name='image', replace='TRUE'),
+                            addColumns={"WIDTH", "HEIGHT"},
+                            caslib='dlib',
+                            decode=True)
+    return image
+
+
+def rescale(self, image, rescale_type):
+
+    # Determine the desired rescale type
+    if rescale_type == ImageDataType.CV_8UC1.value or rescale_type == ImageDataType.CV_8UC3.value:
+        rescale_params = "TO_8U"
+    elif rescale_type == ImageDataType.CV_32FC1.value or rescale_type == ImageDataType.CV_32FC3.value:
+        rescale_params = "TO_32F"
+    elif rescale_type == ImageDataType.CV_64FC1.value or rescale_type == ImageDataType.CV_64FC3.value:
+        rescale_params = "TO_64F"
+
+    # Rescale the image
+    self.s.image.processimages(
+        table=image,
+        casout=image,
+        steps=[
+            {
+                'step':
+                    {
+                        'stepType': 'RESCALE',
+                        'type': rescale_params
+                    }
+            }
+        ],
+        copyVars = {"_width_", "_height_"},
+        decode=True
+    )
+
+    return image
+
+
+def create_numpy_array_and_wide_image(image, num_channels, data_type):
     # Get the image data
     image_rows = image.to_frame()
     image_binary = image_rows['_image_'][0]
     width = image_rows['_width_'][0]
     height = image_rows['_height_'][0]
 
-    # Create the original numpy image array
-    image_array = np.array(bytearray(image_binary[0:(width * height * num_channels)])).astype(np.uint8)
-    numpy_image_array = np.reshape(image_array, (width, height, num_channels))
+    # Get the number of channels and the numpy data type
+    if data_type == ImageDataType.CV_8UC1.value:
+        num_channels = 1
+        np_data_type = np.uint8
+    elif data_type == ImageDataType.CV_8UC3.value:
+        num_channels = 3
+        np_data_type = np.uint8
+    elif data_type == ImageDataType.CV_32FC1.value:
+        num_channels = 1
+        np_data_type = np.float32
+    elif data_type == ImageDataType.CV_32FC3.value:
+        num_channels = 3
+        np_data_type = np.float32
+    elif data_type == ImageDataType.CV_64FC1.value:
+        num_channels = 1
+        np_data_type = np.float64
+    elif data_type == ImageDataType.CV_64FC3.value:
+        num_channels = 3
+        np_data_type = np.float64
 
-    # Get the data type of the image from num_channels
-    if num_channels == 1:
-        data_type = ImageDataType.CV_8UC1.value
-    elif num_channels == 3:
-        data_type = ImageDataType.CV_8UC3.value
+    # Create the original numpy image array
+    image_array = np.array(bytearray(image_binary[0:(width * height * num_channels)])).astype(np_data_type)
+    numpy_image_array = np.reshape(image_array, (width, height, num_channels))
 
     # Convert the numpy array to a wide image
     wide_prefix = np.array([-1, height, width, data_type], dtype=np.int64)
 
     # Return both the array and the wide image
-    return (numpy_image_array, (wide_prefix.tobytes() + numpy_image_array.tobytes()))
+    return numpy_image_array, (wide_prefix.tobytes() + numpy_image_array.tobytes())
+
 
 class TestImage(unittest.TestCase):
 
@@ -217,23 +280,14 @@ class TestImage(unittest.TestCase):
         # Close the connection
         self.s.close()
 
-    def test_convert_wide_to_numpy_3_channel(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
-
-        # Add caslib
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
-        # Load the image
-        image = self.s.CASTable('image', replace=True)
-        self.s.image.loadImages(path='images/Sas_c.jpg',
-                                casOut=dict(name='image', replace='TRUE'),
-                                addColumns={"WIDTH", "HEIGHT"},
-                                caslib='dlib',
-                                decode=True)
+    # Test convert_wide_to_numpy() function for a CV_8UC3 image
+    def test_convert_wide_to_numpy_CV_8UC3(self):
+        # Load and rescale the input image to the desired type
+        image = load(self, 'images/Sas_c.jpg')
+        image = rescale(self, image, ImageDataType.CV_8UC3.value)
 
         # Use the image data to create the original numpy array and the wide image to be converted
-        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 3)
+        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 3, ImageDataType.CV_8UC3.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
         output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
@@ -244,23 +298,14 @@ class TestImage(unittest.TestCase):
         # Close the connection
         self.s.close()
 
-    def test_convert_wide_to_numpy_1_channel(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
-
-        # Add caslib
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
-        # Load the image
-        image = self.s.CASTable('image', replace=True)
-        self.s.image.loadImages(path='unittest/gray_3x3.png',
-                                casOut=dict(name='image', replace='TRUE'),
-                                addColumns={"WIDTH", "HEIGHT"},
-                                caslib='dlib',
-                                decode=True)
+    # Test convert_wide_to_numpy() function for a CV_8UC1 image
+    def test_convert_wide_to_numpy_CV_8UC1(self):
+        # Load and rescale the input image to the desired type
+        image = load(self, 'unittest/gray_3x3.png')
+        image = rescale(self, image, ImageDataType.CV_8UC1.value)
 
         # Use the image data to create the original numpy array and the wide image to be converted
-        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 1)
+        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 1, ImageDataType.CV_8UC1.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
         output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
@@ -270,6 +315,79 @@ class TestImage(unittest.TestCase):
 
         # Close the connection
         self.s.close()
+
+    # Test convert_wide_to_numpy() function for a CV_32FC1 image
+    def test_convert_wide_to_numpy_CV_32FC1(self):
+        # Load and rescale the input image to the desired type
+        image = load(self, 'unittest/gray_3x3.png')
+        image = rescale(self, image, ImageDataType.CV_32FC1.value)
+
+        # Use the image data to create the original numpy array and the wide image to be converted
+        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 1, ImageDataType.CV_32FC1.value)
+
+        # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
+        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+
+        # Compare these arrays to make sure they are equal
+        self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+        # Close the connection
+        self.s.close()
+
+    # Test convert_wide_to_numpy() function for a CV_32FC3 image
+    def test_convert_wide_to_numpy_CV_32FC3(self):
+        # Load and rescale the input image to the desired type
+        image = load(self, 'images/Sas_c.jpg')
+        image = rescale(self, image, ImageDataType.CV_32FC3.value)
+
+        # Use the image data to create the original numpy array and the wide image to be converted
+        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 3, ImageDataType.CV_32FC3.value)
+
+        # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
+        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+
+        # Compare these arrays to make sure they are equal
+        self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+        # Close the connection
+        self.s.close()
+
+    # Test convert_wide_to_numpy() function for a CV_64FC1 image
+    def test_convert_wide_to_numpy_CV_64FC1(self):
+        # Load and rescale the input image to the desired type
+        image = load(self, 'unittest/gray_3x3.png')
+        image = rescale(self, image, ImageDataType.CV_64FC1.value)
+
+        # Use the image data to create the original numpy array and the wide image to be converted
+        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 1, ImageDataType.CV_64FC1.value)
+
+        # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
+        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+
+        # Compare these arrays to make sure they are equal
+        self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+        # Close the connection
+        self.s.close()
+
+    # Test convert_wide_to_numpy() function for a CV_64FC3 image
+    def test_convert_wide_to_numpy_CV_64FC3(self):
+        # Load and rescale the input image to the desired type
+        image = load(self, 'images/Sas_c.jpg')
+        image = rescale(self, image, ImageDataType.CV_64FC3.value)
+
+        # Use the image data to create the original numpy array and the wide image to be converted
+        (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 3, ImageDataType.CV_64FC3.value)
+
+        # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
+        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+
+        # Compare these arrays to make sure they are equal
+        self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+        # Close the connection
+        self.s.close()
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
