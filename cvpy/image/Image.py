@@ -51,43 +51,6 @@ class Image(object):
         idx[axis] = slice(None, None, -1)
         return a[idx]
 
-    def __get_num_channels_and_dtype(data_type: ImageDataType):
-
-        '''
-        Returns the number of channels and the numpy data type.
-
-        Parameters
-        ----------
-        data_type : ImageDataType
-            Specifies the data type
-
-        Returns
-        -------
-        :class:`numpy.ndarray`
-        '''
-
-        # Set the number of channels and the numpy data type based on the input enum.
-        if data_type == ImageDataType.CV_8UC1.value:
-            num_channels = 1
-            np_data_type = np.uint8
-        elif data_type == ImageDataType.CV_8UC3.value:
-            num_channels = 3
-            np_data_type = np.uint8
-        elif data_type == ImageDataType.CV_32FC1.value:
-            num_channels = 1
-            np_data_type = np.float32
-        elif data_type == ImageDataType.CV_32FC3.value:
-            num_channels = 3
-            np_data_type = np.float32
-        elif data_type == ImageDataType.CV_64FC1.value:
-            num_channels = 1
-            np_data_type = np.float64
-        elif data_type == ImageDataType.CV_64FC3.value:
-            num_channels = 3
-            np_data_type = np.float64
-
-        return (num_channels, np_data_type)
-
     @staticmethod
     def get_image_array_from_row(image_binary, dimension, resolution, myformat, channel_count=1):
 
