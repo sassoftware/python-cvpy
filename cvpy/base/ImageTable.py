@@ -54,57 +54,57 @@ class ImageTable(object):
         # Set various columns if specified, or set them to their default values
         self._image = None
         if image:
-            self.image = image
-        elif ImageTable.IMAGE_COL in table.columns:
-            self.image = ImageTable.IMAGE_COL
+            self._image = image
+        elif table and ImageTable.IMAGE_COL in table.columns:
+            self._image = ImageTable.IMAGE_COL
 
         self._dimension = None
         if dimension:
-            self.dimension = dimension
-        elif ImageTable.DIMENSION_COL in table.columns:
-            self.dimension = ImageTable.DIMENSION_COL
+            self._dimension = dimension
+        elif table and ImageTable.DIMENSION_COL in table.columns:
+            self._dimension = ImageTable.DIMENSION_COL
 
         self._resolution = None
         if resolution:
-            self.resolution = resolution
-        elif ImageTable.RESOLUTION_COL in table.columns:
-            self.resolution = ImageTable.RESOLUTION_COL
+            self._resolution = resolution
+        elif table and ImageTable.RESOLUTION_COL in table.columns:
+            self._resolution = ImageTable.RESOLUTION_COL
 
         self._imageFormat = None
         if imageFormat:
-            self.imageFormat = imageFormat
-        elif ImageTable.FORMAT_COL in table.columns:
-            self.imageFormat = ImageTable.FORMAT_COL
+            self._imageFormat = imageFormat
+        elif table and ImageTable.FORMAT_COL in table.columns:
+            self._imageFormat = ImageTable.FORMAT_COL
 
         self._path = None
         if path:
-            self.path = path
-        elif ImageTable.PATH_COL in table.columns:
-            self.path = ImageTable.PATH_COL
+            self._path = path
+        elif table and ImageTable.PATH_COL in table.columns:
+            self._path = ImageTable.PATH_COL
 
         self._label = None
         if label:
-            self.label = label
-        elif ImageTable.LABEL_COL in table.columns:
-            self.label = ImageTable.LABEL_COL
+            self._label = label
+        elif table and ImageTable.LABEL_COL in table.columns:
+            self._label = ImageTable.LABEL_COL
 
         self._id = None
         if id:
-            self.id = id
-        elif ImageTable.ID_COL in table.columns:
-            self.id = ImageTable.ID_COL
+            self._id = id
+        elif table and ImageTable.ID_COL in table.columns:
+            self._id = ImageTable.ID_COL
 
         self._size = None
         if size:
-            self.size = size
-        elif ImageTable.SIZE_COL in table.columns:
-            self.size = ImageTable.SIZE_COL
+            self._size = size
+        elif table and ImageTable.SIZE_COL in table.columns:
+            self._size = ImageTable.SIZE_COL
 
         self._type = None
         if type:
-            self.type = type
-        elif ImageTable.TYPE_COL in table.columns:
-            self.type = ImageTable.TYPE_COL
+            self._type = type
+        elif table and ImageTable.TYPE_COL in table.columns:
+            self._type = ImageTable.TYPE_COL
 
     @property
     def table(self) -> CASTable:
