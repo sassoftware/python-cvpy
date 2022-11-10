@@ -26,6 +26,7 @@ from warnings import warn
 from swat import CAS, CASTable
 from cvpy.base.ImageDataType import ImageDataType
 
+
 class Image(object):
 
     @staticmethod
@@ -50,10 +51,47 @@ class Image(object):
         idx[axis] = slice(None, None, -1)
         return a[idx]
 
+    def __get_num_channels_and_dtype(data_type: ImageDataType):
+
+        '''
+        Returns the number of channels and the numpy data type.
+
+        Parameters
+        ----------
+        data_type : ImageDataType
+            Specifies the data type
+
+        Returns
+        -------
+        :class:`numpy.ndarray`
+        '''
+
+        # Set the number of channels and the numpy data type based on the input enum.
+        if data_type == ImageDataType.CV_8UC1.value:
+            num_channels = 1
+            np_data_type = np.uint8
+        elif data_type == ImageDataType.CV_8UC3.value:
+            num_channels = 3
+            np_data_type = np.uint8
+        elif data_type == ImageDataType.CV_32FC1.value:
+            num_channels = 1
+            np_data_type = np.float32
+        elif data_type == ImageDataType.CV_32FC3.value:
+            num_channels = 3
+            np_data_type = np.float32
+        elif data_type == ImageDataType.CV_64FC1.value:
+            num_channels = 1
+            np_data_type = np.float64
+        elif data_type == ImageDataType.CV_64FC3.value:
+            num_channels = 3
+            np_data_type = np.float64
+
+        return (num_channels, np_data_type)
+
     @staticmethod
     def get_image_array_from_row(image_binary, dimension, resolution, myformat, channel_count=1):
 
-        '''
+        """
         Get a 3D image from a row.
 
         Parameters
@@ -72,7 +110,7 @@ class Image(object):
         Returns
         -------
         :class:`numpy.ndarray`
-        '''
+        """
 
         num_cells = np.prod(resolution)
         if (myformat == '32S'):
@@ -112,7 +150,7 @@ class Image(object):
     @staticmethod
     def get_image_array(image_binaries, dimensions, resolutions, formats, n, channel_count=1):
 
-        '''
+        """
         Get an image from a fetched array.
 
         Parameters
@@ -133,7 +171,7 @@ class Image(object):
         Returns
         -------
         :class:`numpy.ndarray`
-        '''
+        """
 
         dimension = int(dimensions[n])
         resolution = np.array(struct.unpack('=%sq' % dimension, resolutions[n][0:dimension * 8]))
@@ -144,7 +182,7 @@ class Image(object):
     @staticmethod
     def convert_to_CAS_column(s):
 
-        '''
+        """
         Convert a string to CAS column name.
 
         Parameters
@@ -155,7 +193,7 @@ class Image(object):
         Returns
         -------
         :class:`str`
-        '''
+        """
 
         s = str.replace(str.replace(s, '{', '_'), '}', '_')
         return '_'+s+'_'
@@ -163,7 +201,7 @@ class Image(object):
     @staticmethod
     def fetch_image_array(imdata, n=0, qry='', image='_image_', dim='_dimension_', res='_resolution_', ctype='_channelType_', ccount=1):
 
-        '''
+        """
         Fetch image array from a CAS table.
 
         Parameters
@@ -188,7 +226,7 @@ class Image(object):
         Returns
         -------
         :class:`numpy.ndarray`
-        '''
+        """
 
         if (qry != ''):
             example_rows = imdata.query(qry).to_frame(to=n+1)
@@ -203,7 +241,7 @@ class Image(object):
     @staticmethod
     def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orientation_', spaCol='_spacing_', dimCol='_dimension_'):
 
-        '''
+        """
         Fetch geometry information from a CAS table.
 
         Parameters
@@ -226,7 +264,7 @@ class Image(object):
         Returns
         -------
         :class:`tuple`, (position, orientation, spacing)
-        '''
+        """
 
         # Check if geometry info exists in CAS table query before fetching
         if not {'_position_', '_spacing_', '_orientation_'}.issubset(imdata.columns):
@@ -245,7 +283,7 @@ class Image(object):
     @staticmethod
     def get_image_array_const_ctype(image_binaries, dimensions, resolutions, ctype, n, channel_count=1):
 
-        '''
+        """
         Get an image array with a constant channel type from a CAS table.
 
         Parameters
@@ -266,7 +304,7 @@ class Image(object):
         Returns
         -------
         :class:`numpy.ndarray`
-        '''
+        """
         dimension = int(dimensions[n])
         resolution = np.array(struct.unpack('=%sq' % dimension, resolutions[n][0:dimension * 8]))
         resolution = resolution[::-1]
@@ -277,7 +315,7 @@ class Image(object):
     @staticmethod
     def convert_wide_to_numpy(wide_image) -> np.ndarray:
 
-        '''
+        """
         Convert a wide image to a numpy image array.
 
         Parameters
@@ -289,19 +327,32 @@ class Image(object):
         -------
         numpy.ndarray
 
-        '''
+        """
 
         # Get the width and height from the input buffer
-        width = np.frombuffer(wide_image[8:2*8], dtype=np.int64)[0]
-        height = np.frombuffer(wide_image[2*8:3*8], dtype=np.int64)[0]
-        data_type = np.frombuffer(wide_image[3*8:4*8], dtype=np.int64)[0]
+        width = np.frombuffer(wide_image[8:2 * 8], dtype=np.int64)[0]
+        height = np.frombuffer(wide_image[2 * 8:3 * 8], dtype=np.int64)[0]
+        data_type = np.frombuffer(wide_image[3 * 8:4 * 8], dtype=np.int64)[0]
 
-        # Set the number of channels to 1 if the image type is cv2.CV_8UC1
+        # Get the number of channels and the numpy data type
         if data_type == ImageDataType.CV_8UC1.value:
             num_channels = 1
-        # Set the number of channels to 3 if the image type is cv2.CV_8UC3
+            np_data_type = np.uint8
         elif data_type == ImageDataType.CV_8UC3.value:
             num_channels = 3
+            np_data_type = np.uint8
+        elif data_type == ImageDataType.CV_32FC1.value:
+            num_channels = 1
+            np_data_type = np.float32
+        elif data_type == ImageDataType.CV_32FC3.value:
+            num_channels = 3
+            np_data_type = np.float32
+        elif data_type == ImageDataType.CV_64FC1.value:
+            num_channels = 1
+            np_data_type = np.float64
+        elif data_type == ImageDataType.CV_64FC3.value:
+            num_channels = 3
+            np_data_type = np.float64
 
         # Return the numpy array
-        return np.frombuffer(wide_image[4*8:], dtype=np.uint8).reshape(height, width, num_channels)
+        return np.frombuffer(wide_image[4 * 8:], dtype=np_data_type).reshape(height, width, num_channels)
