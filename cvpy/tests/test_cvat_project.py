@@ -1,19 +1,18 @@
+import io
 import sys
 import time
-import io
 import unittest
 from http import HTTPStatus
 
-import swat
 import requests
+import swat
 import xmlrunner
 
-from cvpy.base.ImageTable import ImageTable
 from cvpy.annotation.base.AnnotationLabel import AnnotationLabel
 from cvpy.annotation.base.AnnotationType import AnnotationType
 from cvpy.annotation.base.Credentials import Credentials
-from cvpy.annotation.base.Task import Task
 from cvpy.annotation.cvat.CVATProject import CVATProject
+from cvpy.base.ImageTable import ImageTable
 
 
 class TestCVATProject(unittest.TestCase):
@@ -56,7 +55,7 @@ class TestCVATProject(unittest.TestCase):
         try:
             cvat_project = CVATProject(url=url, credentials=credentials)
         except Exception as e:
-            self.assertEqual(str(e), "Unable to log in with provided credentials.")
+            self.assertRegex(str(e), 'Unable to log in with provided credentials')
 
     # Post images to a project.
     def test_cvat_project_post_images(self):
@@ -65,10 +64,10 @@ class TestCVATProject(unittest.TestCase):
         cas_connection = swat.CAS(TestCVATProject.cas_host, TestCVATProject.cas_port, protocol='http')
         cas_connection.loadactionset('image')
         cas_connection.addcaslib(name='dlib',
-                                      activeOnAdd=False,
-                                      path=TestCVATProject.datapath,
-                                      dataSource='PATH',
-                                      subdirectories=True)
+                                 activeOnAdd=False,
+                                 path=TestCVATProject.datapath,
+                                 dataSource='PATH',
+                                 subdirectories=True)
 
         cas_table_encoded = cas_connection.CASTable('cas_table_encoded')
         cas_connection.image.loadimages(labellevels=5,
@@ -126,8 +125,7 @@ class TestCVATProject(unittest.TestCase):
             # Verify the image data and metadata between CAS and CVAT.
             cvat_frames = response.json()['frames']
             cas_images = task.image_table.table.fetchImages(fetchImagesVars=["_id_", "_type_"]).Images
-            for index, frame_number in enumerate(range(task.start_image_id, task.end_image_id+1)):
-
+            for index, frame_number in enumerate(range(task.start_image_id, task.end_image_id + 1)):
                 # Check the image names.
                 expected_extension = 'jpg' if (task.image_table.has_decoded_images()) else cas_images.iloc[index]._type_
                 expected_name = f'{cas_images.iloc[index]._id_}.{expected_extension}'
@@ -148,6 +146,56 @@ class TestCVATProject(unittest.TestCase):
 
         # Delete the project from CVAT (which will also delete tasks associated with the project).
         cvat_project._delete_project_in_cvat()
+
+    def test_cvat_project_save(self):
+
+        # Setup CAS and create ImageTable's for decoded and encoded CAS image tables.
+        cas_connection = swat.CAS(TestCVATProject.cas_host, TestCVATProject.cas_port, protocol='http')
+        cas_connection.loadactionset('image')
+        cas_connection.addcaslib(name='dlib',
+                                 activeOnAdd=False,
+                                 path=TestCVATProject.datapath,
+                                 dataSource='PATH',
+                                 subdirectories=True)
+
+        cas_table_encoded = cas_connection.CASTable('cas_table_encoded')
+        cas_connection.image.loadimages(labellevels=5,
+                                        casout=cas_table_encoded,
+                                        caslib='dlib',
+                                        decode=False)
+
+        cas_connection.addcaslib(name='bigdata',
+                                 activeOnAdd=False,
+                                 path='/bigdisk/lax/patela/data',
+                                 dataSource='PATH',
+                                 subdirectories=True)
+
+        # Create a CVATProject.
+        url = TestCVATProject.cvat_url
+
+        project_name = 'MyDemoProject'
+        annotation_type = AnnotationType.OBJECT_DETECTION
+
+        mountain_label = AnnotationLabel(name='Mountain', color='orange')
+        person_label = AnnotationLabel(name='Person', color='green')
+
+        labels = [mountain_label, person_label]
+
+        credentials = Credentials(self.cvat_username, self.cvat_password)
+        cvat_project = CVATProject(url=url, cas_connection=cas_connection, credentials=credentials,
+                                   project_name=project_name, annotation_type=annotation_type,
+                                   labels=labels)
+
+        # Post the images to the CVATProject.
+        image_table_encoded = ImageTable(cas_table_encoded)
+        cvat_project.post_images(image_table_encoded)
+
+        # Note: CVAT will throw an internal server error exception if we attempt to access the tasks
+        #       data to soon after an upload. So we have a sleep here to prevent the issue.
+        time.sleep(5)
+
+        cvat_project.save('bigdata', 'cvat_test', replace=True)
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

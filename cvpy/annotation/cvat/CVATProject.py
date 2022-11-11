@@ -1,16 +1,19 @@
+from __future__ import annotations
+
 import io
+import json
 from http import HTTPStatus
 from typing import List
 
+import pandas as pd
 import requests
-
-from cvpy.base.ImageTable import ImageTable
 from cvpy.annotation.base.AnnotationLabel import AnnotationLabel
 from cvpy.annotation.base.AnnotationType import AnnotationType
 from cvpy.annotation.base.Credentials import Credentials
 from cvpy.annotation.base.Project import Project
 from cvpy.annotation.cvat.CVATAuthenticator import CVATAuthenticator
 from cvpy.annotation.cvat.CVATTask import CVATTask
+from cvpy.base.ImageTable import ImageTable
 from swat.cas import CAS
 
 
@@ -37,11 +40,14 @@ class CVATProject(Project):
                  labels: List[AnnotationLabel] = None) -> None:
         super().__init__(cas_connection, url, credentials, project_name, annotation_type, labels)
 
-        # Authenticate with the CVAT server
-        self._authenticate()
+        self.project_version = 1
 
-        # Create a project in the CVAT server
-        self._create_project_in_cvat()
+        if url:
+            # Authenticate with the CVAT server
+            self._authenticate()
+
+            # Create a project in the CVAT server
+            self._create_project_in_cvat()
 
     def _authenticate(self) -> None:
         # No need to authenticate if token is set
@@ -82,7 +88,7 @@ class CVATProject(Project):
             raise Exception(f'Unable to delete the project in the CVAT server: {response.reason}')
 
     def post_images(self, image_table: ImageTable) -> None:
-        '''
+        """
         Create a CVAT task under the project and upload images from a CAS table to that task.
 
         Parameters
@@ -90,7 +96,7 @@ class CVATProject(Project):
         image_table:
             Specifies the input table that contains images to be uploaded.
         
-        '''
+        """
         # Check that the image_table contains the required columns for posting images to CVAT.
         if image_table.id is None:
             raise Exception('Provided ImageTable is missing a required column: id')
@@ -112,7 +118,7 @@ class CVATProject(Project):
         # The dictionary values are tuples: (image_name, image_bytes)
         # where image_name is the _id_ column from the image CAS table and appended
         # with the appropriate file extension, and image_bytes is the encoded image byte buffer.
-        cvat_image_dict = dict() 
+        cvat_image_dict = dict()
         for index, row in image_table_fetched['Images'].iterrows():
             cvat_key = f"client_files[{index}]"
 
@@ -131,10 +137,11 @@ class CVATProject(Project):
             cvat_image_dict[cvat_key] = (f"{row['_id_']}.{image_extension}", image_bytes.getbuffer())
 
         # Post the images to CVAT.
-        response = requests.post(f'{self.url}/api/tasks/{task.task_id}/data', 
+        response = requests.post(f'{self.url}/api/tasks/{task.task_id}/data',
                                  headers=self.credentials.get_auth_header(),
                                  files=cvat_image_dict,
-                                 data=dict(image_quality=100, start_frame=task.start_image_id, stop_frame=task.end_image_id))
+                                 data=dict(image_quality=100, start_frame=task.start_image_id,
+                                           stop_frame=task.end_image_id))
 
         if response.status_code != HTTPStatus.ACCEPTED:
             raise Exception(f'Unable to post images to the CVAT task: {response.reason}')
@@ -143,7 +150,7 @@ class CVATProject(Project):
         self.add_task(task)
 
     def get_annotations(self, annotated_table: ImageTable, image_table: ImageTable) -> None:
-        '''
+        """
         Fetch annotations from CVAT corresponding to the images in a CAS table.
 
         Parameters
@@ -154,11 +161,11 @@ class CVATProject(Project):
             Specifies the input table containing encoded images that was used in a call to post_images()
             on this CVATProject object.
         
-        '''
+        """
         pass
 
-    def save(self, caslib: str, relative_path: str) -> None:
-        '''
+    def save(self, caslib: str, relative_path: str, replace: bool = False) -> None:
+        """
         Saves an annotation session.
 
         Parameters
@@ -167,24 +174,72 @@ class CVATProject(Project):
             Specifies the caslib under which the CAS tables are saved.
         relative_path:
             Specifies the path relative to the caslib where the project will be saved.
+        replace:
+            When set to True, the CAS tables are replaced if they are already present in the specified path.
+        """
 
-        '''
-        pass
+        # Get a JSON representation of this project
+        project_json = self.to_json()
 
-    def resume(self, cas_connection: CAS, caslib: str, relative_path: str, credentials: Credentials) -> None:
-        '''
+        # Upload the JSON representation in a CAS Table
+        df = pd.DataFrame({'project_json': [project_json]})
+        self.cas_connection.upload(df, importoptions=dict(vars=[dict(name='project_json', type='varchar')]),
+                                   casout=dict(name=self.project_name, replace=True))
+        project_table = self.cas_connection.CASTable(self.project_name)
+
+        # Save the project table in the specified caslib and relative path
+        project_table.save(name=f'{relative_path}/{self.project_name}.sashdat', caslib=caslib, replace=replace)
+
+        # Save the image tables from each task
+        for task in self.get_tasks():
+            task.image_table.table.save(name=f'{relative_path}/{task.image_table_name}.sashdat', caslib=caslib,
+                                        replace=replace)
+
+    @staticmethod
+    def resume(project_name: str, cas_connection: CAS, caslib: str, relative_path: str) -> CVATProject:
+        """
         Resumes an annotation session.
 
         Parameters
         ----------
+        project_name:
+            Specifies the project name to be resumed.
         cas_connection:
             Specifies the CAS connection in which the project will be resumed.
         caslib:
             SPecifies the caslib under which CAS tables were saved.
         relative_path:
             Specifies the path relative to caslib where project was saved.
-        credentials:
-            Specifies the credentials to connect to CVAT server.
-        
-        '''
+        """
         pass
+
+    @staticmethod
+    def from_json(project_json_str):
+        """
+        Creates a CVATProject object from a JSON representation of a project.
+
+        Parameters
+        ----------
+        project_json_str:
+            A JSON string with all of the properties as keys and the property values as values.
+
+        Returns
+        -------
+        project:
+            A CVATProject object with all of the properties set from the specified JSON string.
+        """
+        project_dict = json.loads(project_json_str)
+
+        project = CVATProject()
+
+        project.url = project_dict.get('url')
+        project.project_id = project_dict.get('id')
+        project.project_name = project_dict.get('project_name')
+        project.project_version = project_dict.get('project_version')
+        project.credentials = Credentials.from_dict(project_dict.get('credentials'))
+        project.annotation_type = project_dict.get('annotation_type')
+        project.labels = [AnnotationLabel.from_dict(label) for label in project_dict.get('labels')]
+
+        project.tasks = [CVATTask.from_dict(task) for task in project_dict.get('tasks')]
+
+        return project

@@ -76,6 +76,14 @@ class Credentials(object):
         self._password = password
 
     @property
+    def auth_file(self) -> str:
+        return self._auth_file
+
+    @auth_file.setter
+    def auth_file(self, auth_file: str):
+        self._auth_file = auth_file
+
+    @property
     def token(self) -> str:
         return self._token
 
@@ -87,3 +95,31 @@ class Credentials(object):
         if not self.token:
             raise Exception('Token is not set.')
         return dict(Authorization=f'token {self.token}')
+
+    def as_dict(self) -> dict:
+        """
+        Creates a dictionary representation of this object. Only the auth_file attribute is kept in the dictionary
+        for security reason.
+
+        Returns
+        -------
+            A dictionary with all of the properties as keys and the property values as values.
+        """
+        return {'auth_file': self.auth_file}
+
+    @staticmethod
+    def from_dict(object_dict):
+        """
+        Creates a Credentials object from the dictionary representation.
+
+        Parameters
+        ----------
+        object_dict:
+            A dictionary with all of the properties as keys and the property values as values.
+
+        Returns
+        -------
+            A Credentials object.
+        """
+        return Credentials(auth_file=object_dict.get('auth_file'))
+

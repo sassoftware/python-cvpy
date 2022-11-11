@@ -10,22 +10,22 @@ from cvpy.annotation.base.Credentials import Credentials
 
 
 class CVATAuthenticator(object):
-    '''
+    """
     Defines a class with methods for CVAT authentication.
-    '''
+    """
 
     # Max attempts for the user to provide valid URL, username and password before exiting
     MAX_ATTEMPTS = 3
 
     @staticmethod
     def generate_cvat_token():
-        '''
+        """
         Authenticate a user against a CVAT server.
 
         This function prompts the user to enter a CVAT server URL, username and password.
         In case of successful authentication, the function writes the token returned by CVAT
         in a file named .annotation_auth in the user's home directory.
-        '''
+        """
 
         print('Enter the following details to generate and save a CVAT token. The token will be saved '
               'in a file named .annotation_auth under your home directory.')
