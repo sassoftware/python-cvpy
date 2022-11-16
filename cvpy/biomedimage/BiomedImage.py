@@ -24,13 +24,14 @@ import numpy as np
 from typing import List
 from warnings import warn
 from swat import CAS, CASTable
-
 from cvpy.base.ImageTable import ImageTable
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
+from enum import *
+
 
 class BiomedImage(object):
-    '''
-    Implement biomedical image processing functions. 
+    """
+    Implement biomedical image processing functions.
 
      Parameters
      ----------
@@ -40,15 +41,15 @@ class BiomedImage(object):
      Returns
      -------
      :class:`BiomedImage`
-    '''
+    """
 
     def __init__(self, cas_session: CAS = None) -> None:
         self._cas_session = cas_session
-        ## Load the actionsets
+        # Load the actionsets
         self._cas_session.loadactionset('image')
         self._cas_session.loadactionset('biomedimage')
         self._cas_session.loadactionset('fedsql')
-    
+
     @property
     def cas_session(self) -> CAS:
         return self._cas_session
@@ -57,11 +58,10 @@ class BiomedImage(object):
     def cas_session(self, cas_session) -> None:
         self._cas_session = cas_session
 
-
     def quantify_sphericity(self, image_table: ImageTable, use_spacing: bool, input_background: float,
                             label_connectivity: LabelConnectivity, sphericity: CASTable) -> None:
-        '''
-        Quantify the sphericity for the given component from a CAS table. 
+        """
+        Quantify the sphericity for the given component from a CAS table.
 
         Parameters
         ----------
@@ -78,45 +78,167 @@ class BiomedImage(object):
 
         Examples
         --------
-        >>> ## Import classes
+        >>> # Import classes
         >>> from swat import CAS
         >>> from cvpy.base.ImageTable import ImageTable
         >>> from cvpy.biomedimage.BiomedImage import BiomedImage
         >>> from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
         >>> ## Connect to CAS
         >>> s = swat.CAS("example.com", 5570)
-        >>> ## Construct Biomed object
+        >>> # Construct Biomed object
         >>> biomed = BiomedImage(s)
-        >>> ## Construct tables that are paramters to the quantify_sphericity API
+        >>> # Construct tables that are parameters to the quantify_sphericity API
         >>> image_table = s.CASTable(...)
         >>> input_table = ImageTable(image_table)
         >>> output_table = s.CASTable(...)
-        >>> ## Call the API
+        >>> # Call the API
         >>> BiomedImage.quantify_sphericity(input_table.table,....,output_table)
 
-        '''
+        """
         conn = self._cas_session
 
-        ## Quantify the volume and perimeter of the given component.
-        conn.biomedimage.quantifybiomedimages(images=dict(table= image_table.table),
+        # Quantify the volume and perimeter of the given component.
+        conn.biomedimage.quantifybiomedimages(images=dict(table=image_table.table),
                                               copyvars=['_path_'],
                                               region='COMPONENT',
                                               quantities=[dict(quantityparameters=dict(quantitytype='perimeter')),
-                                              dict(quantityparameters=dict(quantitytype='content',useSpacing = use_spacing))
-                                              ],
-                                              labelparameters=dict(labelType='basic',connectivity=label_connectivity.name), 
+                                                          dict(quantityparameters=dict(quantitytype='content',
+                                                                                       useSpacing=use_spacing))
+                                                          ],
+                                              labelparameters=dict(labelType='basic',
+                                                                   connectivity=label_connectivity.name),
                                               inputbackground=input_background,
                                               casout=dict(name='quantify'),
                                               )
 
-        ## Compute sphericity based on perimeter and volume of the lesion
+        # Compute sphericity based on perimeter and volume of the lesion
         conn.fedsql.execdirect(f'''
             create table {sphericity.name} as 
             select _path_,_perimeter_,_content_, (power(pi(), 1.0/3.0) * power(6*_content_, 2.0/3.0))/_perimeter_ as 
             sphericity from quantify
             ''')
-        
-        ## Delete the quantify table
+
+        # Delete the quantify table
         conn.table.dropTable(name='quantify')
 
-    
+    def mask_image(self, image: ImageTable, mask: ImageTable, casout: CASTable,
+                   input_background: int = 0, decode: bool = False, output_background: int = 0,
+                   add_columns: list(Enum) = None, copy_vars: list(Enum) = None):
+        """
+        Applies masking to an image table.
+
+        Parameters
+        ------------
+        image : ImageTable Object
+            Specifies the input image table to be masked
+        mask : ImageTable Object
+            Specifies the image table that will be used for masking
+        input_background : Int
+            Specifies the pixel intensity of the input image background
+        casout : CASTable Object
+            Specifies the output image table
+        decode : Boolean
+            Specifies whether to decode the output image table
+        output_background : Int
+            Specifies the pixel intensity of the output image background
+        add_columns : List(Enum)
+            Specifies the metadata columns to be added to the output image table
+        copy_vars : List(Enum)
+            Specifies which columns to copy to the output image table
+
+        Returns
+        ------------
+        None
+        """
+
+        conn = self._cas_session
+
+        ###############################################
+        ########### Mask Tbl Decoded ##################
+        ###############################################
+        if mask.has_decoded_images():
+
+            # List of columns that will be alternated
+            alter_columns = [dict(name=mask.image, rename="seg"),
+                             dict(name=mask.dimension, rename="dim"),
+                             dict(name=mask.resolution, rename="res"),
+                             dict(name=mask.imageFormat, rename="form")]
+
+            # SQL string to create the mask table
+            fed_sql_str = f'''create table images_to_mask {{options replace=true}} as 
+                select a.seg, a.dim, a.res, a.form, b.* 
+                from {mask.table.name} as a inner join {image.table.name} as b 
+                on a._id_=b._id_'''
+
+            # Dictionary for specifying information in our binary operation
+            binary_operation_dict = dict(binaryoperationtype="mask_specific",
+                                         image="seg",
+                                         dimension="dim",
+                                         resolution="res",
+                                         imageformat="form",
+                                         outputBackground=output_background,
+                                         inputBackground=input_background)
+
+            # Mini method for renaming columns in ImageTable object
+            # *This step must be completed AFTER the alter table command*
+            def rename_columns():
+                mask.image = "seg"
+                mask.dimension = "dim"
+                mask.resolution = "res"
+                mask.imageFormat = "form"
+
+        ###############################################
+        ############# Mask Tbl Encoded ################
+        ###############################################
+        else:
+
+            # List of columns that will be alternated
+            alter_columns = [dict(name=mask.image, rename="seg")]
+
+            # SQL string to create the mask table
+            fed_sql_str = f'''create table images_to_mask {{options replace=true}} as 
+                select a.seg, b.* 
+                from {mask.table.name} as a inner join {image.table.name} as b 
+                on a._id_=b._id_'''
+
+            # Dictionary for specifying information in our binary operation
+            binary_operation_dict = dict(binaryoperationtype="mask_specific",
+                                         image="seg",
+                                         outputBackground=output_background,
+                                         inputBackground=input_background)
+
+            # Mini method for renaming columns in ImageTable Object
+            # *This step must be completed AFTER the alter table command*
+            def rename_columns():
+                mask.image = "seg"
+
+        ###############################################
+        ############### Masking Step ##################
+        ###############################################
+
+        # Change column names so that we can merge tables
+        conn.table.altertable(name=mask.table, columns=alter_columns)
+
+        # Create Images to Mask Table
+        images_to_mask = conn.CASTable("images_to_mask", replace=True)
+
+        # SQL Statement to join tables
+        conn.fedsql.execdirect(fed_sql_str)
+
+        # Masking step
+        conn.biomedimage.processbiomedimages(
+            images=dict(table=images_to_mask),
+            steps=[dict(stepparameters=dict(steptype="binary_operation",
+                                            binaryoperation=binary_operation_dict)
+                        )],
+            decode=decode,
+            addcolumns=add_columns,
+            casout=casout,
+            copyvars=copy_vars
+        )
+
+        # Delete our temporary table
+        conn.table.dropTable(images_to_mask)
+
+        # Change column names in the ImageTable
+        rename_columns()
