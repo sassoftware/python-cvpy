@@ -355,21 +355,19 @@ class Image(object):
     def mask_image(self, image: ImageTable, mask: ImageTable, casout: CASTable, decode: bool = False,
                    copy_vars: list(Enum) = None):
         """
-        Applies masking to an image table.
-
+        Applies masking to an ImageTable.
         Parameters
         ------------
-        image : ImageTable Object
-            Specifies the input image table to be masked
-        mask : ImageTable Object
-            Specifies the image table that will be used for masking
-        casout : CASTable Object
-            Specifies the output image table
-        decode : Boolean
-            Specifies whether to decode the output image table
-        copy_vars : List(Enum)
-            Specifies which columns to copy to the output image table
-
+        image : :class:`cvpy.ImageTable`
+            Specifies the input image table to be masked.
+        mask : :class:`cvpy.ImageTable`
+            Specifies the image table that will be used for masking.
+        casout : :class:`swat.CASTable`
+            Specifies the output image table.
+        decode : :class:`bool`
+            Specifies whether to decode the output image table.
+        copy_vars : :class:`list[enum.Enum]`
+            Specifies which columns to copy to the output image table.
         Returns
         ------------
         None
@@ -389,7 +387,7 @@ class Image(object):
                              dict(name=mask.imageFormat, rename="form")]
 
             # SQL string to create the mask table
-            fed_sql_str = f'''create table images_to_mask {{options replace=true}} as 
+            fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
                 select a.seg, a.dim, a.res, a.form, b.* 
                 from {mask.table.name} as a right join {image.table.name} as b 
                 on a._id_=b._id_ '''
@@ -416,7 +414,7 @@ class Image(object):
             alter_columns = [dict(name=mask.image, rename="seg")]
 
             # SQL string to create the mask table
-            fed_sql_str = f'''create table images_to_mask {{options replace=true}} as 
+            fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
                 select a.seg, b.* 
                 from {mask.table.name} as a right join {image.table.name} as b 
                 on a._id_=b._id_ '''
@@ -437,14 +435,14 @@ class Image(object):
         conn.table.altertable(name=mask.table, columns=alter_columns)
 
         # Create Images to Mask Table
-        images_to_mask = conn.CASTable("images_to_mask", replace=True)
+        _images_to_mask_ = conn.CASTable("_images_to_mask_", replace=True)
 
         # SQL Statement to join tables
         conn.fedsql.execdirect(fed_sql_str)
 
         # Masking step
         conn.image.processimages(
-            table=images_to_mask,
+            table=_images_to_mask_,
             steps=[dict(step=dict(stepType="BINARY_OPERATION",
                                   binaryOperation=binary_operation_dict)
                         )],
@@ -454,7 +452,7 @@ class Image(object):
         )
 
         # Delete our temporary table
-        conn.table.dropTable(images_to_mask)
+        conn.table.dropTable(_images_to_mask_)
 
         # Change column names in the ImageTable
         rename_columns()
