@@ -23,18 +23,12 @@ import struct
 import swat
 import sys
 import numpy as np
-
+from cvpy.base.ImageTable import ImageTable
 from cvpy.image.Image import Image
 from cvpy.base.ImageDataType import ImageDataType
 
 
 def load(self, path):
-    self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-    self.s.loadactionset('image')
-
-    # Add caslib
-    self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
     # Load the image
     image = self.s.CASTable('image', replace=True)
     self.s.image.loadImages(path=path,
@@ -115,15 +109,21 @@ def create_numpy_array_and_wide_image(image, num_channels, data_type):
 
 class TestImage(unittest.TestCase):
 
+    def setUp(self) -> None:
+        # Set up CAS connection
+        self.s = swat.CAS(TestImage.CAS_HOST, TestImage.CAS_PORT, TestImage.USERNAME,
+                     TestImage.PASSWORD)
+        self.s.loadactionset("image")
+        self.s.addcaslib(name='dlib', activeOnAdd=False, path=TestImage.DATAPATH, dataSource='PATH',
+                         subdirectories=True)
+
+    def tearDown(self) -> None:
+        self.s.close()
+
     def test_convert_to_CAS_column(self):
         self.assertTrue(Image.convert_to_CAS_column("id") == "_id_")
 
     def test_fetch_image_array(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
-
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
         # Load the image
         image = self.s.CASTable('image', replace=True)
         self.s.image.loadImages(path='biomedimg/simple.png',
@@ -138,10 +138,6 @@ class TestImage(unittest.TestCase):
         self.s.close()
 
     def test_get_image_array(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
         # Load the image
         self.s.image.loadImages(path='biomedimg/simple.png',
                                 casOut=dict(name='image', replace='TRUE'),
@@ -163,10 +159,6 @@ class TestImage(unittest.TestCase):
         self.s.close()
 
     def test_get_image_array_from_row(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
         # Load the image
         self.s.image.loadImages(path='biomedimg/simple.png',
                                 casOut=dict(name='image', replace='TRUE'),
@@ -220,10 +212,6 @@ class TestImage(unittest.TestCase):
         self.assertTrue(test_pass)
 
     def test_fetch_geometry_info_no_geometry(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
         # Load the image
         image = self.s.CASTable("image", replace=True)
         self.s.image.loadImages(path='biomedimg/simple.png',
@@ -237,10 +225,6 @@ class TestImage(unittest.TestCase):
         self.s.close()
 
     def test_fetch_geometry_info(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-
         # Load an image with geometry data
         imgray = self.s.CASTable("imgray", replace=True)
         self.s.image.loadimages(path="biomedimg/simple.png",
@@ -256,11 +240,8 @@ class TestImage(unittest.TestCase):
         self.s.close()
     
     def test_get_image_array_const_ctype(self):
-        self.s = swat.CAS(self.casHost, self.casPort, self.username, self.password)
-        self.s.loadactionset('image')
         self.s.loadactionset('biomedimage')
-        self.s.addcaslib(name='dlib', activeOnAdd=False, path=self.dataPath, dataSource='PATH', subdirectories=True)
-        
+
         # Load the image
         cdata = self.s.CASTable('cdata')
         self.s.image.loadimages(path='biomedimg/simple.png',
@@ -388,15 +369,154 @@ class TestImage(unittest.TestCase):
         # Close the connection
         self.s.close()
 
+    def test_mask_encoded_image_encoded_mask(self):
+        # Load the image
+        img = self.s.CASTable('image', replace=True)
+        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_natural_image.png', casout=img, decode=False)
+        self.s.image.processimages(
+            table={'name': 'image'},
+            casout={'name': 'image', 'replace': True},
+            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
+        )
+        img_table = ImageTable(img)
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_mask_image.png', casout=smask, decode=False)
+        self.s.image.processimages(
+            table={'name': 'smask'},
+            casout={'name': 'smask', 'replace': True},
+            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
+        )
+        smask_table = ImageTable(smask)
+
+        # New Image Table
+        new_img = self.s.CASTable('new_img', replace=True)
+
+        # Construct Image object
+        image = Image(cas_session=self.s)
+
+        # Masking
+        image.mask_image(img_table, smask_table, new_img, decode=False)
+
+        test_arr = np.asarray([
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 64, 32, 0],
+            [0, 0, 75, 210, 0]
+        ])
+
+        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
+        self.assertTrue(np.array_equal(new_img_arr, test_arr))
+
+    def test_mask_decoded_image_decoded_mask(self):
+        # Load the image
+        img = self.s.CASTable('image', replace=True)
+        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_3x3.png", casout=img, decode=True)
+        img_table = ImageTable(img)
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_2_3x3.png", casout=smask, decode=True)
+        smask_table = ImageTable(smask)
+
+        # New Image Table
+        new_img = self.s.CASTable('new_img', replace=True)
+
+        # Construct Image object
+        image = Image(cas_session=self.s)
+
+        # Masking
+        image.mask_image(img_table, smask_table, new_img, decode=False)
+
+        test_arr = np.array(
+            [[0, 0, 255],
+             [0, 255, 255],
+             [0, 128, 0]]
+        )
+
+        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
+        self.assertTrue(np.array_equal(new_img_arr, test_arr))
+
+    def test_mask_decoded_image_encoded_mask(self):
+        # Load the image
+        img = self.s.CASTable('image', replace=True)
+        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_natural_image.png', casout=img, decode=True)
+        self.s.image.processimages(
+            table={'name': 'image'},
+            casout={'name': 'image', 'replace': True},
+            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_64F'}}]
+        )
+        img_table = ImageTable(img)
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_mask_image.png', casout=smask, decode=False)
+        self.s.image.processimages(
+            table={'name': 'smask'},
+            casout={'name': 'smask', 'replace': True},
+            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_64F'}}]
+        )
+        smask_table = ImageTable(smask)
+
+        # New Image Table
+        new_img = self.s.CASTable('new_img', replace=True)
+
+        # Construct Image object
+        image = Image(cas_session=self.s)
+
+        # Masking
+        image.mask_image(img_table, smask_table, new_img, decode=False)
+
+        test_arr = np.asarray([
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 64, 32, 0],
+            [0, 0, 75, 210, 0]
+        ])
+
+        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
+        self.assertTrue(np.array_equal(new_img_arr, test_arr))
+
+    def test_mask_encoded_image_decoded_mask(self):
+        # Load the image
+        img = self.s.CASTable('image', replace=True)
+        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_3x3.png", casout=img, decode=False)
+        img_table = ImageTable(img)
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_2_3x3.png", casout=smask, decode=True)
+        smask_table = ImageTable(smask)
+
+        # New Image Table
+        new_img = self.s.CASTable('new_img', replace=True)
+
+        # Construct Image object
+        image = Image(cas_session=self.s)
+
+        # Masking
+        image.mask_image(img_table, smask_table, new_img, decode=False)
+
+        test_arr = np.array(
+            [[0, 0, 255],
+             [0, 255, 255],
+             [0, 128, 0]]
+        )
+
+        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
+        self.assertTrue(np.array_equal(new_img_arr, test_arr))
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-
-        TestImage.dataPath = sys.argv.pop()
-        TestImage.password = sys.argv.pop()
-        TestImage.username = sys.argv.pop()
-        TestImage.casPort = sys.argv.pop()
-        TestImage.casHost = sys.argv.pop()
+        TestImage.DATAPATH = sys.argv.pop()
+        TestImage.PASSWORD = sys.argv.pop()
+        TestImage.USERNAME = sys.argv.pop()
+        TestImage.CAS_PORT = sys.argv.pop()
+        TestImage.CAS_HOST = sys.argv.pop()
 
     unittest.main(
         testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
