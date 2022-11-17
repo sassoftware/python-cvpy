@@ -25,9 +25,38 @@ from typing import List
 from warnings import warn
 from swat import CAS, CASTable
 from cvpy.base.ImageDataType import ImageDataType
+from cvpy.base.ImageTable import ImageTable
+from enum import *
 
 
 class Image(object):
+    """
+    Implement image processing functions.
+
+     Parameters
+     ----------
+     cas_session
+          Specifies the CAS session.
+
+     Returns
+     -------
+     :class:`Image`
+    """
+
+    def __init__(self, cas_session: CAS = None) -> None:
+        self._cas_session = cas_session
+        ## Load the actionsets
+        self._cas_session.loadactionset('image')
+        self._cas_session.loadactionset('biomedimage')
+        self._cas_session.loadactionset('fedsql')
+
+    @property
+    def cas_session(self) -> CAS:
+        return self._cas_session
+
+    @cas_session.setter
+    def cas_session(self, cas_session) -> None:
+        self._cas_session = cas_session
 
     @staticmethod
     def __reverse(a, axis=0):
@@ -76,7 +105,7 @@ class Image(object):
         """
 
         num_cells = np.prod(resolution)
-        if (myformat == '32S'):
+        if myformat == '32S':
             image_array = np.array(struct.unpack('=%si' % num_cells, image_binary[0:4 * num_cells])).astype(np.int32)
             image_array = np.reshape(image_array, resolution)
         elif myformat == '32F':
@@ -94,8 +123,8 @@ class Image(object):
         elif myformat == '16U':
             image_array = np.array(struct.unpack('=%sH' % num_cells, image_binary[0:2 * num_cells])).astype(np.uint16)
             image_array = np.reshape(image_array, resolution)
-        elif myformat == '8U' and channel_count==3:
-            image_array = np.array(bytearray(image_binary[0:(num_cells*3)])).astype(np.uint8)
+        elif myformat == '8U' and channel_count == 3:
+            image_array = np.array(bytearray(image_binary[0:(num_cells * 3)])).astype(np.uint8)
             image_array = np.reshape(image_array, (resolution[0], resolution[1], 3))[:, :, 0:3]
             image_array = Image.__reverse(image_array, 2)
         elif myformat == '8S':
@@ -159,10 +188,11 @@ class Image(object):
         """
 
         s = str.replace(str.replace(s, '{', '_'), '}', '_')
-        return '_'+s+'_'
+        return '_' + s + '_'
 
     @staticmethod
-    def fetch_image_array(imdata, n=0, qry='', image='_image_', dim='_dimension_', res='_resolution_', ctype='_channelType_', ccount=1):
+    def fetch_image_array(imdata, n=0, qry='', image='_image_', dim='_dimension_', res='_resolution_',
+                          ctype='_channelType_', ccount=1):
 
         """
         Fetch image array from a CAS table.
@@ -192,17 +222,19 @@ class Image(object):
         """
 
         if (qry != ''):
-            example_rows = imdata.query(qry).to_frame(to=n+1)
+            example_rows = imdata.query(qry).to_frame(to=n + 1)
         else:
-            example_rows = imdata.to_frame(to=n+1)
+            example_rows = imdata.to_frame(to=n + 1)
         medical_dimensions = example_rows[dim]
         medical_formats = example_rows[ctype]
         medical_binaries = example_rows[image]
         medical_resolutions = example_rows[res]
-        return Image.get_image_array(medical_binaries, medical_dimensions, medical_resolutions, medical_formats, n, ccount)
+        return Image.get_image_array(medical_binaries, medical_dimensions, medical_resolutions, medical_formats, n,
+                                     ccount)
 
     @staticmethod
-    def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orientation_', spaCol='_spacing_', dimCol='_dimension_'):
+    def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orientation_', spaCol='_spacing_',
+                            dimCol='_dimension_'):
 
         """
         Fetch geometry information from a CAS table.
@@ -238,9 +270,9 @@ class Image(object):
         else:
             example_rows = imdata[[dimCol, posCol, oriCol, spaCol]].to_frame(to=n)
         dim = example_rows[dimCol][0]
-        pos = struct.unpack('=%sd'%dim, example_rows[posCol][0][0:dim*8])
-        ori = struct.unpack('=%sd'%(dim*dim), example_rows[oriCol][0][0:dim*dim*8])
-        spa = struct.unpack('=%sd'%dim, example_rows[spaCol][0][0:dim*8])
+        pos = struct.unpack('=%sd' % dim, example_rows[posCol][0][0:dim * 8])
+        ori = struct.unpack('=%sd' % (dim * dim), example_rows[oriCol][0][0:dim * dim * 8])
+        spa = struct.unpack('=%sd' % dim, example_rows[spaCol][0][0:dim * 8])
         return pos, ori, spa
 
     @staticmethod
@@ -319,3 +351,108 @@ class Image(object):
 
         # Return the numpy array
         return np.frombuffer(wide_image[4 * 8:], dtype=np_data_type).reshape(height, width, num_channels)
+
+    def mask_image(self, image: ImageTable, mask: ImageTable, casout: CASTable, decode: bool = False,
+                   copy_vars: list(Enum) = None):
+        """
+        Applies masking to an ImageTable.
+        Parameters
+        ------------
+        image : :class:`cvpy.ImageTable`
+            Specifies the input image table to be masked.
+        mask : :class:`cvpy.ImageTable`
+            Specifies the image table that will be used for masking.
+        casout : :class:`swat.CASTable`
+            Specifies the output image table.
+        decode : :class:`bool`
+            Specifies whether to decode the output image table.
+        copy_vars : :class:`list[enum.Enum]`
+            Specifies which columns to copy to the output image table.
+        Returns
+        ------------
+        None
+        """
+
+        conn = self._cas_session
+
+        ###############################################
+        ########### Mask Tbl Decoded ##################
+        ###############################################
+        if mask.has_decoded_images():
+
+            # List of columns that will be alternated
+            alter_columns = [dict(name=mask.image, rename="seg"),
+                             dict(name=mask.dimension, rename="dim"),
+                             dict(name=mask.resolution, rename="res"),
+                             dict(name=mask.imageFormat, rename="form")]
+
+            # SQL string to create the mask table
+            fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
+                select a.seg, a.dim, a.res, a.form, b.* 
+                from {mask.table.name} as a right join {image.table.name} as b 
+                on a._id_=b._id_ '''
+
+            # Dictionary for specifying information in our binary operation
+            binary_operation_dict = dict(binaryOperationType="MASK_SPECIFIC",
+                                         image="seg", dimension="dim",
+                                         resolution="res", imageFormat="form")
+
+            # Mini method for renaming columns in ImageTable object
+            # *This step must be completed AFTER the alter table command*
+            def rename_columns():
+                mask.image = "seg"
+                mask.dimension = "dim"
+                mask.resolution = "res"
+                mask.imageFormat = "form"
+
+        ###############################################
+        ############# Mask Tbl Encoded ################
+        ###############################################
+        else:
+
+            # List of columns that will be alternated
+            alter_columns = [dict(name=mask.image, rename="seg")]
+
+            # SQL string to create the mask table
+            fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
+                select a.seg, b.* 
+                from {mask.table.name} as a right join {image.table.name} as b 
+                on a._id_=b._id_ '''
+
+            # Dictionary for specifying information in our binary operation
+            binary_operation_dict = dict(binaryOperationType="MASK_SPECIFIC", image="seg")
+
+            # Mini method for renaming columns in ImageTable Object
+            # *This step must be completed AFTER the alter table command*
+            def rename_columns():
+                mask.image = "seg"
+
+        ###############################################
+        ############### Masking Step ##################
+        ###############################################
+
+        # Change column names so that we can merge tables
+        conn.table.altertable(name=mask.table, columns=alter_columns)
+
+        # Create Images to Mask Table
+        _images_to_mask_ = conn.CASTable("_images_to_mask_", replace=True)
+
+        # SQL Statement to join tables
+        conn.fedsql.execdirect(fed_sql_str)
+
+        # Masking step
+        conn.image.processimages(
+            table=_images_to_mask_,
+            steps=[dict(step=dict(stepType="BINARY_OPERATION",
+                                  binaryOperation=binary_operation_dict)
+                        )],
+            decode=decode,
+            casout=casout,
+            copyVars=copy_vars
+        )
+
+        # Delete our temporary table
+        conn.table.dropTable(_images_to_mask_)
+
+        # Change column names in the ImageTable
+        rename_columns()

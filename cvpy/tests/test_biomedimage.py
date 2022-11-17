@@ -19,12 +19,11 @@
 import os
 import sys
 import unittest
-
 import xmlrunner
+import numpy as np
 from swat import CAS, CASTable
-
+from cvpy.image.Image import Image
 from cvpy.base.ImageTable import ImageTable
-
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 from cvpy.biomedimage.BiomedImage import BiomedImage
 
@@ -43,19 +42,18 @@ class TestBiomedImage(unittest.TestCase):
         self.s.loadactionset("image")
         self.s.addcaslib(name='dlib', activeOnAdd=False, path=TestBiomedImage.DATAPATH, dataSource='PATH',
                          subdirectories=True)
-    
+
     def tearDown(self) -> None:
         self.s.close()
-    
+
     # Load a biomed image and quantify sphericity use default input background, use spacing, and FACE for label connectivity.
     def test_quantify_sphericity_from_casTable(self):
-
         # Load the input image
         input = self.s.CASTable('input')
-        self.s.image.loadimages(casout = input,
-                                path = 'biomedimg/Prostate3T-01-0001.nii',
-                                caslib = 'dlib',
-                                decode = True)
+        self.s.image.loadimages(casout=input,
+                                path='biomedimg/Prostate3T-01-0001.nii',
+                                caslib='dlib',
+                                decode=True)
 
         input_table = ImageTable(input)
 
@@ -64,27 +62,26 @@ class TestBiomedImage(unittest.TestCase):
 
         # Compute the sphericity
         output_sph = self.s.CASTable('output_sph')
-        biomed.quantify_sphericity(image_table = input_table, 
-                                   use_spacing = True, 
-                                   input_background = 0,  
-                                   label_connectivity = LabelConnectivity.FACE,
-                                   sphericity = output_sph)
+        biomed.quantify_sphericity(image_table=input_table,
+                                   use_spacing=True,
+                                   input_background=0,
+                                   label_connectivity=LabelConnectivity.FACE,
+                                   sphericity=output_sph)
 
         imageRows = self.s.fetch(table='output_sph')['Fetch']
-        
+
         ## Assert the sphericity result
         self.assertTrue(output_sph is not None)
         self.assertEqual(imageRows['SPHERICITY'][0], 0.5542345330101192)
-    
-    # Load a biomed image and quantify sphericity using custom input background of -20. 
-    def test_quantify_sphericity_from_casTable_custom_input_background(self):
 
+    # Load a biomed image and quantify sphericity using custom input background of -20.
+    def test_quantify_sphericity_from_casTable_custom_input_background(self):
         # Load the input image
         input = self.s.CASTable('input')
-        self.s.image.loadimages(casout = input,
-                                path = 'biomedimg/Prostate3T-01-0001.nii',
-                                caslib = 'dlib',
-                                decode = True)
+        self.s.image.loadimages(casout=input,
+                                path='biomedimg/Prostate3T-01-0001.nii',
+                                caslib='dlib',
+                                decode=True)
 
         input_table = ImageTable(input)
 
@@ -93,17 +90,189 @@ class TestBiomedImage(unittest.TestCase):
 
         # Compute the sphericity
         output_sph = self.s.CASTable('output_sph')
-        biomed.quantify_sphericity(image_table = input_table, 
-                                   use_spacing = True, 
-                                   input_background = -20,  
-                                   label_connectivity = LabelConnectivity.FACE,
-                                   sphericity = output_sph)
+        biomed.quantify_sphericity(image_table=input_table,
+                                   use_spacing=True,
+                                   input_background=-20,
+                                   label_connectivity=LabelConnectivity.FACE,
+                                   sphericity=output_sph)
 
         imageRows = self.s.fetch(table='output_sph')['Fetch']
-        
+
         ## Assert the sphericity result
         self.assertTrue(output_sph is not None)
-        self.assertEqual(imageRows['SPHERICITY'][0], 0.31121426716017353)
+        self.assertEqual(imageRows['SPHERICITY'][0], 0.3112142671601735)
+
+    def test_mask_encoded_image_encoded_mask(self):
+        # Load the gray-scale image
+        sgray = self.s.CASTable('sgray', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleGray.nii',
+            casout=sgray,
+            decode=False
+        )
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleMask.nii',
+            casout=smask,
+            decode=False
+        )
+
+        # Casout Table
+        new = self.s.CASTable('new', replace=True)
+
+        # Create ImageTable Objects
+        sgray_table = ImageTable(sgray)
+        smask_table = ImageTable(smask)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Masking Function
+        biomed.mask_image(image=sgray_table, mask=smask_table, casout=new,
+                               input_background=128, output_background=10, decode=True,
+                               add_columns=["CHANNELTYPE"])
+
+        # Correct Image Array
+        test_arr = np.array([[[0, 10, 0, 0, 0],
+                              [0, 10, 128, 0, 0],
+                              [0, 10, 0, 0, 0],
+                              [128, 128, 0, 0, 0],
+                              [0, 0, 0, 0, 0]]])
+
+        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
+
+    def test_mask_decoded_image_decoded_mask(self):
+        # Load the gray-scale image
+        sgray = self.s.CASTable('sgray', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleGray.nii',
+            casout=sgray,
+            decode=True
+        )
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleMask.nii',
+            casout=smask,
+            decode=True
+        )
+
+        # Casout Table
+        new = self.s.CASTable('new', replace=True)
+
+        # Create ImageTable Objects
+        sgray_table = ImageTable(sgray)
+        smask_table = ImageTable(smask)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Masking Function
+        biomed.mask_image(image=sgray_table, mask=smask_table, casout=new,
+                   input_background=128, output_background=10, decode=True,
+                   add_columns=["CHANNELTYPE"])
+
+        # Correct Image Array
+        test_arr = np.array([[[0, 10, 0, 0, 0],
+                              [0, 10, 128, 0, 0],
+                              [0, 10, 0, 0, 0],
+                              [128, 128, 0, 0, 0],
+                              [0, 0, 0, 0, 0]]])
+
+        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
+
+    def test_mask_decoded_image_encoded_mask(self):
+        # Load the gray-scale image
+        sgray = self.s.CASTable('sgray', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleGray.nii',
+            casout=sgray,
+            decode=True
+        )
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleMask.nii',
+            casout=smask,
+            decode=False
+        )
+
+        # Casout Table
+        new = self.s.CASTable('new', replace=True)
+
+        # Create ImageTable Objects
+        sgray_table = ImageTable(sgray)
+        smask_table = ImageTable(smask)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Masking Function
+        biomed.mask_image(image=sgray_table, mask=smask_table, casout=new,
+                   input_background=128, output_background=10, decode=True,
+                   add_columns=["CHANNELTYPE"])
+
+        # Correct Image Array
+        test_arr = np.array([[[0, 10, 0, 0, 0],
+                              [0, 10, 128, 0, 0],
+                              [0, 10, 0, 0, 0],
+                              [128, 128, 0, 0, 0],
+                              [0, 0, 0, 0, 0]]])
+
+        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
+
+    def test_mask_decoded_image_encoded_mask(self):
+        # Load the gray-scale image
+        sgray = self.s.CASTable('sgray', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleGray.nii',
+            casout=sgray,
+            decode=False
+        )
+
+        # Load the mask image
+        smask = self.s.CASTable('smask', replace=True)
+        self.s.image.loadimages(
+            caslib='dlib',
+            path='TestMasking/simpleMask.nii',
+            casout=smask,
+            decode=True
+        )
+
+        # Casout Table
+        new = self.s.CASTable('new', replace=True)
+
+        # Create ImageTable Objects
+        sgray_table = ImageTable(sgray)
+        smask_table = ImageTable(smask)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Masking Function
+        biomed.mask_image(image=sgray_table, mask=smask_table, casout=new,
+                   input_background=128, output_background=10, decode=True,
+                   add_columns=["CHANNELTYPE"])
+
+        # Correct Image Array
+        test_arr = np.array([[[0, 10, 0, 0, 0],
+                              [0, 10, 128, 0, 0],
+                              [0, 10, 0, 0, 0],
+                              [128, 128, 0, 0, 0],
+                              [0, 0, 0, 0, 0]]])
+
+        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
 
 
 if __name__ == '__main__':
