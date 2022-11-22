@@ -141,6 +141,58 @@ class TestImageTable(unittest.TestCase):
 
         assert_contains_message(r, '5 of 5 images were processed successfully')
 
+    def test_imagetable_column_validations(self):
+        cdata_decoded = self.s.CASTable('cdata_decoded')
+        self.s.image.loadimages(path='images',
+                                labellevels=5,
+                                casout=cdata_decoded,
+                                caslib='dlib',
+                                decode=True)
+
+        self.s.loadactionset('fedsql')
+        test_image_table = self.s.CASTable('test_image_table')
+
+        col_value = [123, 'abc', 123, 'abc', 123, 123, 'abc', 'abc', 123]
+        col_name = ['image', 'dimension', 'resolution', 'imageFormat', 'path', 'label', 'id', 'size', 'type']
+        col_dtype = [None, ImageTable.INT64_TYPE, ImageTable.VARBINARY_TYPE, ImageTable.INT64_TYPE,
+                     ImageTable.VARCHAR_TYPE,
+                     ImageTable.VARCHAR_TYPE, ImageTable.INT64_TYPE, ImageTable.INT64_TYPE, ImageTable.CHAR_TYPE]
+
+        for a_col_name, a_col_value, a_col_dtype in zip(col_name, col_value, col_dtype):
+
+            # Check column-exists validation
+            try:
+                parms = {'table': cdata_decoded, a_col_name: 'test'}
+                ImageTable(**parms)
+            except Exception as e:
+                assert str(e) == 'Column test is not present in the table.'
+
+            # Check column data-type validation
+            if a_col_name == 'image':
+                invalid_dtype_msg = 'Column test_image has an unsupported data type. ' \
+                                    'The supported datatypes for this column are: (varbinary(image), varchar)'
+            else:
+                invalid_dtype_msg = f'Column test_{a_col_name} has an unsupported data type. ' \
+                                    f'The supported datatype for this column is: {a_col_dtype}.'
+
+            parms = {'table': test_image_table, a_col_name: f'test_{a_col_name}'}
+
+            try:
+                if type(a_col_value) == str:
+                    query = f'''
+                        create table test_image_table {{options replace=True}} as 
+                        select *, '{a_col_value}' as "test_{a_col_name}" from cdata_decoded
+                    '''
+                else:
+                    query = f'''
+                        create table test_image_table {{options replace=True}} as 
+                        select *, {a_col_value} as "test_{a_col_name}" from cdata_decoded
+                    '''
+                self.s.fedsql.execdirect(query)
+                ImageTable(**parms)
+            except Exception as e:
+                assert str(e) == invalid_dtype_msg
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
