@@ -166,7 +166,7 @@ class CVATProject(Project):
 
     def save(self, caslib: str, relative_path: str, replace: bool = False) -> None:
         """
-        Saves an annotation session.
+        Saves a CVATProject in the specified caslib and relative path.
 
         Parameters
         ----------
@@ -198,7 +198,7 @@ class CVATProject(Project):
     @staticmethod
     def resume(project_name: str, cas_connection: CAS, caslib: str, relative_path: str) -> CVATProject:
         """
-        Resumes an annotation session.
+        Resumes a CVATProject by reading it from the specified caslib and relative path.
 
         Parameters
         ----------
@@ -207,11 +207,44 @@ class CVATProject(Project):
         cas_connection:
             Specifies the CAS connection in which the project will be resumed.
         caslib:
-            SPecifies the caslib under which CAS tables were saved.
+            Specifies the caslib under which CAS tables were saved.
         relative_path:
             Specifies the path relative to caslib where project was saved.
+
+        Returns
+        -------
+        project:
+            A CVATProject object with all of the properties set from the specified JSON string.
         """
-        pass
+
+        # Load the project table
+        project_table = cas_connection.CASTable(project_name)
+        cas_connection.loadtable(f'{relative_path}/{project_name}.sashdat', caslib=caslib,
+                                 casout=project_name)
+
+        # Fetch the JSON representation of the project
+        project_json = project_table.fetch().Fetch.project_json.values[0]
+
+        # Deserialize CVAT Project from the JSON representation
+        cvat_project = CVATProject.from_json(project_json)
+
+        cvat_project.cas_connection = cas_connection
+
+        # Load the image tables
+        for task in cvat_project.get_tasks():
+            # Load the images CAS table
+            cas_connection.loadtable(f'{relative_path}/{task.image_table_name}.sashdat', caslib=caslib,
+                                     casout=task.image_table_name)
+            image_cas_table = cas_connection.CASTable(task.image_table_name)
+
+            # Create ImageTable object
+            task.image_table.table = image_cas_table
+
+            # Set project pointer
+            task.project = cvat_project
+
+        # Return the resumed project object
+        return cvat_project
 
     @staticmethod
     def from_json(project_json_str):
@@ -237,7 +270,7 @@ class CVATProject(Project):
         project.project_name = project_dict.get('project_name')
         project.project_version = project_dict.get('project_version')
         project.credentials = Credentials.from_dict(project_dict.get('credentials'))
-        project.annotation_type = project_dict.get('annotation_type')
+        project.annotation_type = AnnotationType(project_dict.get('annotation_type'))
         project.labels = [AnnotationLabel.from_dict(label) for label in project_dict.get('labels')]
 
         project.tasks = [CVATTask.from_dict(task) for task in project_dict.get('tasks')]

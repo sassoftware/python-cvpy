@@ -17,11 +17,27 @@ from cvpy.base.ImageTable import ImageTable
 
 class TestCVATProject(unittest.TestCase):
 
+    def setUp(self) -> None:
+        self.cas_connection = swat.CAS(hostname=TestCVATProject.cas_host, port=TestCVATProject.cas_port,
+                                       username=TestCVATProject.cas_username, password=TestCVATProject.cas_password,
+                                       protocol=TestCVATProject.cas_protocol)
+
+        self.cas_connection.loadactionset('image')
+
+        self.caslib_name = 'dlib'
+
+        self.cas_connection.addcaslib(name=self.caslib_name,
+                                      activeOnAdd=False,
+                                      path=TestCVATProject.datapath,
+                                      dataSource='PATH',
+                                      subdirectories=True)
+
+    def tearDown(self) -> None:
+        self.cas_connection.close()
+
     # Create an instance of CVATProject
     def test_cvat_project(self):
         url = TestCVATProject.cvat_url
-
-        cas_connection = swat.CAS(TestCVATProject.cas_host, TestCVATProject.cas_port, protocol='http')
 
         project_name = 'Test Project'
         annotation_type = AnnotationType.OBJECT_DETECTION
@@ -32,12 +48,12 @@ class TestCVATProject(unittest.TestCase):
         labels = [mountain_label, person_label]
 
         credentials = Credentials()
-        cvat_project = CVATProject(url=url, cas_connection=cas_connection, credentials=credentials,
+        cvat_project = CVATProject(url=url, cas_connection=self.cas_connection, credentials=credentials,
                                    project_name=project_name, annotation_type=annotation_type,
                                    labels=labels)
 
         self.assertEqual(cvat_project.url, url)
-        self.assertEqual(cvat_project.cas_connection, cas_connection)
+        self.assertEqual(cvat_project.cas_connection, self.cas_connection)
         self.assertEqual(cvat_project.credentials, credentials)
         self.assertEqual(cvat_project.project_name, project_name)
         self.assertEqual(cvat_project.annotation_type, annotation_type)
@@ -60,26 +76,19 @@ class TestCVATProject(unittest.TestCase):
     # Post images to a project.
     def test_cvat_project_post_images(self):
 
-        # Setup CAS and create ImageTable's for decoded and encoded CAS image tables.
-        cas_connection = swat.CAS(TestCVATProject.cas_host, TestCVATProject.cas_port, protocol='http')
-        cas_connection.loadactionset('image')
-        cas_connection.addcaslib(name='dlib',
-                                 activeOnAdd=False,
-                                 path=TestCVATProject.datapath,
-                                 dataSource='PATH',
-                                 subdirectories=True)
+        cas_table_encoded = self.cas_connection.CASTable('cas_table_encoded')
+        self.cas_connection.image.loadimages(path='images',
+                                             labellevels=5,
+                                             casout=cas_table_encoded,
+                                             caslib=self.caslib_name,
+                                             decode=False)
 
-        cas_table_encoded = cas_connection.CASTable('cas_table_encoded')
-        cas_connection.image.loadimages(labellevels=5,
-                                        casout=cas_table_encoded,
-                                        caslib='dlib',
-                                        decode=False)
-
-        cas_table_decoded = cas_connection.CASTable('cas_table_decoded')
-        cas_connection.image.loadimages(labellevels=5,
-                                        casout=cas_table_decoded,
-                                        caslib='dlib',
-                                        decode=True)
+        cas_table_decoded = self.cas_connection.CASTable('cas_table_decoded')
+        self.cas_connection.image.loadimages(path='images',
+                                             labellevels=5,
+                                             casout=cas_table_decoded,
+                                             caslib=self.caslib_name,
+                                             decode=True)
 
         image_table_encoded = ImageTable(cas_table_encoded)
         image_table_decoded = ImageTable(cas_table_decoded)
@@ -95,8 +104,8 @@ class TestCVATProject(unittest.TestCase):
 
         labels = [mountain_label, person_label]
 
-        credentials = Credentials(self.cvat_username, self.cvat_password)
-        cvat_project = CVATProject(url=url, cas_connection=cas_connection, credentials=credentials,
+        credentials = Credentials(TestCVATProject.cvat_username, TestCVATProject.cvat_password)
+        cvat_project = CVATProject(url=url, cas_connection=self.cas_connection, credentials=credentials,
                                    project_name=project_name, annotation_type=annotation_type,
                                    labels=labels)
 
@@ -149,31 +158,17 @@ class TestCVATProject(unittest.TestCase):
 
     def test_cvat_project_save(self):
 
-        # Setup CAS and create ImageTable's for decoded and encoded CAS image tables.
-        cas_connection = swat.CAS(TestCVATProject.cas_host, TestCVATProject.cas_port, protocol='http')
-        cas_connection.loadactionset('image')
-        cas_connection.addcaslib(name='dlib',
-                                 activeOnAdd=False,
-                                 path=TestCVATProject.datapath,
-                                 dataSource='PATH',
-                                 subdirectories=True)
-
-        cas_table_encoded = cas_connection.CASTable('cas_table_encoded')
-        cas_connection.image.loadimages(labellevels=5,
-                                        casout=cas_table_encoded,
-                                        caslib='dlib',
-                                        decode=False)
-
-        cas_connection.addcaslib(name='bigdata',
-                                 activeOnAdd=False,
-                                 path='/bigdisk/lax/patela/data',
-                                 dataSource='PATH',
-                                 subdirectories=True)
+        cas_table_encoded = self.cas_connection.CASTable('cas_table_encoded_save_test')
+        self.cas_connection.image.loadimages(path='images',
+                                             labellevels=5,
+                                             casout=cas_table_encoded,
+                                             caslib=self.caslib_name,
+                                             decode=False)
 
         # Create a CVATProject.
         url = TestCVATProject.cvat_url
 
-        project_name = 'MyDemoProject'
+        project_name = 'MyDemoProject_SaveTest'
         annotation_type = AnnotationType.OBJECT_DETECTION
 
         mountain_label = AnnotationLabel(name='Mountain', color='orange')
@@ -181,8 +176,8 @@ class TestCVATProject(unittest.TestCase):
 
         labels = [mountain_label, person_label]
 
-        credentials = Credentials(self.cvat_username, self.cvat_password)
-        cvat_project = CVATProject(url=url, cas_connection=cas_connection, credentials=credentials,
+        credentials = Credentials(TestCVATProject.cvat_username, TestCVATProject.cvat_password)
+        cvat_project = CVATProject(url=url, cas_connection=self.cas_connection, credentials=credentials,
                                    project_name=project_name, annotation_type=annotation_type,
                                    labels=labels)
 
@@ -190,21 +185,47 @@ class TestCVATProject(unittest.TestCase):
         image_table_encoded = ImageTable(cas_table_encoded)
         cvat_project.post_images(image_table_encoded)
 
-        # Note: CVAT will throw an internal server error exception if we attempt to access the tasks
-        #       data to soon after an upload. So we have a sleep here to prevent the issue.
-        time.sleep(5)
+        # Save the project
+        cvat_project.save(self.caslib_name, 'cvpy', replace=True)
 
-        cvat_project.save('bigdata', 'cvat_test', replace=True)
+    def test_cvat_project_resume(self):
+
+        # Resume a test project
+        cvat_project = CVATProject.resume(project_name='MyDemoProject', cas_connection=self.cas_connection,
+                                          caslib=self.caslib_name, relative_path='cvpy')
+
+        # Verify all project attributes are set correctly
+        assert cvat_project.project_version == 1
+        assert cvat_project.project_name == 'MyDemoProject'
+        assert cvat_project.annotation_type == AnnotationType.OBJECT_DETECTION
+        assert cvat_project.credentials.username is None
+        assert cvat_project.credentials.password is None
+        assert len(cvat_project.labels) == 2
+
+        for label in cvat_project.labels:
+            if label.name == 'Mountain':
+                assert label.color == 'orange'
+            elif label.name == 'Person':
+                assert label.color == 'green'
+            else:
+                assert False
+
+        for task in cvat_project.tasks:
+            assert task.image_table_name == 'cas_table_encoded'
+            assert task.image_table.table.tableinfo().TableInfo.Rows.values[0] == 5
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        TestCVATProject.cvat_url = sys.argv.pop(1)
         TestCVATProject.cas_host = sys.argv.pop(1)
         TestCVATProject.cas_port = sys.argv.pop(1)
+        TestCVATProject.cas_username = sys.argv.pop(1)
+        TestCVATProject.cas_password = sys.argv.pop(1)
+        TestCVATProject.cas_protocol = sys.argv.pop(1)
+        TestCVATProject.datapath = sys.argv.pop(1)
+        TestCVATProject.cvat_url = sys.argv.pop(1)
         TestCVATProject.cvat_username = sys.argv.pop(1)
         TestCVATProject.cvat_password = sys.argv.pop(1)
-        TestCVATProject.datapath = sys.argv.pop(1)
 
     unittest.main(
         testRunner=xmlrunner.XMLTestRunner(output='test-reports'),
