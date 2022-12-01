@@ -78,7 +78,7 @@ class Image(object):
 
         idx = [slice(None)] * len(a.shape)
         idx[axis] = slice(None, None, -1)
-        return a[idx]
+        return a[tuple(idx)]
 
     @staticmethod
     def get_image_array_from_row(image_binary, dimension, resolution, myformat, channel_count=1):

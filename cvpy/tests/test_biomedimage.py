@@ -100,11 +100,11 @@ class TestBiomedImage(unittest.TestCase):
 
         ## Assert the sphericity result
         self.assertTrue(output_sph is not None)
-        self.assertEqual(imageRows['SPHERICITY'][0], 0.3112142671601735)
+        self.assertAlmostEqual(imageRows['SPHERICITY'][0], 0.31121426716017353)
 
     def test_mask_encoded_image_encoded_mask(self):
         # Load the gray-scale image
-        sgray = self.s.CASTable('sgray', replace=True)
+        sgray = self.s.CASTable('sgray')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleGray.nii',
@@ -113,7 +113,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
+        smask = self.s.CASTable('smask')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleMask.nii',
@@ -122,7 +122,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Casout Table
-        new = self.s.CASTable('new', replace=True)
+        new = self.s.CASTable('new')
 
         # Create ImageTable Objects
         sgray_table = ImageTable(sgray)
@@ -137,17 +137,32 @@ class TestBiomedImage(unittest.TestCase):
                                add_columns=["CHANNELTYPE"])
 
         # Correct Image Array
-        test_arr = np.array([[[0, 10, 0, 0, 0],
+        test_arr = np.array([[0, 10, 0, 0, 0],
                               [0, 10, 128, 0, 0],
                               [0, 10, 0, 0, 0],
                               [128, 128, 0, 0, 0],
-                              [0, 0, 0, 0, 0]]])
+                              [0, 0, 0, 0, 0]])
 
-        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
+        # Export the biomedical image
+        export_image = self.s.CASTable('export_image')
+        self.s.biomedimage.processbiomedimages(
+            images=dict(table=new),
+            steps=[
+                dict(stepparameters=dict(steptype='export', encodetype='PNG'))
+            ],
+            decode=False,
+            casout=export_image
+        )
+
+        # Create an array from the exported image
+        export_img_arr = np.asarray(self.s.image.fetchImages(table='export_image').Images.Image[0])
+
+        # Compare the arrays
+        return np.array_equal(export_img_arr, test_arr)
 
     def test_mask_decoded_image_decoded_mask(self):
         # Load the gray-scale image
-        sgray = self.s.CASTable('sgray', replace=True)
+        sgray = self.s.CASTable('sgray')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleGray.nii',
@@ -156,7 +171,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
+        smask = self.s.CASTable('smask')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleMask.nii',
@@ -165,7 +180,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Casout Table
-        new = self.s.CASTable('new', replace=True)
+        new = self.s.CASTable('new')
 
         # Create ImageTable Objects
         sgray_table = ImageTable(sgray)
@@ -180,17 +195,32 @@ class TestBiomedImage(unittest.TestCase):
                    add_columns=["CHANNELTYPE"])
 
         # Correct Image Array
-        test_arr = np.array([[[0, 10, 0, 0, 0],
+        test_arr = np.array([[0, 10, 0, 0, 0],
                               [0, 10, 128, 0, 0],
                               [0, 10, 0, 0, 0],
                               [128, 128, 0, 0, 0],
-                              [0, 0, 0, 0, 0]]])
+                              [0, 0, 0, 0, 0]])
 
-        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
+        # Export the biomedical image
+        export_image = self.s.CASTable('export_image')
+        self.s.biomedimage.processbiomedimages(
+            images=dict(table=new),
+            steps=[
+                dict(stepparameters=dict(steptype='export', encodetype='PNG'))
+            ],
+            decode=False,
+            casout=export_image
+        )
+
+        # Create an array from the exported image
+        export_img_arr = np.asarray(self.s.image.fetchImages(table='export_image').Images.Image[0])
+
+        # Compare the arrays
+        return np.array_equal(export_img_arr, test_arr)
 
     def test_mask_decoded_image_encoded_mask(self):
         # Load the gray-scale image
-        sgray = self.s.CASTable('sgray', replace=True)
+        sgray = self.s.CASTable('sgray')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleGray.nii',
@@ -199,7 +229,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
+        smask = self.s.CASTable('smask')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleMask.nii',
@@ -208,7 +238,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Casout Table
-        new = self.s.CASTable('new', replace=True)
+        new = self.s.CASTable('new')
 
         # Create ImageTable Objects
         sgray_table = ImageTable(sgray)
@@ -223,17 +253,32 @@ class TestBiomedImage(unittest.TestCase):
                    add_columns=["CHANNELTYPE"])
 
         # Correct Image Array
-        test_arr = np.array([[[0, 10, 0, 0, 0],
+        test_arr = np.array([[0, 10, 0, 0, 0],
                               [0, 10, 128, 0, 0],
                               [0, 10, 0, 0, 0],
                               [128, 128, 0, 0, 0],
-                              [0, 0, 0, 0, 0]]])
+                              [0, 0, 0, 0, 0]])
 
-        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
+        # Export the biomedical image
+        export_image = self.s.CASTable('export_image')
+        self.s.biomedimage.processbiomedimages(
+            images=dict(table=new),
+            steps=[
+                dict(stepparameters=dict(steptype='export', encodetype='PNG'))
+            ],
+            decode=False,
+            casout=export_image
+        )
 
-    def test_mask_decoded_image_encoded_mask(self):
+        # Create an array from the exported image
+        export_img_arr = np.asarray(self.s.image.fetchImages(table='export_image').Images.Image[0])
+
+        # Compare the arrays
+        return np.array_equal(export_img_arr, test_arr)
+
+    def test_mask_encoded_image_decoded_mask(self):
         # Load the gray-scale image
-        sgray = self.s.CASTable('sgray', replace=True)
+        sgray = self.s.CASTable('sgray')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleGray.nii',
@@ -242,7 +287,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
+        smask = self.s.CASTable('smask')
         self.s.image.loadimages(
             caslib='dlib',
             path='TestMasking/simpleMask.nii',
@@ -251,7 +296,7 @@ class TestBiomedImage(unittest.TestCase):
         )
 
         # Casout Table
-        new = self.s.CASTable('new', replace=True)
+        new = self.s.CASTable('new')
 
         # Create ImageTable Objects
         sgray_table = ImageTable(sgray)
@@ -266,14 +311,28 @@ class TestBiomedImage(unittest.TestCase):
                    add_columns=["CHANNELTYPE"])
 
         # Correct Image Array
-        test_arr = np.array([[[0, 10, 0, 0, 0],
+        test_arr = np.array([[0, 10, 0, 0, 0],
                               [0, 10, 128, 0, 0],
                               [0, 10, 0, 0, 0],
                               [128, 128, 0, 0, 0],
-                              [0, 0, 0, 0, 0]]])
+                              [0, 0, 0, 0, 0]])
 
-        self.assertTrue(np.array_equal(Image.fetch_image_array(new), test_arr))
+        # Export the biomedical image
+        export_image = self.s.CASTable('export_image')
+        self.s.biomedimage.processbiomedimages(
+            images=dict(table=new),
+            steps=[
+                dict(stepparameters=dict(steptype='export', encodetype='PNG'))
+            ],
+            decode=False,
+            casout=export_image
+        )
 
+        # Create an array from the exported image
+        export_img_arr = np.asarray(self.s.image.fetchImages(table='export_image').Images.Image[0])
+
+        # Compare the arrays
+        return np.array_equal(export_img_arr, test_arr)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

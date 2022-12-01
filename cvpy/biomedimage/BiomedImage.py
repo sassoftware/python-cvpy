@@ -164,7 +164,7 @@ class BiomedImage(object):
                              dict(name=mask.imageFormat, rename="form")]
 
             # SQL string to create the mask table
-            fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
+            fed_sql_str = f'''create table _images_to_mask_ as 
                 select a.seg, a.dim, a.res, a.form, b.* 
                 from {mask.table.name} as a inner join {image.table.name} as b 
                 on a._id_=b._id_'''
@@ -195,7 +195,7 @@ class BiomedImage(object):
             alter_columns = [dict(name=mask.image, rename="seg")]
 
             # SQL string to create the mask table
-            fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
+            fed_sql_str = f'''create table _images_to_mask_ as 
                 select a.seg, b.* 
                 from {mask.table.name} as a inner join {image.table.name} as b 
                 on a._id_=b._id_'''
@@ -219,7 +219,7 @@ class BiomedImage(object):
         conn.table.altertable(name=mask.table, columns=alter_columns)
 
         # Create Images to Mask Table
-        _images_to_mask_ = conn.CASTable("_images_to_mask_", replace=True)
+        _images_to_mask_ = conn.CASTable("_images_to_mask_")
 
         # SQL Statement to join tables
         conn.fedsql.execdirect(fed_sql_str)
