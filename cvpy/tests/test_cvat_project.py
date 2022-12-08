@@ -7,7 +7,6 @@ from http import HTTPStatus
 import requests
 import swat
 import xmlrunner
-
 from cvpy.annotation.base.AnnotationLabel import AnnotationLabel
 from cvpy.annotation.base.AnnotationType import AnnotationType
 from cvpy.annotation.base.Credentials import Credentials
@@ -197,6 +196,7 @@ class TestCVATProject(unittest.TestCase):
         # Verify all project attributes are set correctly
         assert cvat_project.project_version == 1
         assert cvat_project.project_name == 'MyDemoProject'
+        assert cvat_project.project_id == 285
         assert cvat_project.annotation_type == AnnotationType.OBJECT_DETECTION
         assert cvat_project.credentials.username is None
         assert cvat_project.credentials.password is None

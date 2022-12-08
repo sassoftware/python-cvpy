@@ -266,7 +266,7 @@ class CVATProject(Project):
         project = CVATProject()
 
         project.url = project_dict.get('url')
-        project.project_id = project_dict.get('id')
+        project.project_id = project_dict.get('project_id')
         project.project_name = project_dict.get('project_name')
         project.project_version = project_dict.get('project_version')
         project.credentials = Credentials.from_dict(project_dict.get('credentials'))
