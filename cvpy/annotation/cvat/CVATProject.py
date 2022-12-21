@@ -157,7 +157,7 @@ class CVATProject(Project):
         Parameters
         ----------
         image_table:
-            Specifies the input ImageTable that was used in a call to post_images() on this CVATProject object.
+            Specifies the ImageTable that was used to post images to the CVATProject object.
         annotated_table:
             Specifies the output CAS table where the images and the corresponding annotations will be stored.
 
@@ -170,7 +170,8 @@ class CVATProject(Project):
                 main_task = task
 
         # Get the tasks from CVAT.
-        task_response = requests.get(f'{self.url}/api/tasks', headers=self.credentials.get_auth_header())
+        task_response = requests.get(f'{self.url}/api/tasks/' + str(main_task.task_id),
+                                     headers=self.credentials.get_auth_header())
 
         # Raise an exception if there was a problem getting the tasks.
         if task_response.status_code != HTTPStatus.OK:
@@ -178,8 +179,8 @@ class CVATProject(Project):
                 f'Unable to get the tasks from the CVAT server: {task_response.reason}')
             return
 
-        task_id = task_response.json()['results'][0]['id']
-        task_labels = pd.json_normalize(task_response.json()['results'][0]['labels'])[['id', 'name']]
+        task_id = task_response.json()['id']
+        task_labels = pd.json_normalize(task_response.json()['labels'])[['id', 'name']]
 
         # Get the image metadata from CVAT.
         data_response = requests.get(f'{self.url}/api/tasks/' + str(task_id) + '/data/meta',
@@ -258,17 +259,17 @@ class CVATProject(Project):
                 image_annotations = image_annotations_aggregate.drop(['name_tag', 'points'], axis=1).reset_index()
 
             else:
-                print('No annotations detected.')
+                raise Exception("No annotations detected.")
                 return
 
         # If the annotation type is semantic segmentation, print a message and return.
         elif self.annotation_type == AnnotationType.SEMANTIC_SEGMENTATION:
-            print('Semantic Segmentation is not supported yet.')
+            raise Exception("Semantic Segmentation is not supported yet.")
             return
 
         # If any other annotation type is specified, print a message and return.
         else:
-            print('Annotation type is not supported.')
+            raise Exception("Annotation type is not supported.")
             return
 
         # Create a new CAS table with the created annotation data.
@@ -280,14 +281,14 @@ class CVATProject(Project):
 
         # If the annotation type is classification, merge the tables with the annotated tags.
         if self.annotation_type == AnnotationType.CLASSIFICATION:
-            self.cas_connection.fedsql.execdirect(
-                "create table  " + annotated_table.to_table_name() + " {options replace=true} "
-                                                                     "as (select a._id_, a._image_, "
-                                                                     "a._path_, b.name_tag as _label_ "
-                                                                     "from " + image_table.table.to_table_name() +
-                                                                     " as a inner join image_annotations_castable as b "
-                                                                     "on compress(put(a._id_, best.) || '.' || "
-                                                                     "a._type_)=b.name_image)")
+            self.cas_connection.fedsql.execdirect(f'''
+            create table {annotated_table.to_table_name()} {{options replace=true}}
+            as
+            (select a._id_, a._image_, a._path_, b.name_tag as _label_
+            from {image_table.table.to_table_name()} as a
+            inner join image_annotations_castable as b
+            on compress(put(a._id_, best.) || '.' || a._type_)=b.name_image)
+            ''')
 
             # Rename the label column to be lowercase
             self.cas_connection.table.altertable(
@@ -297,13 +298,14 @@ class CVATProject(Project):
 
         # If the annotation type is object detection, merge the tables with the coordinate columns.
         elif self.annotation_type == AnnotationType.OBJECT_DETECTION:
-            self.cas_connection.fedsql.execdirect(
-                "create table " + annotated_table.to_table_name() + " {options replace=true} "
-                                                                    "as (select a._id_, a._image_, a._path_, b.* "
-                                                                    "from " + image_table.table.to_table_name() +
-                                                                    " as a inner join image_annotations_castable as b "
-                                                                    "on compress(put(a._id_, best.) || '.' || "
-                                                                    "a._type_)=b.name_image)")
+            self.cas_connection.fedsql.execdirect(f'''
+            create table {annotated_table.to_table_name()} {{options replace=true}}
+            as
+            (select a._id_, a._image_, a._path_, b.* 
+            from {image_table.table.to_table_name()} as a
+            inner join image_annotations_castable as b
+            on compress(put(a._id_, best.) || '.' || a._type_)=b.name_image)
+            ''')
 
         # Drop the cas table that was created.
         self.cas_connection.table.dropTable(name=image_annotations_castable)
