@@ -7,6 +7,7 @@ from http import HTTPStatus
 import requests
 import swat
 import xmlrunner
+import numpy as np
 from cvpy.annotation.base.AnnotationLabel import AnnotationLabel
 from cvpy.annotation.base.AnnotationType import AnnotationType
 from cvpy.annotation.base.Credentials import Credentials
@@ -214,6 +215,335 @@ class TestCVATProject(unittest.TestCase):
             assert task.image_table_name == 'cas_table_encoded'
             assert task.image_table.table.tableinfo().TableInfo.Rows.values[0] == 5
 
+    def test_cvat_project_get_annotation_classification(self):
+
+        # Load the images to post to CVAT.
+        cas_table_encoded = self.cas_connection.CASTable('cas_table_encoded')
+        self.cas_connection.image.loadimages(labellevels=5,
+                                             path='images',
+                                             casout=cas_table_encoded,
+                                             caslib=self.caslib_name,
+                                             decode=False)
+
+        # Create a CVATProject.
+        url = "https://cvdata.unx.sas.com:8080"
+        project_name = 'ClassificationTest'
+        annotation_type = AnnotationType.CLASSIFICATION
+
+        # Define the labels for the CVAT project.
+        mountain_label = AnnotationLabel(name='Mountain', color='orange')
+        person_label = AnnotationLabel(name='Person', color='green')
+        labels = [mountain_label, person_label]
+
+        # Get authentication information for CVAT.
+        credentials = Credentials()
+
+        # Post the images to the CVATProject.
+        image_table_encoded = ImageTable(cas_table_encoded)
+
+        # Create the CVAT Project.
+        cvat_project = CVATProject(url=url, cas_connection=self.cas_connection, credentials=credentials,
+                                   project_name=project_name, annotation_type=annotation_type,
+                                   labels=labels)
+
+        # Post the images to the project.
+        cvat_project.post_images(image_table_encoded)
+
+        # Wait before trying to access the project.
+        time.sleep(5)
+
+        # Get the task response.
+        tasks = cvat_project.get_tasks()
+        for task in tasks:
+            if task.image_table == image_table_encoded:
+                main_task = task
+        task_response = requests.get(f'{cvat_project.url}/api/tasks/' + str(main_task.task_id),
+                                     headers=cvat_project.credentials.get_auth_header())
+
+        # Get the label ids for each of the labels.
+        mountain_label = task_response.json()['labels'][0]['id']
+        person_label = task_response.json()['labels'][1]['id']
+
+        # Define the manual annotations to send to the project.
+        annotations = {'version': 0,
+                       'tags': [{'id': 17,
+                                 'frame': 0,
+                                 'label_id': person_label,
+                                 'group': 0,
+                                 'source': 'manual',
+                                 'attributes': []},
+                                {'id': 18,
+                                 'frame': 1,
+                                 'label_id': mountain_label,
+                                 'group': 0,
+                                 'source': 'manual',
+                                 'attributes': []},
+                                {'id': 20,
+                                 'frame': 2,
+                                 'label_id': person_label,
+                                 'group': 0,
+                                 'source': 'manual',
+                                 'attributes': []},
+                                {'id': 21,
+                                 'frame': 3,
+                                 'label_id': mountain_label,
+                                 'group': 0,
+                                 'source': 'manual',
+                                 'attributes': []},
+                                {'id': 22,
+                                 'frame': 4,
+                                 'label_id': mountain_label,
+                                 'group': 0,
+                                 'source': 'manual',
+                                 'attributes': []}],
+                       'shapes': [],
+                       'tracks': []}
+
+        # Manually add annotations for each of the images.
+        put_response = requests.put(f'{cvat_project.url}/api/tasks/' + str(main_task.task_id) + '/annotations',
+                                    headers=credentials.get_auth_header(),
+                                    json=annotations)
+
+        # Create the output annotations table.
+        output_annotations = self.cas_connection.CASTable('output_annotations')
+
+        # Call the get_annotations() API.
+        cvat_project.get_annotations(image_table_encoded, output_annotations)
+
+        # Delete the CVAT project.
+        cvat_project._delete_project_in_cvat()
+
+        # Assert that the images have been copied over correctly
+        self.assertTrue(np.all(output_annotations.to_frame()['_image_'] == cas_table_encoded.to_frame()['_image_']))
+
+        # Assert that the annotations are correct.
+        self.assertEqual(output_annotations.to_frame().iloc[0]['_label_'], 'Person')
+        self.assertEqual(output_annotations.to_frame().iloc[1]['_label_'], 'Mountain')
+        self.assertEqual(output_annotations.to_frame().iloc[2]['_label_'], 'Person')
+        self.assertEqual(output_annotations.to_frame().iloc[3]['_label_'], 'Mountain')
+        self.assertEqual(output_annotations.to_frame().iloc[4]['_label_'], 'Mountain')
+
+    def test_cvat_project_get_annotation_objectdetection(self):
+
+        # Load the images to post to CVAT.
+        cas_table_encoded = self.cas_connection.CASTable('cas_table_encoded_save_test')
+        self.cas_connection.image.loadimages(path='images',
+                                             labellevels=5,
+                                             casout=cas_table_encoded,
+                                             caslib=self.caslib_name,
+                                             decode=False)
+
+        project_name = 'ObjectDetection'
+        annotation_type = AnnotationType.OBJECT_DETECTION
+
+        # Define the labels for the CVAT project.
+        mountain_label = AnnotationLabel(name='Mountain', color='orange')
+        person_label = AnnotationLabel(name='Person', color='green')
+        labels = [mountain_label, person_label]
+
+        # Get authentication information for CVAT.
+        credentials = Credentials()
+
+        # Post the images to the CVATProject.
+        image_table_encoded = ImageTable(cas_table_encoded)
+
+        # Create the CVAT Project.
+        cvat_project = CVATProject(url=TestCVATProject.cvat_url, cas_connection=self.cas_connection,
+                                   credentials=credentials, project_name=project_name, annotation_type=annotation_type,
+                                   labels=labels)
+
+        # Post the images to the project.
+        cvat_project.post_images(image_table_encoded)
+
+        # Wait before trying to access the project.
+        time.sleep(5)
+
+        # Get the task response.
+        tasks = cvat_project.get_tasks()
+        for task in tasks:
+            if task.image_table == image_table_encoded:
+                main_task = task
+        task_response = requests.get(f'{cvat_project.url}/api/tasks/' + str(main_task.task_id),
+                                     headers=cvat_project.credentials.get_auth_header())
+
+        # Get the label ids for each of the labels.
+        mountain_label = task_response.json()['labels'][0]['id']
+        person_label = task_response.json()['labels'][1]['id']
+
+        # Define the manual annotations to send to the project.
+        annotations = {'version': 0,
+                       'tags': [],
+                       'shapes': [{'type': 'rectangle',
+                                   'occluded': False,
+                                   'z_order': 0,
+                                   'rotation': 0.0,
+                                   'points': [275.5446428571413,
+                                              43.85649350649146,
+                                              426.08035714285506,
+                                              197.1292207792194],
+                                   'id': 282,
+                                   'frame': 0,
+                                   'label_id': person_label,
+                                   'group': 0,
+                                   'source': 'manual',
+                                   'attributes': []},
+                                  {'type': 'rectangle',
+                                   'occluded': False,
+                                   'z_order': 0,
+                                   'rotation': 0.0,
+                                   'points': [584.8271103896095,
+                                              26.065909090908463,
+                                              731.2573051948038,
+                                              227.2363636363625],
+                                   'id': 283,
+                                   'frame': 0,
+                                   'label_id': person_label,
+                                   'group': 0,
+                                   'source': 'manual',
+                                   'attributes': []},
+                                  {'type': 'rectangle',
+                                   'occluded': False,
+                                   'z_order': 0,
+                                   'rotation': 0.0,
+                                   'points': [321.93652597402615,
+                                              140.7501623376629,
+                                              446.32938311688304,
+                                              334.2501623376629],
+                                   'id': 284,
+                                   'frame': 1,
+                                   'label_id': person_label,
+                                   'group': 0,
+                                   'source': 'manual',
+                                   'attributes': []},
+                                  {'type': 'rectangle',
+                                   'occluded': False,
+                                   'z_order': 0,
+                                   'rotation': 0.0,
+                                   'points': [385.49659090909154,
+                                              240.6090909090908,
+                                              702.9852272727276,
+                                              306.0863636363629],
+                                   'id': 285,
+                                   'frame': 2,
+                                   'label_id': mountain_label,
+                                   'group': 0,
+                                   'source': 'manual',
+                                   'attributes': []},
+                                  {'type': 'rectangle',
+                                   'occluded': False,
+                                   'z_order': 0,
+                                   'rotation': 0.0,
+                                   'points': [439.77077922078024,
+                                              453.1831168831177,
+                                              558.9915584415594,
+                                              599.2285714285717],
+                                   'id': 286,
+                                   'frame': 3,
+                                   'label_id': person_label,
+                                   'group': 0,
+                                   'source': 'manual',
+                                   'attributes': []},
+                                  {'type': 'rectangle',
+                                   'occluded': False,
+                                   'z_order': 0,
+                                   'rotation': 0.0,
+                                   'points': [1846.5759740259746,
+                                              733.351948051948,
+                                              2016.465584415584,
+                                              933.0467532467537],
+                                   'id': 287,
+                                   'frame': 3,
+                                   'label_id': person_label,
+                                   'group': 0,
+                                   'source': 'manual',
+                                   'attributes': []},
+                                  {'type': 'rectangle',
+                                   'occluded': False,
+                                   'z_order': 0,
+                                   'rotation': 0.0,
+                                   'points': [981.298828125, 893.5068359375, 1656.623046875, 1238.9609375],
+                                   'id': 288,
+                                   'frame': 4,
+                                   'label_id': mountain_label,
+                                   'group': 0,
+                                   'source': 'manual',
+                                   'attributes': []}],
+                       'tracks': []}
+
+        # Manually add annotations for each of the images.
+        put_response = requests.put(f'{cvat_project.url}/api/tasks/' + str(main_task.task_id) + '/annotations',
+                                    headers=credentials.get_auth_header(),
+                                    json=annotations)
+
+        # Create the output annotations table.
+        output_annotations = self.cas_connection.CASTable('output_annotations')
+
+        # Call the get_annotations() API.
+        cvat_project.get_annotations(image_table_encoded, output_annotations)
+
+        # Delete the CVAT project.
+        cvat_project._delete_project_in_cvat()
+
+        # Assert that the images have been copied over correctly
+        self.assertTrue(np.all(output_annotations.to_frame()['_image_'] == cas_table_encoded.to_frame()['_image_']))
+
+        # Assert that the first image's annotations are correct.
+        first_image = output_annotations.to_frame().iloc[0]
+        self.assertEqual(first_image['_Object0_'], 'Person')
+        self.assertEqual(first_image['_Object1_'], 'Person')
+        self.assertEqual(first_image['_nObjects_'], 2)
+        self.assertAlmostEqual(first_image['_Object0_xMin'], 275.544642, 2)
+        self.assertAlmostEqual(first_image['_Object0_yMin'], 43.8564935, 2)
+        self.assertAlmostEqual(first_image['_Object0_xMax'], 426.080357, 2)
+        self.assertAlmostEqual(first_image['_Object0_yMax'], 197.12922, 2)
+        self.assertAlmostEqual(first_image['_Object1_xMin'], 584.82711, 2)
+        self.assertAlmostEqual(first_image['_Object1_yMin'], 26.0659090, 2)
+        self.assertAlmostEqual(first_image['_Object1_xMax'], 731.257305, 2)
+        self.assertAlmostEqual(first_image['_Object1_yMax'], 227.236363, 2)
+
+        # Assert that the second image's annotations are correct.
+        second_image = output_annotations.to_frame().iloc[1]
+        self.assertEqual(second_image['_Object0_'], 'Person')
+        self.assertEqual(second_image['_nObjects_'], 1)
+        self.assertAlmostEqual(second_image['_Object0_xMin'], 321.936526, 2)
+        self.assertAlmostEqual(second_image['_Object0_yMin'], 140.750162, 2)
+        self.assertAlmostEqual(second_image['_Object0_xMax'], 446.329383, 2)
+        self.assertAlmostEqual(second_image['_Object0_yMax'], 334.250162, 2)
+        self.assertTrue(np.isnan(second_image['_Object1_xMin']))
+
+        # Assert that the third image's annotations are correct.
+        third_image = output_annotations.to_frame().iloc[2]
+        self.assertEqual(third_image['_Object0_'], 'Mountain')
+        self.assertEqual(third_image['_nObjects_'], 1)
+        self.assertAlmostEqual(third_image['_Object0_xMin'], 385.496591, 2)
+        self.assertAlmostEqual(third_image['_Object0_yMin'], 240.609091, 2)
+        self.assertAlmostEqual(third_image['_Object0_xMax'], 702.985227, 2)
+        self.assertAlmostEqual(third_image['_Object0_yMax'], 306.086363, 2)
+        self.assertTrue(np.isnan(third_image['_Object1_xMin']))
+
+        # Assert that the fourth image's annotations are correct.
+        fourth_image = output_annotations.to_frame().iloc[3]
+        self.assertEqual(fourth_image['_Object0_'], 'Person')
+        self.assertEqual(fourth_image['_Object1_'], 'Person')
+        self.assertEqual(fourth_image['_nObjects_'], 2)
+        self.assertAlmostEqual(fourth_image['_Object0_xMin'], 439.770779, 2)
+        self.assertAlmostEqual(fourth_image['_Object0_yMin'], 453.183117, 2)
+        self.assertAlmostEqual(fourth_image['_Object0_xMax'], 558.991558, 2)
+        self.assertAlmostEqual(fourth_image['_Object0_yMax'], 599.228571, 2)
+        self.assertAlmostEqual(fourth_image['_Object1_xMin'], 1846.575974, 2)
+        self.assertAlmostEqual(fourth_image['_Object1_yMin'], 733.351948, 2)
+        self.assertAlmostEqual(fourth_image['_Object1_xMax'], 2016.465584, 2)
+        self.assertAlmostEqual(fourth_image['_Object1_yMax'], 933.046753, 2)
+
+        ## Assert that the fifth image's annotations are correct.
+        fifth_image = output_annotations.to_frame().iloc[4]
+        self.assertEqual(fifth_image['_Object0_'], 'Mountain')
+        self.assertEqual(fifth_image['_nObjects_'], 1)
+        self.assertAlmostEqual(fifth_image['_Object0_xMin'], 981.298828, 2)
+        self.assertAlmostEqual(fifth_image['_Object0_yMin'], 893.506836, 2)
+        self.assertAlmostEqual(fifth_image['_Object0_xMax'], 1656.623047, 2)
+        self.assertAlmostEqual(fifth_image['_Object0_yMax'], 1238.960938, 2)
+        self.assertTrue(np.isnan(fifth_image['_Object1_xMin']))
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

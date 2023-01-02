@@ -14,11 +14,11 @@ from cvpy.annotation.base.Project import Project
 from cvpy.annotation.cvat.CVATAuthenticator import CVATAuthenticator
 from cvpy.annotation.cvat.CVATTask import CVATTask
 from cvpy.base.ImageTable import ImageTable
-from swat.cas import CAS
+from swat.cas import CAS, CASTable
 
 
 class CVATProject(Project):
-    """ Defines a class to interact with with a CVAT Project.
+    """ Defines a class to interact with a CVAT Project.
     
     Parameters
     ----------
@@ -62,7 +62,8 @@ class CVATProject(Project):
             raise Exception(message)
 
     def _create_project_in_cvat(self) -> None:
-        if self.annotation_type == AnnotationType.OBJECT_DETECTION:
+        if self.annotation_type == AnnotationType.OBJECT_DETECTION or \
+                self.annotation_type == AnnotationType.CLASSIFICATION:
             # Create a serializable list of labels used in this project.
             labels = [label.as_dict() for label in self._labels]
             payload = dict(name=self.project_name, labels=labels)
@@ -149,20 +150,165 @@ class CVATProject(Project):
         # Images successfully posted for this task, add it to the projects task list.
         self.add_task(task)
 
-    def get_annotations(self, annotated_table: ImageTable, image_table: ImageTable) -> None:
+    def get_annotations(self, image_table: ImageTable, annotated_table: CASTable) -> None:
         """
         Fetch annotations from CVAT corresponding to the images in a CAS table.
 
         Parameters
         ----------
-        annotated_table:
-            Specifies the output table where the images and the corresponding annotations will be stored.
         image_table:
-            Specifies the input table containing encoded images that was used in a call to post_images()
-            on this CVATProject object.
-        
+            Specifies the ImageTable that was used to post images to the CVATProject object.
+        annotated_table:
+            Specifies the output CAS table where the images and the corresponding annotations will be stored.
+
         """
-        pass
+
+        # Determine which unique CVAT task is associated with the input image table.
+        tasks = self.get_tasks()
+        for task in tasks:
+            if task.image_table == image_table:
+                main_task = task
+
+        # Get the tasks from CVAT.
+        task_response = requests.get(f'{self.url}/api/tasks/{main_task.task_id}',
+                                     headers=self.credentials.get_auth_header())
+
+        # Raise an exception if there was a problem getting the tasks.
+        if task_response.status_code != HTTPStatus.OK:
+            raise Exception(
+                f'Unable to get the tasks from the CVAT server: {task_response.reason}')
+            return
+
+        task_id = task_response.json()['id']
+        task_labels = pd.json_normalize(task_response.json()['labels'])[['id', 'name']]
+
+        # Get the image metadata from CVAT.
+        data_response = requests.get(f'{self.url}/api/tasks/' + str(task_id) + '/data/meta',
+                                     headers=self.credentials.get_auth_header())
+
+        # Raise an exception if there was a problem getting the data.
+        if data_response.status_code != HTTPStatus.OK:
+            raise Exception(
+                f'Unable to get the meta data from the CVAT server: {data_response.reason}')
+            return
+
+        task_frames = pd.json_normalize(data_response.json()['frames'])[['name']]
+
+        # Get the annotations from CVAT.
+        annotations_response = requests.get(f'{self.url}/api/tasks/' + str(task_id) + '/annotations',
+                                            headers=self.credentials.get_auth_header())
+
+        # Raise an exception if there was a problem getting the annotations.
+        if annotations_response.status_code != HTTPStatus.OK:
+            raise Exception(
+                f'Unable to get the annotations from the CVAT server: {annotations_response.reason}')
+            return
+
+        # Check if the annotation type is classification.
+        if self.annotation_type == AnnotationType.CLASSIFICATION:
+
+            # If tags are detected in the annotation data, process the data.
+            if len(annotations_response.json()['tags']):
+                task_annotations = pd.json_normalize(annotations_response.json()['tags'])[
+                    ['frame', 'label_id']]
+                task_frames_annotations = task_annotations.join(task_frames, on='frame', how='inner')[
+                    ['name', 'label_id']]
+                image_annotations = task_frames_annotations.join(task_labels.set_index('id'),
+                                                                 on='label_id', lsuffix='_image',
+                                                                 rsuffix='_tag')[['name_image', 'name_tag']]
+
+            else:
+                print('No annotations have been detected.')
+                return
+
+        # Check if the annotation type is object detection.
+        elif self.annotation_type == AnnotationType.OBJECT_DETECTION:
+
+            # If shapes are detected in the annotation data, process the data.
+            if len(annotations_response.json()['shapes']):
+                task_annotations_pre_filter = pd.json_normalize(annotations_response.json()['shapes'])
+                task_annotations = task_annotations_pre_filter[task_annotations_pre_filter['type'] == 'rectangle'][
+                    ['frame', 'label_id', 'points']]
+                task_frames_annotations = task_annotations.join(task_frames, on='frame', how='inner')[
+                    ['name', 'label_id', 'points']]
+                image_annotations = task_frames_annotations.join(task_labels.set_index('id'),
+                                                                 on='label_id', lsuffix='_image',
+                                                                 rsuffix='_tag')[['name_image', 'name_tag', 'points']]
+
+                image_annotations_aggregate = image_annotations.groupby('name_image').agg(
+                    {'name_tag': list, 'points': sum})
+                image_annotations_aggregate['_nObjects_'] = image_annotations_aggregate['name_tag'].str.len()
+                max_objects = image_annotations_aggregate['_nObjects_'].max()
+                object_name_columns = []
+                object_box_columns = []
+
+                # For each object in the image, create a column name for each coordinate.
+                for i in range(max_objects):
+                    object_prefix = '_Object' + str(i)
+                    object_name_columns.append(object_prefix + '_')
+                    object_box_columns += [object_prefix + '_xMin', object_prefix + '_yMin',
+                                           object_prefix + '_xMax', object_prefix + '_yMax', ]
+
+                # Create the data frame with the annotation data.
+                object_names_data_frame = image_annotations_aggregate.name_tag.apply(pd.Series)
+                object_names_data_frame.columns = object_name_columns
+                image_annotations_aggregate[object_name_columns] = object_names_data_frame
+                points_data_frame = image_annotations_aggregate.points.apply(pd.Series)
+                points_data_frame.columns = object_box_columns
+                image_annotations_aggregate[object_box_columns] = points_data_frame
+                image_annotations = image_annotations_aggregate.drop(['name_tag', 'points'], axis=1).reset_index()
+
+            else:
+                raise Exception("No annotations detected.")
+                return
+
+        # If the annotation type is semantic segmentation, print a message and return.
+        elif self.annotation_type == AnnotationType.SEMANTIC_SEGMENTATION:
+            raise Exception("Semantic Segmentation is not supported yet.")
+            return
+
+        # If any other annotation type is specified, print a message and return.
+        else:
+            raise Exception("Annotation type is not supported.")
+            return
+
+        # Create a new CAS table with the created annotation data.
+        image_annotations_castable = self.cas_connection.CASTable('image_annotations_castable')
+        self.cas_connection.upload(image_annotations, casout=image_annotations_castable)
+
+        # Load the fedsql action set.
+        self.cas_connection.loadactionset('fedsql')
+
+        # If the annotation type is classification, merge the tables with the annotated tags.
+        if self.annotation_type == AnnotationType.CLASSIFICATION:
+            self.cas_connection.fedsql.execdirect(f'''
+            create table {annotated_table.to_table_name()} {{options replace=true}}
+            as
+            (select a._id_, a._image_, a._path_, b.name_tag as _label_
+            from {image_table.table.to_table_name()} as a
+            inner join image_annotations_castable as b
+            on compress(put(a._id_, best.) || '.' || a._type_)=b.name_image)
+            ''')
+
+            # Rename the label column to be lowercase
+            self.cas_connection.table.altertable(
+                table=annotated_table.to_table_name(),
+                columns=[dict(name='_LABEL_', rename='_label_')]
+            )
+
+        # If the annotation type is object detection, merge the tables with the coordinate columns.
+        elif self.annotation_type == AnnotationType.OBJECT_DETECTION:
+            self.cas_connection.fedsql.execdirect(f'''
+            create table {annotated_table.to_table_name()} {{options replace=true}}
+            as
+            (select a._id_, a._image_, a._path_, b.* 
+            from {image_table.table.to_table_name()} as a
+            inner join image_annotations_castable as b
+            on compress(put(a._id_, best.) || '.' || a._type_)=b.name_image)
+            ''')
+
+        # Drop the cas table that was created.
+        self.cas_connection.table.dropTable(name=image_annotations_castable)
 
     def save(self, caslib: str, relative_path: str, replace: bool = False) -> None:
         """
