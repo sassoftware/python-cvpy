@@ -19,7 +19,8 @@ class TestCVATProject(unittest.TestCase):
 
     def setUp(self) -> None:
         self.cas_connection = swat.CAS(hostname=TestCVATProject.cas_host, port=TestCVATProject.cas_port,
-                                       username=TestCVATProject.cas_username, password=TestCVATProject.cas_password)
+                                       username=TestCVATProject.cas_username, password=TestCVATProject.cas_password,
+                                       protocol=TestCVATProject.cas_protocol)
 
         self.cas_connection.loadactionset('image')
 
@@ -550,6 +551,7 @@ if __name__ == '__main__':
         TestCVATProject.cas_port = sys.argv.pop(1)
         TestCVATProject.cas_username = sys.argv.pop(1)
         TestCVATProject.cas_password = sys.argv.pop(1)
+        TestCVATProject.cas_protocol = sys.argv.pop(1)
         TestCVATProject.datapath = sys.argv.pop(1)
         TestCVATProject.cvat_url = sys.argv.pop(1)
         TestCVATProject.cvat_username = sys.argv.pop(1)

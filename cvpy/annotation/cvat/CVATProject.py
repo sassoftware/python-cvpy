@@ -170,7 +170,7 @@ class CVATProject(Project):
                 main_task = task
 
         # Get the tasks from CVAT.
-        task_response = requests.get(f'{self.url}/api/tasks/' + str(main_task.task_id),
+        task_response = requests.get(f'{self.url}/api/tasks/{main_task.task_id}',
                                      headers=self.credentials.get_auth_header())
 
         # Raise an exception if there was a problem getting the tasks.
