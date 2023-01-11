@@ -362,7 +362,7 @@ class Image(object):
         Parameters
         ----------
         numpy_array: np.ndarray
-             Specifies the numpy image array
+             Specifies the numpy image array.
 
         Returns
         -------
