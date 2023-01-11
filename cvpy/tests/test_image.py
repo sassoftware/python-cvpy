@@ -276,6 +276,12 @@ class TestImage(unittest.TestCase):
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
+        # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
+        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+
+        # Compare these buffers to make sure they are equal
+        self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
+
         # Close the connection
         self.s.close()
 
@@ -293,6 +299,12 @@ class TestImage(unittest.TestCase):
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+        # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
+        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+
+        # Compare these buffers to make sure they are equal
+        self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
 
         # Close the connection
         self.s.close()
@@ -312,6 +324,12 @@ class TestImage(unittest.TestCase):
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
+        # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
+        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+
+        # Compare these buffers to make sure they are equal
+        self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
+
         # Close the connection
         self.s.close()
 
@@ -329,6 +347,12 @@ class TestImage(unittest.TestCase):
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+        # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
+        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+
+        # Compare these buffers to make sure they are equal
+        self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
 
         # Close the connection
         self.s.close()
@@ -348,6 +372,12 @@ class TestImage(unittest.TestCase):
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
+        # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
+        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+
+        # Compare these buffers to make sure they are equal
+        self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
+
         # Close the connection
         self.s.close()
 
@@ -365,6 +395,12 @@ class TestImage(unittest.TestCase):
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
+
+        # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
+        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+
+        # Compare these buffers to make sure they are equal
+        self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
 
         # Close the connection
         self.s.close()

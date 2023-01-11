@@ -352,6 +352,45 @@ class Image(object):
         # Return the numpy array
         return np.frombuffer(wide_image[4 * 8:], dtype=np_data_type).reshape(height, width, num_channels)
 
+
+    @staticmethod
+    def convert_numpy_to_wide(numpy_array: np.ndarray) -> bytes:
+
+        """
+        Convert a numpy image array to a wide image.
+
+        Parameters
+        ----------
+        numpy_array: np.ndarray
+             Specifies the numpy image array.
+
+        Returns
+        -------
+        bytes
+        """
+
+        # Get the width, height, number of channels, and data type from the numpy image array
+        (width, height, num_channels) = numpy_array.shape
+        np_data_type = numpy_array.dtype
+
+        # Assign the appropriate ImageDataType
+        if num_channels == 1 and np_data_type == np.dtype(np.uint8):
+            data_type = ImageDataType.CV_8UC1.value
+        elif num_channels == 3 and np_data_type == np.dtype(np.uint8):
+            data_type = ImageDataType.CV_8UC3.value
+        elif num_channels == 1 and np_data_type == np.dtype(np.float32):
+            data_type = ImageDataType.CV_32FC1.value
+        elif num_channels == 3 and np_data_type == np.dtype(np.float32):
+            data_type = ImageDataType.CV_32FC3.value
+        elif num_channels == 1 and np_data_type == np.dtype(np.float64):
+            data_type = ImageDataType.CV_64FC1.value
+        elif num_channels == 3 and np_data_type == np.dtype(np.float64):
+            data_type = ImageDataType.CV_64FC3.value
+
+        # Create the wide image
+        wide_prefix = np.array([-1, height, width, data_type], dtype=np.int64)
+        return wide_prefix.tobytes() + numpy_array.tobytes()
+
     def mask_image(self, image: ImageTable, mask: ImageTable, casout: CASTable, decode: bool = False,
                    copy_vars: list(Enum) = None):
         """
