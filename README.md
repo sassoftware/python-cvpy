@@ -26,8 +26,6 @@ Follow the steps below to create a new Python 3.8 environment for your CVPy inst
 
 Mayavi is a heavy, complex package that is required by CVPy. If you do not already have Mayavi installed, follow the steps below to install it.
 
-Install Mayavi
-
 `pip install mayavi`
 
 Install PyQt, a GUI toolkit needed to run Mayavi.
@@ -44,9 +42,9 @@ To install CVPy, use the following command:
 
 To install and start Jupyter Notebook, run the following steps:
 
-`conda install ipykernel`
+`pip install jupyter`
 
-`ipython kernel install --user --name=cvpy-kernel`
+`python -m ipykernel install --user --name cvpy`
 
 `jupyter notebook`
 
