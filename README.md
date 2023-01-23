@@ -14,27 +14,21 @@ Currently available within CVPy are visualization APIs that allow users to easil
 - A user login to your SAS Viya back-end is required. See your system administrator for details if you do not have a SAS Viya account.
 - Install Mayavi for scientific data visualization in Python
 
+### Create a New Python Environment [Optional]
+
+Follow the steps below to create a new Python 3.8 environment for your CVPy installation named "cvpy".
+
+`conda create --name cvpy python=3.8`
+
+`activate cvpy`
+
 ### Mayavi Installation
 
 Mayavi is a heavy, complex package that is required by CVPy. If you do not already have Mayavi installed, follow the steps below to install it.
 
-Install VTK, a critical dependency for Mayavi.
-
-`pip install VTK‑8.1.2‑cp37‑cp37m‑win_amd64.whl`
-
-or
-
-`pip install VTK==8.1.2`
-
-Note that a specific version of is VTK used. You can download the wheel file from [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#vtk).
-
-Install Mayavi
-
 `pip install mayavi`
 
-You may see an error message about numpy, like “Numpy is required to build Mayavi correctly, please install it first.” Ignore that message.
-
-Install PyQt, a GUI toolkit needed to run Mayavi
+Install PyQt, a GUI toolkit needed to run Mayavi.
 
 `pip install PyQt5`
 
@@ -43,6 +37,14 @@ Install PyQt, a GUI toolkit needed to run Mayavi
 To install CVPy, use the following command:
 
 `pip install sas-cvpy`
+
+### Install and Run Jupyter Notebook
+
+To install and start Jupyter Notebook, run the following steps:
+
+`pip install jupyter`
+
+`jupyter notebook`
 
 ## Contributing
 
