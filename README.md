@@ -14,7 +14,7 @@ Currently available within CVPy are visualization APIs that allow users to easil
 - A user login to your SAS Viya back-end is required. See your system administrator for details if you do not have a SAS Viya account.
 - Install Mayavi for scientific data visualization in Python
 
-## Create a New Python Environment [Optional]
+### Create a New Python Environment [Optional]
 
 Follow the steps below to create a new Python 3.8 environment for your CVPy installation named "cvpy".
 
@@ -39,7 +39,7 @@ To install CVPy, use the following command:
 
 `pip install sas-cvpy`
 
-# Install and Run Jupyter Notebook
+### Install and Run Jupyter Notebook
 
 To install and start Jupyter Notebook, run the following steps:
 
