@@ -44,8 +44,6 @@ To install and start Jupyter Notebook, run the following steps:
 
 `pip install jupyter`
 
-`python -m ipykernel install --user --name cvpy`
-
 `jupyter notebook`
 
 ## Contributing
