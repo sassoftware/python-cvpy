@@ -19,6 +19,7 @@ Currently available within CVPy are visualization APIs that allow users to easil
 Follow the steps below to create a new Python 3.8 environment for your CVPy installation named "cvpy".
 
 `conda create --name cvpy python=3.8`
+
 `activate cvpy`
 
 ### Mayavi Installation
@@ -44,6 +45,7 @@ To install CVPy, use the following command:
 To install and start Jupyter Notebook, run the following steps:
 
 `conda install ipykernel`
+
 `ipython kernel install --user --name=cvpy-kernel`
 
 `jupyter notebook`
