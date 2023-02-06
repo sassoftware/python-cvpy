@@ -333,6 +333,61 @@ class TestBiomedImage(unittest.TestCase):
 
         # Compare the arrays
         return np.array_equal(export_img_arr, test_arr)
+    
+    def test_morphological_gradient_3d_grayscale_image(self):
+        # Load the input image
+        input = self.s.CASTable('input')
+        self.s.image.loadimages(path='biomedimg/Prostate3T-01-0001.nii',
+                                caslib='dlib',
+                                casout=input)
+
+        input_table = ImageTable(input)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Compute Morphological Gradient
+        output = biomed.morphological_gradient(images=input_table, copy_vars = ['_id_'])
+
+        # Assert the output
+        self.assertTrue(output.table is not None)
+
+    def test_morphological_gradient_2d_image(self):
+        # Load the input image
+        input = self.s.CASTable('input')
+        self.s.image.loadimages(path='images/famous_selfie.jpg',
+                                caslib='dlib',
+                                casout=input)
+
+        input_table = ImageTable(input)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Compute Morphological Gradient
+        output = biomed.morphological_gradient(images=input_table)
+
+        # Assert the output
+        self.assertFalse(output.table)
+
+    def test_morphological_gradient_invalid_parameters(self):
+        # Load the input image
+        input = self.s.CASTable('input')
+        self.s.image.loadimages(path='biomedimg/Prostate3T-01-0001.nii',
+                                caslib='dlib',
+                                casout=input)
+
+        input_table = ImageTable(input)
+
+        # Construct Biomed object
+        biomed = BiomedImage(cas_session=self.s)
+
+        # Compute Morphological Gradient
+        output = biomed.morphological_gradient(images=input_table, kernel_width = 11,
+                                               kernel_height = 13, copy_vars=['invalid'])
+
+        # Assert the output
+        self.assertTrue(output.table is not None)
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
