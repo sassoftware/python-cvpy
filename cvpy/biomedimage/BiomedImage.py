@@ -18,14 +18,11 @@
 
 ''' BioMedImage analysis tools '''
 
-import sys
-import struct
-import numpy as np
 from typing import List
-from warnings import warn
 from swat import CAS, CASTable
 from cvpy.base.ImageTable import ImageTable
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
+from cvpy.utils.RandomNameGenerator import RandomNameGenerator
 from enum import *
 
 
@@ -92,7 +89,7 @@ class BiomedImage(object):
         >>> input_table = ImageTable(image_table)
         >>> output_table = s.CASTable(...)
         >>> # Call the API
-        >>> BiomedImage.quantify_sphericity(input_table.table,...,output_table)
+        >>> biomed.quantify_sphericity(input_table.table,...,output_table)
 
         """
         conn = self._cas_session
@@ -241,3 +238,92 @@ class BiomedImage(object):
 
         # Change column names in the ImageTable
         rename_columns()
+
+    def morphological_gradient(self, images: ImageTable, kernel_width: int = 3,
+                               kernel_height: int = 3, copy_vars: List[str] = None) -> ImageTable:
+        """
+        Compute the morphological gradient for each 3D grayscale image in the image table.
+
+        Parameters
+        ------------
+        images : :class:'ImageTable'
+            Specifies the image table that contains 3D grayscale images.
+        kernel_width : :class:'int'
+            Specifies the kernel width.
+        kernel_height : :class:'int'
+            Specifies the kernel height.
+        copy_vars : :class:'List[str]'
+            Specifies which columns to copy to the output image table.
+
+        Returns
+        ------------
+        :class:'ImageTable'
+
+        Examples
+        --------
+        >>> # Import classes
+        >>> from swat import CAS
+        >>> from cvpy.base.ImageTable import ImageTable
+        >>> from cvpy.biomedimage.BiomedImage import BiomedImage
+        >>> ## Connect to CAS
+        >>> s = swat.CAS("example.com", 5570)
+        >>> # Construct Biomed object
+        >>> biomed = BiomedImage(s)
+        >>> # Construct table to be passed to the morphological_gradient API
+        >>> image_table = s.CASTable(...)
+        >>> input_table = ImageTable(image_table)
+        >>> # Call the API
+        >>> output_table = biomed.quantify_sphericity(input_table,...)
+        """
+
+        conn = self._cas_session
+        random_name_generator = RandomNameGenerator()
+
+        if copy_vars is None:
+            copy_vars_with_biomed_vars = ['_biomedid_','_biomeddimension_','_sliceindex_']
+        else:
+            copy_vars_with_biomed_vars = []
+            copy_vars_with_biomed_vars += copy_vars
+
+            if '_biomedid_' not in copy_vars_with_biomed_vars:
+                copy_vars_with_biomed_vars.append('_biomedid_')
+            if '_biomeddimension_' not in copy_vars_with_biomed_vars:
+                copy_vars_with_biomed_vars.append('_biomeddimension_')
+            if '_sliceindex_' not in copy_vars_with_biomed_vars:
+                copy_vars_with_biomed_vars.append('_sliceindex_')
+
+        # Export images from 3d to 2d
+        name_image_2d = random_name_generator.generate_name()
+        image_2d = conn.CASTable(name=name_image_2d, replace=True)
+        conn.biomedimage.processbiomedimages(images=dict(table=images.table),
+                                             steps=[dict(stepparameters=dict(steptype='export'))],
+                                             casout=image_2d,
+                                             copyvars=copy_vars)
+
+        # Compute morphological gradient of 2d images
+        name_morph_grad_2d = random_name_generator.generate_name()
+        morph_grad_2d = conn.CASTable(name=name_morph_grad_2d, replace=True)
+        conn.image.processImages(table=image_2d,
+                                 steps=[
+                                     {'options': {
+                                         'functiontype': 'MORPHOLOGY',
+                                         'method': 'GRADIENT',
+                                         'kernelWidth': kernel_width,
+                                         'kernelHeight': kernel_height,
+                                     }}],
+                                 casout=morph_grad_2d,
+                                 copyvars=copy_vars_with_biomed_vars)
+
+        # Import gradient images from 2d to 3d
+        name_morph_grad_3d = random_name_generator.generate_name()
+        morph_grad_3d = conn.CASTable(name=name_morph_grad_3d, replace=True)
+        conn.biomedimage.processbiomedimages(images=dict(table={'name': name_morph_grad_2d}),
+                                             steps=[dict(stepparameters=dict(steptype='import', targetdimension=3))],
+                                             casout=morph_grad_3d,
+                                             copyvars=copy_vars)
+
+        # Delete our temporary tables
+        conn.table.dropTable(image_2d)
+        conn.table.dropTable(morph_grad_2d)
+
+        return ImageTable(morph_grad_3d)
