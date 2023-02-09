@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cvpy.image.Image.Image &mdash; CVPy 1.1.1-dev documentation</title>
@@ -13,10 +13,8 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> CVPy
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CVPy
           </a>
               <div class="version">
                 1.1.1-dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -49,7 +51,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner">CAS Thread Tuner</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner-results">CAS Thread Tuner Results</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#image">Image</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.image.Image.Image</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.image.Image.Image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cvpy.image.Image.Image"><strong>Image</strong></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.convert_to_CAS_column.html">cvpy.image.Image.Image.convert_to_CAS_column</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.convert_wide_to_numpy.html">cvpy.image.Image.Image.convert_wide_to_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.fetch_geometry_info.html">cvpy.image.Image.Image.fetch_geometry_info</a></li>
@@ -79,9 +84,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-      <li>cvpy.image.Image.Image</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">cvpy.image.Image.Image</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/generated/cvpy.image.Image.Image.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -95,42 +100,66 @@
 <h1>cvpy.image.Image.Image<a class="headerlink" href="#cvpy-image-image-image" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="cvpy.image.Image.Image">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cvpy.image.Image.</span></span><span class="sig-name descname"><span class="pre">Image</span></span><a class="headerlink" href="#cvpy.image.Image.Image" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cvpy.image.Image.</span></span><span class="sig-name descname"><span class="pre">Image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cas_session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sassoftware.github.io/python-swat/generated/swat.cas.connection.CAS.html#swat.CAS" title="(in SWAT v1.12.1)"><span class="pre">CAS</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvpy.image.Image.Image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement image processing functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cas_session</strong></dt><dd><p>Specifies the CAS session.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="#cvpy.image.Image.Image" title="cvpy.image.Image.Image"><strong>Image</strong></a></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="cvpy.image.Image.Image.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvpy.image.Image.Image.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cas_session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sassoftware.github.io/python-swat/generated/swat.cas.connection.CAS.html#swat.CAS" title="(in SWAT v1.12.1)"><span class="pre">CAS</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#cvpy.image.Image.Image.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#cvpy.image.Image.Image.__init__" title="cvpy.image.Image.Image.__init__"><strong>__init__</strong></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#cvpy.image.Image.Image.__init__" title="cvpy.image.Image.Image.__init__"><strong>__init__</strong></a>([cas_session])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cvpy.image.Image.Image.convert_to_CAS_column.html#cvpy.image.Image.Image.convert_to_CAS_column" title="cvpy.image.Image.Image.convert_to_CAS_column"><strong>convert_to_CAS_column</strong></a>(s)</p></td>
+<tr class="row-even"><td><p><strong>convert_numpy_to_wide</strong>(numpy_array)</p></td>
+<td><p>Convert a numpy image array to a wide image.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.image.Image.Image.convert_to_CAS_column.html#cvpy.image.Image.Image.convert_to_CAS_column" title="cvpy.image.Image.Image.convert_to_CAS_column"><strong>convert_to_CAS_column</strong></a>(s)</p></td>
 <td><p>Convert a string to CAS column name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.image.Image.Image.convert_wide_to_numpy.html#cvpy.image.Image.Image.convert_wide_to_numpy" title="cvpy.image.Image.Image.convert_wide_to_numpy"><strong>convert_wide_to_numpy</strong></a>(wide_image)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="cvpy.image.Image.Image.convert_wide_to_numpy.html#cvpy.image.Image.Image.convert_wide_to_numpy" title="cvpy.image.Image.Image.convert_wide_to_numpy"><strong>convert_wide_to_numpy</strong></a>(wide_image)</p></td>
 <td><p>Convert a wide image to a numpy image array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cvpy.image.Image.Image.fetch_geometry_info.html#cvpy.image.Image.Image.fetch_geometry_info" title="cvpy.image.Image.Image.fetch_geometry_info"><strong>fetch_geometry_info</strong></a>(imdata[, n, qry, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.image.Image.Image.fetch_geometry_info.html#cvpy.image.Image.Image.fetch_geometry_info" title="cvpy.image.Image.Image.fetch_geometry_info"><strong>fetch_geometry_info</strong></a>(imdata[, n, qry, ...])</p></td>
 <td><p>Fetch geometry information from a CAS table.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.image.Image.Image.fetch_image_array.html#cvpy.image.Image.Image.fetch_image_array" title="cvpy.image.Image.Image.fetch_image_array"><strong>fetch_image_array</strong></a>(imdata[, n, qry, image, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="cvpy.image.Image.Image.fetch_image_array.html#cvpy.image.Image.Image.fetch_image_array" title="cvpy.image.Image.Image.fetch_image_array"><strong>fetch_image_array</strong></a>(imdata[, n, qry, image, ...])</p></td>
 <td><p>Fetch image array from a CAS table.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cvpy.image.Image.Image.get_image_array.html#cvpy.image.Image.Image.get_image_array" title="cvpy.image.Image.Image.get_image_array"><strong>get_image_array</strong></a>(image_binaries, dimensions, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.image.Image.Image.get_image_array.html#cvpy.image.Image.Image.get_image_array" title="cvpy.image.Image.Image.get_image_array"><strong>get_image_array</strong></a>(image_binaries, dimensions, ...)</p></td>
 <td><p>Get an image from a fetched array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_const_ctype.html#cvpy.image.Image.Image.get_image_array_const_ctype" title="cvpy.image.Image.Image.get_image_array_const_ctype"><strong>get_image_array_const_ctype</strong></a>(image_binaries, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_const_ctype.html#cvpy.image.Image.Image.get_image_array_const_ctype" title="cvpy.image.Image.Image.get_image_array_const_ctype"><strong>get_image_array_const_ctype</strong></a>(image_binaries, ...)</p></td>
 <td><p>Get an image array with a constant channel type from a CAS table.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_from_row.html#cvpy.image.Image.Image.get_image_array_from_row" title="cvpy.image.Image.Image.get_image_array_from_row"><strong>get_image_array_from_row</strong></a>(image_binary, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_from_row.html#cvpy.image.Image.Image.get_image_array_from_row" title="cvpy.image.Image.Image.get_image_array_from_row"><strong>get_image_array_from_row</strong></a>(image_binary, ...)</p></td>
 <td><p>Get a 3D image from a row.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>mask_image</strong>(image, mask, casout[, decode, ...])</p></td>
+<td><p>Applies masking to an ImageTable. Parameters ------------ image : <strong>cvpy.ImageTable</strong>     Specifies the input image table to be masked. mask : <strong>cvpy.ImageTable</strong>     Specifies the image table that will be used for masking. casout : <strong>swat.CASTable</strong>     Specifies the output image table. decode : <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><strong>bool</strong></a>     Specifies whether to decode the output image table. copy_vars : <strong>list[enum.Enum]</strong>     Specifies which columns to copy to the output image table. Returns ------------ None.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>cas_session</strong></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>

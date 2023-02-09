@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>cvpy.image.Image.Image.get_image_array_from_row &mdash; CVPy 1.1.1-dev documentation</title>
@@ -13,10 +13,8 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> CVPy
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CVPy
           </a>
               <div class="version">
                 1.1.1-dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -54,7 +56,10 @@
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.convert_wide_to_numpy.html">cvpy.image.Image.Image.convert_wide_to_numpy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.fetch_geometry_info.html">cvpy.image.Image.Image.fetch_geometry_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.fetch_image_array.html">cvpy.image.Image.Image.fetch_image_array</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.image.Image.Image.get_image_array_from_row</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.image.Image.Image.get_image_array_from_row</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cvpy.image.Image.Image.get_image_array_from_row"><strong>Image.get_image_array_from_row()</strong></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.get_image_array.html">cvpy.image.Image.Image.get_image_array</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_const_ctype.html">cvpy.image.Image.Image.get_image_array_const_ctype</a></li>
 </ul>
@@ -79,9 +84,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../api.html">API Reference</a> &raquo;</li>
-      <li>cvpy.image.Image.Image.get_image_array_from_row</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">cvpy.image.Image.Image.get_image_array_from_row</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/generated/cvpy.image.Image.Image.get_image_array_from_row.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -98,23 +103,23 @@
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Image.</span></span><span class="sig-name descname"><span class="pre">get_image_array_from_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_binary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">myformat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvpy.image.Image.Image.get_image_array_from_row" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a 3D image from a row.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>image_binary</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.10)"><strong>bytes</strong></a></span></dt><dd><p>Specifies the image binary.</p>
+<dt><strong>image_binary</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><strong>bytes</strong></a></span></dt><dd><p>Specifies the image binary.</p>
 </dd>
-<dt><strong>dimension</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><strong>int</strong></a></span></dt><dd><p>Specifies the dimension of the image.</p>
+<dt><strong>dimension</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a></span></dt><dd><p>Specifies the dimension of the image.</p>
 </dd>
-<dt><strong>resolution</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><strong>numpy.ndarray</strong></a></span></dt><dd><p>Specifies the resolution of the image.</p>
+<dt><strong>resolution</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><strong>numpy.ndarray</strong></a></span></dt><dd><p>Specifies the resolution of the image.</p>
 </dd>
-<dt><strong>myformat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><strong>str</strong></a></span></dt><dd><p>Specifies the format of the image.</p>
+<dt><strong>myformat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><strong>str</strong></a></span></dt><dd><p>Specifies the format of the image.</p>
 </dd>
-<dt><strong>channel_count</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><strong>int</strong></a></span><span class="opt-sep">, </span><span class="optional">optional</span></dt><dd><p>Specifies the number of channels that the image has.</p>
+<dt><strong>channel_count</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a></span><span class="opt-sep">, </span><span class="optional">optional</span></dt><dd><p>Specifies the number of channels that the image has.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.23)"><strong>numpy.ndarray</strong></a></dt><dd></dd>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><strong>numpy.ndarray</strong></a></dt><dd></dd>
 </dl>
 </dd>
 </dl>

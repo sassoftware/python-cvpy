@@ -25,15 +25,20 @@
 
    .. autosummary::
    
+      ~ImageTable.CHAR_TYPE
       ~ImageTable.DIMENSION_COL
       ~ImageTable.FORMAT_COL
       ~ImageTable.ID_COL
       ~ImageTable.IMAGE_COL
+      ~ImageTable.INT64_TYPE
       ~ImageTable.LABEL_COL
       ~ImageTable.PATH_COL
       ~ImageTable.RESOLUTION_COL
       ~ImageTable.SIZE_COL
       ~ImageTable.TYPE_COL
+      ~ImageTable.VARBINARY_IMAGE_TYPE
+      ~ImageTable.VARBINARY_TYPE
+      ~ImageTable.VARCHAR_TYPE
       ~ImageTable.dimension
       ~ImageTable.id
       ~ImageTable.image

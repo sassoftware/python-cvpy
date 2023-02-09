@@ -14,6 +14,8 @@
    .. autosummary::
    
       ~BiomedImage.__init__
+      ~BiomedImage.mask_image
+      ~BiomedImage.morphological_gradient
       ~BiomedImage.quantify_sphericity
    
    

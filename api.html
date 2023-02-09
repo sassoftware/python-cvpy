@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API Reference &mdash; CVPy 1.1.1-dev documentation</title>
@@ -13,10 +13,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -29,14 +27,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> CVPy
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            CVPy
           </a>
               <div class="version">
                 1.1.1-dev
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -102,8 +104,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>API Reference</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -118,10 +120,6 @@
 <section id="biomedical-images">
 <h2>Biomedical Images<a class="headerlink" href="#biomedical-images" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html#cvpy.biomedimage.BiomedImage.BiomedImage" title="cvpy.biomedimage.BiomedImage.BiomedImage"><strong>BiomedImage</strong></a>([cas_session])</p></td>
 <td><p>Implement biomedical image processing functions.</p></td>
@@ -135,10 +133,6 @@
 <section id="cas-thread-tuner">
 <h2>CAS Thread Tuner<a class="headerlink" href="#cas-thread-tuner" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.html#cvpy.utils.CASThreadTuner.CASThreadTuner" title="cvpy.utils.CASThreadTuner.CASThreadTuner"><strong>CASThreadTuner</strong></a>()</p></td>
 <td><p></p></td>
@@ -152,10 +146,6 @@
 <section id="cas-thread-tuner-results">
 <h2>CAS Thread Tuner Results<a class="headerlink" href="#cas-thread-tuner-results" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.html#cvpy.base.CASThreadTunerResults.CASThreadTunerResults" title="cvpy.base.CASThreadTunerResults.CASThreadTunerResults"><strong>CASThreadTunerResults</strong></a>([cas_server_mode, ...])</p></td>
 <td><p>Store and present results for the CAS thread optimization tool.</p></td>
@@ -169,13 +159,9 @@
 <section id="image">
 <h2>Image<a class="headerlink" href="#image" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.html#cvpy.image.Image.Image" title="cvpy.image.Image.Image"><strong>Image</strong></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.html#cvpy.image.Image.Image" title="cvpy.image.Image.Image"><strong>Image</strong></a>([cas_session])</p></td>
+<td><p>Implement image processing functions.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_to_CAS_column.html#cvpy.image.Image.Image.convert_to_CAS_column" title="cvpy.image.Image.Image.convert_to_CAS_column"><strong>Image.convert_to_CAS_column</strong></a>(s)</p></td>
 <td><p>Convert a string to CAS column name.</p></td>
@@ -204,10 +190,6 @@
 <section id="imagetable">
 <h2>ImageTable<a class="headerlink" href="#imagetable" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><strong>ImageTable</strong></a>(table[, image, dimension, ...])</p></td>
 <td><p>Interface with a CASTable of images.</p></td>
@@ -224,10 +206,6 @@
 <section id="visualization-reference">
 <h2>Visualization Reference<a class="headerlink" href="#visualization-reference" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_image_slice.html#cvpy.visualization.display_image_slice" title="cvpy.visualization.display_image_slice"><strong>display_image_slice</strong></a>(images, dims, ress, ...)</p></td>
 <td><p>Display an image slice in 3D.</p></td>
