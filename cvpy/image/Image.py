@@ -395,6 +395,7 @@ class Image(object):
                    copy_vars: list(Enum) = None):
         """
         Applies masking to an ImageTable.
+
         Parameters
         ------------
         image : :class:`cvpy.ImageTable`

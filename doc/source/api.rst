@@ -17,6 +17,8 @@ Biomedical Images
 
     BiomedImage
     BiomedImage.quantify_sphericity
+    BiomedImage.mask_image
+    BiomedImage.morphological_gradient
 
 CAS Thread Tuner
 ----------------
@@ -52,11 +54,13 @@ Image
     Image
     Image.convert_to_CAS_column
     Image.convert_wide_to_numpy
+    Image.convert_numpy_to_wide
     Image.fetch_geometry_info
     Image.fetch_image_array
     Image.get_image_array_from_row
     Image.get_image_array
     Image.get_image_array_const_ctype
+    Image.mask_image
 
 
 ImageTable
