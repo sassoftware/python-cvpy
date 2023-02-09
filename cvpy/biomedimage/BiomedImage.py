@@ -123,6 +123,7 @@ class BiomedImage(object):
                    add_columns: list(Enum) = None, copy_vars: list(Enum) = None):
         """
         Applies masking to an ImageTable.
+
         Parameters
         ------------
         image : :class:`cvpy.ImageTable`
