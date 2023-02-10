@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity &mdash; CVPy 1.1.1-dev documentation</title>
+  <title>cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient &mdash; CVPy 1.1.1-dev documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
@@ -18,8 +18,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image" href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html" />
-    <link rel="prev" title="cvpy.biomedimage.BiomedImage.BiomedImage" href="cvpy.biomedimage.BiomedImage.BiomedImage.html" /> 
+    <link rel="next" title="cvpy.utils.CASThreadTuner.CASThreadTuner" href="cvpy.utils.CASThreadTuner.CASThreadTuner.html" />
+    <link rel="prev" title="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image" href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,12 +49,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#biomedical-images">Biomedical Images</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.html">cvpy.biomedimage.BiomedImage.BiomedImage</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity"><strong>BiomedImage.quantify_sphericity()</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html">cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html">cvpy.biomedimage.BiomedImage.BiomedImage.mask_image</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient"><strong>BiomedImage.morphological_gradient()</strong></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html">cvpy.biomedimage.BiomedImage.BiomedImage.mask_image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html">cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner">CAS Thread Tuner</a></li>
@@ -82,9 +82,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
-      <li class="breadcrumb-item active">cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity</li>
+      <li class="breadcrumb-item active">cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/generated/cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/generated/cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -92,25 +92,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cvpy-biomedimage-biomedimage-biomedimage-quantify-sphericity">
-<h1>cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity<a class="headerlink" href="#cvpy-biomedimage-biomedimage-biomedimage-quantify-sphericity" title="Permalink to this heading">¶</a></h1>
+  <section id="cvpy-biomedimage-biomedimage-biomedimage-morphological-gradient">
+<h1>cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient<a class="headerlink" href="#cvpy-biomedimage-biomedimage-biomedimage-morphological-gradient" title="Permalink to this heading">¶</a></h1>
 <dl class="py method">
-<dt class="sig sig-object py" id="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity">
-<span class="sig-prename descclassname"><span class="pre">BiomedImage.</span></span><span class="sig-name descname"><span class="pre">quantify_sphericity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><span class="pre">ImageTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_connectivity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LabelConnectivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphericity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sassoftware.github.io/python-swat/generated/swat.cas.table.CASTable.html#swat.cas.table.CASTable" title="(in SWAT v1.12.1)"><span class="pre">CASTable</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Quantify the sphericity for the given component from a CAS table.</p>
+<dt class="sig sig-object py" id="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient">
+<span class="sig-prename descclassname"><span class="pre">BiomedImage.</span></span><span class="sig-name descname"><span class="pre">morphological_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><span class="pre">ImageTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><span class="pre">ImageTable</span></a></span></span><a class="headerlink" href="#cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the morphological gradient for each 3D grayscale image in the image table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>image_table: ImageTable</strong></dt><dd><p>Specifies the CAS table that contains the image binaries.</p>
+<dt><strong>images</strong><span class="classifier">:class:’ImageTable’</span></dt><dd><p>Specifies the image table that contains 3D grayscale images.</p>
 </dd>
-<dt><strong>use_spacing: bool</strong></dt><dd><p>When set to True, use image spacing in the sphericity calculation.</p>
+<dt><strong>kernel_width</strong><span class="classifier">:class:’int’</span></dt><dd><p>Specifies the kernel width.</p>
 </dd>
-<dt><strong>input_background: float</strong></dt><dd><p>Specifies the background value in input images.</p>
+<dt><strong>kernel_height</strong><span class="classifier">:class:’int’</span></dt><dd><p>Specifies the kernel height.</p>
 </dd>
-<dt><strong>label_connectivity: LabelConnectivity.FACE | LabelConnectivity.VERTEX</strong></dt><dd><p>Specifies the level of connectivity for connected components: LabelConnectivity.FACE or LabelConnectivity.VERTEX</p>
+<dt><strong>copy_vars</strong><span class="classifier">:class:’List[str]’</span></dt><dd><p>Specifies which columns to copy to the output image table.</p>
 </dd>
-<dt><strong>sphericity: CASTable</strong></dt><dd><p>Specifies the output CAS table.</p>
+</dl>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>:class:’ImageTable’</dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -119,17 +122,15 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">swat</span> <span class="kn">import</span> <span class="n">CAS</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvpy.base.ImageTable</span> <span class="kn">import</span> <span class="n">ImageTable</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvpy.biomedimage.BiomedImage</span> <span class="kn">import</span> <span class="n">BiomedImage</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">cvpy.biomedimage.LabelConnectivity</span> <span class="kn">import</span> <span class="n">LabelConnectivity</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1">## Connect to CAS</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">swat</span><span class="o">.</span><span class="n">CAS</span><span class="p">(</span><span class="s2">&quot;example.com&quot;</span><span class="p">,</span> <span class="mi">5570</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct Biomed object</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">biomed</span> <span class="o">=</span> <span class="n">BiomedImage</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct tables that are parameters to the quantify_sphericity API</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Construct table to be passed to the morphological_gradient API</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">image_table</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">CASTable</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">input_table</span> <span class="o">=</span> <span class="n">ImageTable</span><span class="p">(</span><span class="n">image_table</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">output_table</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">CASTable</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Call the API</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">biomed</span><span class="o">.</span><span class="n">quantify_sphericity</span><span class="p">(</span><span class="n">input_table</span><span class="o">.</span><span class="n">table</span><span class="p">,</span><span class="o">...</span><span class="p">,</span><span class="n">output_table</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">output_table</span> <span class="o">=</span> <span class="n">biomed</span><span class="o">.</span><span class="n">quantify_sphericity</span><span class="p">(</span><span class="n">input_table</span><span class="p">,</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -140,8 +141,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cvpy.biomedimage.BiomedImage.BiomedImage.html" class="btn btn-neutral float-left" title="cvpy.biomedimage.BiomedImage.BiomedImage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html" class="btn btn-neutral float-right" title="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html" class="btn btn-neutral float-left" title="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cvpy.utils.CASThreadTuner.CASThreadTuner.html" class="btn btn-neutral float-right" title="cvpy.utils.CASThreadTuner.CASThreadTuner" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

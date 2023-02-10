@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cvpy.biomedimage.BiomedImage.BiomedImage.mask_image &mdash; CVPy 1.1.1-dev documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient" href="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html" />
+    <link rel="prev" title="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity" href="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            CVPy
+          </a>
+              <div class="version">
+                1.1.1-dev
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#biomedical-images">Biomedical Images</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.html">cvpy.biomedimage.BiomedImage.BiomedImage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html">cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.biomedimage.BiomedImage.BiomedImage.mask_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cvpy.biomedimage.BiomedImage.BiomedImage.mask_image"><strong>BiomedImage.mask_image()</strong></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html">cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner">CAS Thread Tuner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner-results">CAS Thread Tuner Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#image">Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#imagetable">ImageTable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#visualization-reference">Visualization Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CVPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">cvpy.biomedimage.BiomedImage.BiomedImage.mask_image</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/generated/cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cvpy-biomedimage-biomedimage-biomedimage-mask-image">
+<h1>cvpy.biomedimage.BiomedImage.BiomedImage.mask_image<a class="headerlink" href="#cvpy-biomedimage-biomedimage-biomedimage-mask-image" title="Permalink to this heading">¶</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image">
+<span class="sig-prename descclassname"><span class="pre">BiomedImage.</span></span><span class="sig-name descname"><span class="pre">mask_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><span class="pre">ImageTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><span class="pre">ImageTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">casout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sassoftware.github.io/python-swat/generated/swat.cas.table.CASTable.html#swat.cas.table.CASTable" title="(in SWAT v1.12.1)"><span class="pre">CASTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvpy.biomedimage.BiomedImage.BiomedImage.mask_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies masking to an ImageTable.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>image</strong><span class="classifier"><strong>cvpy.ImageTable</strong></span></dt><dd><p>Specifies the input image table to be masked.</p>
+</dd>
+<dt><strong>mask</strong><span class="classifier"><strong>cvpy.ImageTable</strong></span></dt><dd><p>Specifies the image table that will be used for masking.</p>
+</dd>
+<dt><strong>input_background</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a></span></dt><dd><p>Specifies the pixel intensity of the input image background.</p>
+</dd>
+<dt><strong>casout</strong><span class="classifier"><strong>swat.CASTable</strong></span></dt><dd><p>Specifies the output image table.</p>
+</dd>
+<dt><strong>decode</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><strong>bool</strong></a></span></dt><dd><p>Specifies whether to decode the output image table.</p>
+</dd>
+<dt><strong>output_background</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a></span></dt><dd><p>Specifies the pixel intensity of the output image background.</p>
+</dd>
+<dt><strong>add_columns</strong><span class="classifier"><strong>list[enum.Enum]</strong></span></dt><dd><p>Specifies the metadata columns to be added to the output image table.</p>
+</dd>
+<dt><strong>copy_vars</strong><span class="classifier"><strong>list[enum.Enum]</strong></span></dt><dd><p>Specifies which columns to copy to the output image table.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>None</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html" class="btn btn-neutral float-left" title="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html" class="btn btn-neutral float-right" title="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021 SAS Institute Inc. All Rights Reserved..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

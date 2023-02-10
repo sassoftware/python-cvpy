@@ -1,0 +1,6 @@
+﻿cvpy.biomedimage.BiomedImage.BiomedImage.mask\_image
+====================================================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImage
+
+.. automethod:: BiomedImage.mask_image

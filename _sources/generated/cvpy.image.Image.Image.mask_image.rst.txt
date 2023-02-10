@@ -1,0 +1,6 @@
+﻿cvpy.image.Image.Image.mask\_image
+==================================
+
+.. currentmodule:: cvpy.image.Image
+
+.. automethod:: Image.mask_image

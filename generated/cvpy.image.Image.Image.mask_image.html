@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cvpy.image.Image.Image.get_image_array &mdash; CVPy 1.1.1-dev documentation</title>
+  <title>cvpy.image.Image.Image.mask_image &mdash; CVPy 1.1.1-dev documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/theme.css" type="text/css" />
@@ -18,8 +18,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="cvpy.image.Image.Image.get_image_array_const_ctype" href="cvpy.image.Image.Image.get_image_array_const_ctype.html" />
-    <link rel="prev" title="cvpy.image.Image.Image.get_image_array_from_row" href="cvpy.image.Image.Image.get_image_array_from_row.html" /> 
+    <link rel="next" title="cvpy.base.ImageTable.ImageTable" href="cvpy.base.ImageTable.ImageTable.html" />
+    <link rel="prev" title="cvpy.image.Image.Image.get_image_array_const_ctype" href="cvpy.image.Image.Image.get_image_array_const_ctype.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -58,12 +58,12 @@
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.fetch_geometry_info.html">cvpy.image.Image.Image.fetch_geometry_info</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.fetch_image_array.html">cvpy.image.Image.Image.fetch_image_array</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_from_row.html">cvpy.image.Image.Image.get_image_array_from_row</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.image.Image.Image.get_image_array</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cvpy.image.Image.Image.get_image_array"><strong>Image.get_image_array()</strong></a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.get_image_array.html">cvpy.image.Image.Image.get_image_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_const_ctype.html">cvpy.image.Image.Image.get_image_array_const_ctype</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.image.Image.Image.mask_image</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cvpy.image.Image.Image.mask_image"><strong>Image.mask_image()</strong></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.get_image_array_const_ctype.html">cvpy.image.Image.Image.get_image_array_const_ctype</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cvpy.image.Image.Image.mask_image.html">cvpy.image.Image.Image.mask_image</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#imagetable">ImageTable</a></li>
@@ -88,9 +88,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
-      <li class="breadcrumb-item active">cvpy.image.Image.Image.get_image_array</li>
+      <li class="breadcrumb-item active">cvpy.image.Image.Image.mask_image</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/generated/cvpy.image.Image.Image.get_image_array.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/generated/cvpy.image.Image.Image.mask_image.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -98,32 +98,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="cvpy-image-image-image-get-image-array">
-<h1>cvpy.image.Image.Image.get_image_array<a class="headerlink" href="#cvpy-image-image-image-get-image-array" title="Permalink to this heading">¶</a></h1>
+  <section id="cvpy-image-image-image-mask-image">
+<h1>cvpy.image.Image.Image.mask_image<a class="headerlink" href="#cvpy-image-image-image-mask-image" title="Permalink to this heading">¶</a></h1>
 <dl class="py method">
-<dt class="sig sig-object py" id="cvpy.image.Image.Image.get_image_array">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Image.</span></span><span class="sig-name descname"><span class="pre">get_image_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_binaries</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolutions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvpy.image.Image.Image.get_image_array" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an image from a fetched array.</p>
+<dt class="sig sig-object py" id="cvpy.image.Image.Image.mask_image">
+<span class="sig-prename descclassname"><span class="pre">Image.</span></span><span class="sig-name descname"><span class="pre">mask_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><span class="pre">ImageTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><span class="pre">ImageTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">casout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sassoftware.github.io/python-swat/generated/swat.cas.table.CASTable.html#swat.cas.table.CASTable" title="(in SWAT v1.12.1)"><span class="pre">CASTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">decode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_vars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvpy.image.Image.Image.mask_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies masking to an ImageTable.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
-<dt><strong>image_binaries</strong><span class="classifier"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/version/0.19.2/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.19.2)"><strong>pandas.Series</strong></a></span></dt><dd><p>Specifies the image binaries</p>
+<dt><strong>image</strong><span class="classifier"><strong>cvpy.ImageTable</strong></span></dt><dd><p>Specifies the input image table to be masked.</p>
 </dd>
-<dt><strong>dimensions</strong><span class="classifier"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/version/0.19.2/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.19.2)"><strong>pandas.Series</strong></a></span></dt><dd><p>Specifies the dimensions of the images.</p>
+<dt><strong>mask</strong><span class="classifier"><strong>cvpy.ImageTable</strong></span></dt><dd><p>Specifies the image table that will be used for masking.</p>
 </dd>
-<dt><strong>resolutions</strong><span class="classifier"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/version/0.19.2/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.19.2)"><strong>pandas.Series</strong></a></span></dt><dd><p>Specifies the resolutions of the images.</p>
+<dt><strong>casout</strong><span class="classifier"><strong>swat.CASTable</strong></span></dt><dd><p>Specifies the output image table.</p>
 </dd>
-<dt><strong>formats</strong><span class="classifier"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/version/0.19.2/generated/pandas.Series.html#pandas.Series" title="(in pandas v0.19.2)"><strong>pandas.Series</strong></a></span></dt><dd><p>Specifies the image formats.</p>
+<dt><strong>decode</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><strong>bool</strong></a></span></dt><dd><p>Specifies whether to decode the output image table.</p>
 </dd>
-<dt><strong>n</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a></span></dt><dd><p>Specifies the dimension index.</p>
+<dt><strong>copy_vars</strong><span class="classifier"><strong>list[enum.Enum]</strong></span></dt><dd><p>Specifies which columns to copy to the output image table.</p>
 </dd>
-<dt><strong>channel_count</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a></span><span class="opt-sep">, </span><span class="optional">optional</span></dt><dd><p>Specifies the number of channels that the image has.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><strong>numpy.ndarray</strong></a></dt><dd></dd>
+<dt><strong>Returns</strong></dt><dd></dd>
+<dt><strong>————</strong></dt><dd></dd>
+<dt><strong>None</strong></dt><dd></dd>
 </dl>
 </dd>
 </dl>
@@ -135,8 +131,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cvpy.image.Image.Image.get_image_array_from_row.html" class="btn btn-neutral float-left" title="cvpy.image.Image.Image.get_image_array_from_row" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="cvpy.image.Image.Image.get_image_array_const_ctype.html" class="btn btn-neutral float-right" title="cvpy.image.Image.Image.get_image_array_const_ctype" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cvpy.image.Image.Image.get_image_array_const_ctype.html" class="btn btn-neutral float-left" title="cvpy.image.Image.Image.get_image_array_const_ctype" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cvpy.base.ImageTable.ImageTable.html" class="btn btn-neutral float-right" title="cvpy.base.ImageTable.ImageTable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

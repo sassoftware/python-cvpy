@@ -53,6 +53,8 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html">cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html">cvpy.biomedimage.BiomedImage.BiomedImage.mask_image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html">cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner">CAS Thread Tuner</a></li>
@@ -120,10 +122,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#cvpy.biomedimage.BiomedImage.BiomedImage.__init__" title="cvpy.biomedimage.BiomedImage.BiomedImage.__init__"><strong>__init__</strong></a>([cas_session])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>mask_image</strong>(image, mask, casout[, ...])</p></td>
-<td><p>Applies masking to an ImageTable. Parameters ------------ image : <strong>cvpy.ImageTable</strong>     Specifies the input image table to be masked. mask : <strong>cvpy.ImageTable</strong>     Specifies the image table that will be used for masking. input_background : <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a>     Specifies the pixel intensity of the input image background. casout : <strong>swat.CASTable</strong>     Specifies the output image table. decode : <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><strong>bool</strong></a>     Specifies whether to decode the output image table. output_background : <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><strong>int</strong></a>     Specifies the pixel intensity of the output image background. add_columns : <strong>list[enum.Enum]</strong>     Specifies the metadata columns to be added to the output image table. copy_vars : <strong>list[enum.Enum]</strong>     Specifies which columns to copy to the output image table.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html#cvpy.biomedimage.BiomedImage.BiomedImage.mask_image" title="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image"><strong>mask_image</strong></a>(image, mask, casout[, ...])</p></td>
+<td><p>Applies masking to an ImageTable.</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>morphological_gradient</strong>(images[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html#cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient" title="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient"><strong>morphological_gradient</strong></a>(images[, ...])</p></td>
 <td><p>Compute the morphological gradient for each 3D grayscale image in the image table.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html#cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity" title="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity"><strong>quantify_sphericity</strong></a>(image_table, ...)</p></td>

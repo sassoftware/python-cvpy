@@ -1,0 +1,6 @@
+﻿cvpy.image.Image.Image.convert\_numpy\_to\_wide
+===============================================
+
+.. currentmodule:: cvpy.image.Image
+
+.. automethod:: Image.convert_numpy_to_wide
