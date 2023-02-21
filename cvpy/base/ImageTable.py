@@ -63,134 +63,74 @@ class ImageTable(object):
     def __init__(self, table: CASTable, image: str = None, dimension: str = None, resolution: str = None,
                  imageFormat: str = None, path: str = None, label: str = None, id: str = None, size: str = None,
                  type: str = None):
-        self._table = table
 
-        # Get the column data types
-        column_dtype_lookup = dict()
-        if table:
-            column_dtype_lookup = \
-                table.columninfo()['ColumnInfo'][['Column', 'Type']].set_index('Column').to_dict()['Type']
+        # Add _table attribute and set the table property
+        self._table = None
+        self.table = table
 
-        # Set various columns if specified, or set them to their default values
-        # Verify the columns have supported data types
+        # Add an attribute for each column and then set the corresponding property
         self._image = None
-        if image:
-            self._image = image
-            if table and self._image not in table.columns:
-                raise Exception(f'Column {self._image} is not present in the table.')
-        elif table and ImageTable.IMAGE_COL in table.columns:
-            self._image = ImageTable.IMAGE_COL
-
-        if self._image and table:
-            if column_dtype_lookup[self._image].lower() not in (ImageTable.VARBINARY_IMAGE_TYPE,
-                                                                ImageTable.VARCHAR_TYPE):
-                raise Exception(f'Column {self._image} has an unsupported data type. '
-                                f'The supported datatypes for this column are: ({ImageTable.VARBINARY_IMAGE_TYPE}, '
-                                f'{ImageTable.VARCHAR_TYPE})')
+        self.image = image
 
         self._dimension = None
-        if dimension:
-            self._dimension = dimension
-            if table and self._dimension not in table.columns:
-                raise Exception(f'Column {self._dimension} is not present in the table.')
-        elif table and ImageTable.DIMENSION_COL in table.columns:
-            self._dimension = ImageTable.DIMENSION_COL
-
-        if self._dimension and table:
-            if column_dtype_lookup[self._dimension].lower() != ImageTable.INT64_TYPE:
-                raise Exception(f'Column {self._dimension} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.INT64_TYPE}.')
+        self.dimension = dimension
 
         self._resolution = None
-        if resolution:
-            self._resolution = resolution
-            if table and self._resolution not in table.columns:
-                raise Exception(f'Column {self._resolution} is not present in the table.')
-        elif table and ImageTable.RESOLUTION_COL in table.columns:
-            self._resolution = ImageTable.RESOLUTION_COL
-
-        if self._resolution and table:
-            if column_dtype_lookup[self._resolution].lower() != ImageTable.VARBINARY_TYPE:
-                raise Exception(f'Column {self._resolution} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.VARBINARY_TYPE}.')
+        self.resolution = resolution
 
         self._imageFormat = None
-        if imageFormat:
-            self._imageFormat = imageFormat
-            if table and self._imageFormat not in table.columns:
-                raise Exception(f'Column {self._imageFormat} is not present in the table.')
-        elif table and ImageTable.FORMAT_COL in table.columns:
-            self._imageFormat = ImageTable.FORMAT_COL
-
-        if self._imageFormat and table:
-            if column_dtype_lookup[self._imageFormat].lower() != ImageTable.INT64_TYPE:
-                raise Exception(f'Column {self._imageFormat} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.INT64_TYPE}.')
+        self.imageFormat = imageFormat
 
         self._path = None
-        if path:
-            self._path = path
-            if table and self._path not in table.columns:
-                raise Exception(f'Column {self._path} is not present in the table.')
-        elif table and ImageTable.PATH_COL in table.columns:
-            self._path = ImageTable.PATH_COL
-
-        if self._path and table:
-            if column_dtype_lookup[self._path].lower() != ImageTable.VARCHAR_TYPE:
-                raise Exception(f'Column {self._path} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.VARCHAR_TYPE}.')
+        self.path = path
 
         self._label = None
-        if label:
-            self._label = label
-            if table and self._label not in table.columns:
-                raise Exception(f'Column {self._label} is not present in the table.')
-        elif table and ImageTable.LABEL_COL in table.columns:
-            self._label = ImageTable.LABEL_COL
-
-        if self._label and table:
-            if column_dtype_lookup[self._label].lower() != ImageTable.VARCHAR_TYPE:
-                raise Exception(f'Column {self._label} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.VARCHAR_TYPE}.')
+        self.label = label
 
         self._id = None
-        if id:
-            self._id = id
-            if table and self._id not in table.columns:
-                raise Exception(f'Column {self._id} is not present in the table.')
-        elif table and ImageTable.ID_COL in table.columns:
-            self._id = ImageTable.ID_COL
-
-        if self._id and table:
-            if column_dtype_lookup[self._id].lower() != ImageTable.INT64_TYPE:
-                raise Exception(f'Column {self._id} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.INT64_TYPE}.')
+        self.id = id
 
         self._size = None
-        if size:
-            self._size = size
-            if table and self._size not in table.columns:
-                raise Exception(f'Column {self._size} is not present in the table.')
-        elif table and ImageTable.SIZE_COL in table.columns:
-            self._size = ImageTable.SIZE_COL
-
-        if self._size and table:
-            if column_dtype_lookup[self._size].lower() != ImageTable.INT64_TYPE:
-                raise Exception(f'Column {self._size} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.INT64_TYPE}.')
+        self.size = size
 
         self._type = None
-        if type:
-            self._type = type
-            if table and self._type not in table.columns:
-                raise Exception(f'Column {self._type} is not present in the table.')
-        elif table and ImageTable.TYPE_COL in table.columns:
-            self._type = ImageTable.TYPE_COL
+        self.type = type
 
-        if self._type and table:
-            if column_dtype_lookup[self._type].lower() != ImageTable.CHAR_TYPE:
-                raise Exception(f'Column {self._type} has an unsupported data type. '
-                                f'The supported datatype for this column is: {ImageTable.CHAR_TYPE}.')
+    # Function to validate and set column attribute on ImageTable
+    def validate_set_column(self, column, column_name, default_column_name, valid_column_datatypes):
+
+        if self.table is None:
+            # No validations are possible if table is not set
+            if column_name:
+                # Set the column attribute to user specified column_name
+                setattr(self, f'_{column}', column_name)
+            else:
+                # Set the column attribute to default_column_name
+                setattr(self, f'_{column}', default_column_name)
+            return
+
+        # Validate presence of the column and its datatype
+        if column_name:
+            # Check if column is present in the table
+            if column_name.lower() not in self._column_dtype_lookup.keys():
+                raise Exception(f'Column {column_name} is not present in the table.')
+        else:
+            # Check if default column name is present in the table
+            if default_column_name.lower() in self._column_dtype_lookup.keys():
+                column_name = default_column_name
+
+        setattr(self, f'_{column}', column_name)
+
+        # Data type validation
+        if column_name and self._column_dtype_lookup.get(column_name.lower()) not in valid_column_datatypes:
+            if len(valid_column_datatypes) == 1:
+                message = f'Column {column_name} has an unsupported data type. ' \
+                          f'The supported datatype for this column is: {valid_column_datatypes[0]}.'
+            else:
+                message = f'Column {column_name} has an unsupported data type. ' \
+                          f'The supported datatypes for this column are: ({", ".join(valid_column_datatypes)}).'
+
+            raise Exception(message)
 
     @property
     def table(self) -> CASTable:
@@ -198,6 +138,12 @@ class ImageTable(object):
 
     @table.setter
     def table(self, table) -> None:
+        self._column_dtype_lookup = None
+        if table is not None:
+            self._column_dtype_lookup = \
+                table.columninfo()['ColumnInfo'][['Column', 'Type']].set_index('Column').to_dict()['Type']
+            # Lowercase keys in _column_dtype_lookup
+            self._column_dtype_lookup = {k.lower(): v.lower() for k, v in self._column_dtype_lookup.items()}
         self._table = table
 
     @property
@@ -206,9 +152,8 @@ class ImageTable(object):
 
     @image.setter
     def image(self, image) -> None:
-        if image not in self.table.columns:
-            raise Exception(f'Column "{image}" is not present in the table.')
-        self._image = image
+        self.validate_set_column('image', image, ImageTable.IMAGE_COL,
+                                 [ImageTable.VARBINARY_IMAGE_TYPE, ImageTable.VARCHAR_TYPE])
 
     @property
     def dimension(self) -> str:
@@ -216,9 +161,7 @@ class ImageTable(object):
 
     @dimension.setter
     def dimension(self, dimension) -> None:
-        if dimension not in self.table.columns:
-            raise Exception(f'Column "{dimension}" is not present in the table.')
-        self._dimension = dimension
+        self.validate_set_column('dimension', dimension, ImageTable.DIMENSION_COL, [ImageTable.INT64_TYPE])
 
     @property
     def resolution(self) -> str:
@@ -226,9 +169,7 @@ class ImageTable(object):
 
     @resolution.setter
     def resolution(self, resolution) -> None:
-        if resolution not in self.table.columns:
-            raise Exception(f'Column "{resolution}" is not present in the table.')
-        self._resolution = resolution
+        self.validate_set_column('resolution', resolution, ImageTable.RESOLUTION_COL, [ImageTable.VARBINARY_TYPE])
 
     @property
     def imageFormat(self) -> str:
@@ -236,9 +177,7 @@ class ImageTable(object):
 
     @imageFormat.setter
     def imageFormat(self, imageFormat) -> None:
-        if imageFormat not in self.table.columns:
-            raise Exception(f'Column "{imageFormat}" is not present in the table.')
-        self._imageFormat = imageFormat
+        self.validate_set_column('imageFormat', imageFormat, ImageTable.FORMAT_COL, [ImageTable.INT64_TYPE])
 
     @property
     def path(self) -> str:
@@ -246,9 +185,7 @@ class ImageTable(object):
 
     @path.setter
     def path(self, path) -> None:
-        if path not in self.table.columns:
-            raise Exception(f'Column "{path}" is not present in the table.')
-        self._path = path
+        self.validate_set_column('path', path, ImageTable.PATH_COL, [ImageTable.VARCHAR_TYPE])
 
     @property
     def label(self) -> str:
@@ -256,9 +193,7 @@ class ImageTable(object):
 
     @label.setter
     def label(self, label) -> None:
-        if label not in self.table.columns:
-            raise Exception(f'Column "{label}" is not present in the table.')
-        self._label = label
+        self.validate_set_column('label', label, ImageTable.LABEL_COL, [ImageTable.VARCHAR_TYPE])
 
     @property
     def id(self) -> str:
@@ -266,9 +201,7 @@ class ImageTable(object):
 
     @id.setter
     def id(self, id) -> None:
-        if id not in self.table.columns:
-            raise Exception(f'Column "{id}" is not present in the table.')
-        self._id = id
+        self.validate_set_column('id', id, ImageTable.ID_COL, [ImageTable.INT64_TYPE])
 
     @property
     def size(self) -> str:
@@ -276,9 +209,7 @@ class ImageTable(object):
 
     @size.setter
     def size(self, size) -> None:
-        if size not in self.table.columns:
-            raise Exception(f'Column "{size}" is not present in the table.')
-        self._size = size
+        self.validate_set_column('size', size, ImageTable.SIZE_COL, [ImageTable.INT64_TYPE])
 
     @property
     def type(self) -> str:
@@ -286,9 +217,7 @@ class ImageTable(object):
 
     @type.setter
     def type(self, type) -> None:
-        if type not in self.table.columns:
-            raise Exception(f'Column "{type}" is not present in the table.')
-        self._type = type
+        self.validate_set_column('type', type, ImageTable.TYPE_COL, [ImageTable.CHAR_TYPE])
 
     def as_dict(self) -> dict:
         '''
@@ -301,7 +230,8 @@ class ImageTable(object):
         '''
         d = {}
         for k, v in vars(self).items():
-            d[k[1:]] = v
+            if k != '_column_dtype_lookup':
+                d[k[1:]] = v
         return d
 
     def has_decoded_images(self) -> bool:
