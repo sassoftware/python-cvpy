@@ -170,7 +170,7 @@ class TestImageTable(unittest.TestCase):
             # Check column data-type validation
             if a_col_name == 'image':
                 invalid_dtype_msg = 'Column test_image has an unsupported data type. ' \
-                                    'The supported datatypes for this column are: (varbinary(image), varchar)'
+                                    'The supported datatypes for this column are: (varbinary(image), varchar).'
             else:
                 invalid_dtype_msg = f'Column test_{a_col_name} has an unsupported data type. ' \
                                     f'The supported datatype for this column is: {a_col_dtype}.'
