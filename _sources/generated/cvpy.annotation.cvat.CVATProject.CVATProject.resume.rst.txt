@@ -1,0 +1,6 @@
+﻿cvpy.annotation.cvat.CVATProject.CVATProject.resume
+===================================================
+
+.. currentmodule:: cvpy.annotation.cvat.CVATProject
+
+.. automethod:: CVATProject.resume

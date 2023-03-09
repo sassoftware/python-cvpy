@@ -1,0 +1,45 @@
+﻿cvpy.annotation.cvat.CVATProject.CVATProject
+============================================
+
+.. currentmodule:: cvpy.annotation.cvat.CVATProject
+
+.. autoclass:: CVATProject
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CVATProject.__init__
+      ~CVATProject.add_task
+      ~CVATProject.as_dict
+      ~CVATProject.from_json
+      ~CVATProject.get_annotations
+      ~CVATProject.get_tasks
+      ~CVATProject.post_images
+      ~CVATProject.resume
+      ~CVATProject.save
+      ~CVATProject.to_json
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CVATProject.annotation_type
+      ~CVATProject.cas_connection
+      ~CVATProject.credentials
+      ~CVATProject.labels
+      ~CVATProject.project_id
+      ~CVATProject.project_name
+      ~CVATProject.project_version
+      ~CVATProject.tasks
+      ~CVATProject.url
+   
+   

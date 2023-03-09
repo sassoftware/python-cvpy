@@ -16,6 +16,7 @@
       ~ImageTable.__init__
       ~ImageTable.as_dict
       ~ImageTable.has_decoded_images
+      ~ImageTable.validate_set_column
    
    
 

@@ -1,0 +1,6 @@
+﻿cvpy.annotation.cvat.CVATProject.CVATProject.get\_annotations
+=============================================================
+
+.. currentmodule:: cvpy.annotation.cvat.CVATProject
+
+.. automethod:: CVATProject.get_annotations

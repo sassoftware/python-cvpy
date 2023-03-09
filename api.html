@@ -90,6 +90,26 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_surface.html">cvpy.visualization.display_3D_surface</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#annotations">Annotations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#projects">Projects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.html">cvpy.annotation.base.Project.Project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.post_images.html">cvpy.annotation.base.Project.Project.post_images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.get_annotations.html">cvpy.annotation.base.Project.Project.get_annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.save.html">cvpy.annotation.base.Project.Project.save</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.resume.html">cvpy.annotation.base.Project.Project.resume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.html">cvpy.annotation.cvat.CVATProject.CVATProject</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.post_images.html">cvpy.annotation.cvat.CVATProject.CVATProject.post_images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations.html">cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.save.html">cvpy.annotation.cvat.CVATProject.CVATProject.save</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.resume.html">cvpy.annotation.cvat.CVATProject.CVATProject.resume</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#authentication">Authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Credentials.Credentials.html">cvpy.annotation.base.Credentials.Credentials</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -237,6 +257,60 @@
 </tr>
 </tbody>
 </table>
+</section>
+<section id="annotations">
+<h2>Annotations<a class="headerlink" href="#annotations" title="Permalink to this heading">¶</a></h2>
+<section id="projects">
+<h3>Projects<a class="headerlink" href="#projects" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.html#cvpy.annotation.base.Project.Project" title="cvpy.annotation.base.Project.Project"><strong>Project</strong></a>([cas_connection, url, credentials, ...])</p></td>
+<td><p>Defines a base class to interface with a project in an annotation tool.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.post_images.html#cvpy.annotation.base.Project.Project.post_images" title="cvpy.annotation.base.Project.Project.post_images"><strong>Project.post_images</strong></a>(image_table)</p></td>
+<td><p>Create a CVAT task under the project and upload images from a CAS table to that task.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.get_annotations.html#cvpy.annotation.base.Project.Project.get_annotations" title="cvpy.annotation.base.Project.Project.get_annotations"><strong>Project.get_annotations</strong></a>(annotated_table, ...)</p></td>
+<td><p>Fetch annotations from CVAT that correspond to the images in a CAS table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.save.html#cvpy.annotation.base.Project.Project.save" title="cvpy.annotation.base.Project.Project.save"><strong>Project.save</strong></a>(caslib, relative_path[, replace])</p></td>
+<td><p>Save an annotation session.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.resume.html#cvpy.annotation.base.Project.Project.resume" title="cvpy.annotation.base.Project.Project.resume"><strong>Project.resume</strong></a>(project_name, cas_connection, ...)</p></td>
+<td><p>Resume an annotation session.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.html#cvpy.annotation.cvat.CVATProject.CVATProject" title="cvpy.annotation.cvat.CVATProject.CVATProject"><strong>CVATProject</strong></a>([cas_connection, url, ...])</p></td>
+<td><p>Defines a class to interact with a CVAT Project.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.post_images.html#cvpy.annotation.cvat.CVATProject.CVATProject.post_images" title="cvpy.annotation.cvat.CVATProject.CVATProject.post_images"><strong>CVATProject.post_images</strong></a>(image_table)</p></td>
+<td><p>Create a CVAT task under the project and upload images from a CAS table to that task.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations.html#cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations" title="cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations"><strong>CVATProject.get_annotations</strong></a>(image_table, ...)</p></td>
+<td><p>Fetch annotations from CVAT corresponding to the images in a CAS table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.save.html#cvpy.annotation.cvat.CVATProject.CVATProject.save" title="cvpy.annotation.cvat.CVATProject.CVATProject.save"><strong>CVATProject.save</strong></a>(caslib, relative_path[, ...])</p></td>
+<td><p>Saves a CVATProject in the specified caslib and relative path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.resume.html#cvpy.annotation.cvat.CVATProject.CVATProject.resume" title="cvpy.annotation.cvat.CVATProject.CVATProject.resume"><strong>CVATProject.resume</strong></a>(project_name, ...)</p></td>
+<td><p>Resumes a CVATProject by reading it from the specified caslib and relative path.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="authentication">
+<h3>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Credentials.Credentials.html#cvpy.annotation.base.Credentials.Credentials" title="cvpy.annotation.base.Credentials.Credentials"><strong>Credentials</strong></a>([username, password, token, ...])</p></td>
+<td><p>Construct an object that contains authentication information.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 </section>
 

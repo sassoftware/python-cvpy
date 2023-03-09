@@ -1,0 +1,44 @@
+﻿cvpy.annotation.base.Project.Project
+====================================
+
+.. currentmodule:: cvpy.annotation.base.Project
+
+.. autoclass:: Project
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Project.__init__
+      ~Project.add_task
+      ~Project.as_dict
+      ~Project.get_annotations
+      ~Project.get_tasks
+      ~Project.post_images
+      ~Project.resume
+      ~Project.save
+      ~Project.to_json
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Project.annotation_type
+      ~Project.cas_connection
+      ~Project.credentials
+      ~Project.labels
+      ~Project.project_id
+      ~Project.project_name
+      ~Project.project_version
+      ~Project.tasks
+      ~Project.url
+   
+   

@@ -1,0 +1,6 @@
+﻿cvpy.annotation.base.Project.Project.post\_images
+=================================================
+
+.. currentmodule:: cvpy.annotation.base.Project
+
+.. automethod:: Project.post_images

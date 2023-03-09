@@ -1,0 +1,6 @@
+﻿cvpy.annotation.cvat.CVATProject.CVATProject.save
+=================================================
+
+.. currentmodule:: cvpy.annotation.cvat.CVATProject
+
+.. automethod:: CVATProject.save
