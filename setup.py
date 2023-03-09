@@ -46,7 +46,8 @@ setup(
         'pandas',
         'numpy',
         'matplotlib',
-        'mayavi'
+        'mayavi', 
+        'requests'
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
