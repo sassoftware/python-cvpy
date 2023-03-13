@@ -20,8 +20,6 @@ from typing import Dict
 from swat import CASTable, CAS
 
 from cvpy.base.ImageType import ImageType
-from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
-from cvpy.image.NaturalImageTable import NaturalImageTable
 from cvpy.utils.RandomNameGenerator import RandomNameGenerator
 
 
@@ -252,7 +250,7 @@ class ImageTable(object):
         '''
         d = {}
         for k, v in vars(self).items():
-            if k != '_column_dtype_lookup':
+            if k not in ['_column_dtype_lookup', '_connection']:
                 d[k[1:]] = v
         return d
 
@@ -271,6 +269,10 @@ class ImageTable(object):
     def load(connection: CAS, path: str, load_parms: Dict[str, str] = None,
              output_table_parms: Dict[str, str] = None):
 
+        # Imports statements are specified here to prevent circular import issue
+        from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+        from cvpy.image.NaturalImageTable import NaturalImageTable
+
         # If load_parms or output_table_parms are not passed, set them to empty dicts
         if not load_parms:
             load_parms = dict()
@@ -282,13 +284,11 @@ class ImageTable(object):
         connection.loadactionset('image')
 
         # Calculate the table name to use
-        if output_table_parms and 'name' in output_table_parms:
-            cas_table_name = output_table_parms.get('name')
-        else:
-            cas_table_name = RandomNameGenerator().generate_name()
+        if 'name' not in output_table_parms:
+            output_table_parms['name'] = RandomNameGenerator().generate_name()
 
         # Create a cas table
-        cas_table = connection.CASTable(name=cas_table_name, **output_table_parms)
+        cas_table = connection.CASTable(**output_table_parms)
 
         # Load the images
         r = connection.loadimages(path=path, casout=cas_table, **load_parms)
@@ -319,7 +319,7 @@ class ImageTable(object):
         query = ' or '.join([f'_type_ = "{x}"' for x in ImageTable.BIOMED_IMAGE_FORMATS])
 
         # Find number of biomed images in the table
-        biomed_image_count = cas_table.query(query).recordcount()
+        biomed_image_count = cas_table.query(query).recordcount()['RecordCount'].N.values[0]
 
         # If table contains more biomed images than natural images, set image_type as biomed
         if biomed_image_count > int(image_count / 2):
@@ -328,10 +328,14 @@ class ImageTable(object):
         return image_type
 
     @staticmethod
-    def from_table(self, cas_table: CASTable, image_type: ImageType = None,
+    def from_table(cas_table: CASTable, image_type: ImageType = None,
                    image: str = None, dimension: str = None, resolution: str = None,
                    imageFormat: str = None, path: str = None, label: str = None,
                    id: str = None, size: str = None, type: str = None):
+
+        # Imports statements are specified here to prevent circular import issue
+        from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+        from cvpy.image.NaturalImageTable import NaturalImageTable
 
         # Calculate the image_type of the table
         if not image_type:
