@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from swat import CASTable
 
+import numpy as np
 from cvpy.base.ImageTable import ImageTable
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 
@@ -30,3 +31,12 @@ class BiomedImageTable(ImageTable):
     def morphological_gradient(self, kernel_width: int = 3, kernel_height: int = 3, copy_vars: List[str] = None,
                                output_table_parms: Dict[str, str] = None) -> ImageTable:
         pass
+
+    def fetch_image_array(self, n: int = 0, qry: str = '', image: str = '_image_', dim: str = '_dimension_', 
+                          res: str = '_resolution_', ctype: str = '_channelType_', ccount: int = 1) ->np.ndarray:
+        pass
+
+    def fetch_geometry_info(self, n: int = 0, qry: str = '', posCol: str = '_position_', oriCol: str = '_orientation_', 
+                            spaCol: str = '_spacing_', dimCol: str = '_dimension_') -> tuple:
+        pass
+
