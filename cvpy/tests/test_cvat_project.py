@@ -186,7 +186,103 @@ class TestCVATProject(unittest.TestCase):
         cvat_project.post_images(image_table_encoded)
 
         # Save the project
-        cvat_project.save(self.caslib_name, 'cvpy', replace=True)
+        cvat_project.save(caslib=self.caslib_name, relative_path='cvpy', replace=True)
+
+    def test_cvat_project_save_no_caslib(self):
+
+        cas_table_encoded = self.cas_connection.CASTable('cas_table_encoded_save_test')
+        self.cas_connection.image.loadimages(path='images',
+                                             labellevels=5,
+                                             casout=cas_table_encoded,
+                                             caslib=self.caslib_name,
+                                             decode=False)
+
+        # Create a CVATProject.
+        url = TestCVATProject.cvat_url
+
+        project_name = 'MyDemoProject_SaveTest'
+        annotation_type = AnnotationType.OBJECT_DETECTION
+
+        mountain_label = AnnotationLabel(name='Mountain', color='orange')
+        person_label = AnnotationLabel(name='Person', color='green')
+
+        labels = [mountain_label, person_label]
+
+        credentials = Credentials(TestCVATProject.cvat_username, TestCVATProject.cvat_password)
+        cvat_project = CVATProject(url=url, cas_connection=self.cas_connection, credentials=credentials,
+                                   project_name=project_name, annotation_type=annotation_type,
+                                   labels=labels)
+
+        # Post the images to the CVATProject.
+        image_table_encoded = ImageTable(cas_table_encoded)
+        cvat_project.post_images(image_table_encoded)
+
+        # Save the project with no caslib specified
+        cvat_project.save(relative_path='cvpy', replace=True)
+
+    def test_cvat_project_save_no_relative_path(self):
+
+        cas_table_encoded = self.cas_connection.CASTable('cas_table_encoded_save_test')
+        self.cas_connection.image.loadimages(path='images',
+                                             labellevels=5,
+                                             casout=cas_table_encoded,
+                                             caslib=self.caslib_name,
+                                             decode=False)
+
+        # Create a CVATProject.
+        url = TestCVATProject.cvat_url
+
+        project_name = 'MyDemoProject_SaveTest'
+        annotation_type = AnnotationType.OBJECT_DETECTION
+
+        mountain_label = AnnotationLabel(name='Mountain', color='orange')
+        person_label = AnnotationLabel(name='Person', color='green')
+
+        labels = [mountain_label, person_label]
+
+        credentials = Credentials(TestCVATProject.cvat_username, TestCVATProject.cvat_password)
+        cvat_project = CVATProject(url=url, cas_connection=self.cas_connection, credentials=credentials,
+                                   project_name=project_name, annotation_type=annotation_type,
+                                   labels=labels)
+
+        # Post the images to the CVATProject.
+        image_table_encoded = ImageTable(cas_table_encoded)
+        cvat_project.post_images(image_table_encoded)
+
+        # Save the project with no relative path specified
+        cvat_project.save(caslib=self.caslib_name, replace=True)
+
+    def test_cvat_project_save_no_caslib_no_relative_path(self):
+
+        cas_table_encoded = self.cas_connection.CASTable('cas_table_encoded_save_test')
+        self.cas_connection.image.loadimages(path='images',
+                                             labellevels=5,
+                                             casout=cas_table_encoded,
+                                             caslib=self.caslib_name,
+                                             decode=False)
+
+        # Create a CVATProject.
+        url = TestCVATProject.cvat_url
+
+        project_name = 'MyDemoProject_SaveTest'
+        annotation_type = AnnotationType.OBJECT_DETECTION
+
+        mountain_label = AnnotationLabel(name='Mountain', color='orange')
+        person_label = AnnotationLabel(name='Person', color='green')
+
+        labels = [mountain_label, person_label]
+
+        credentials = Credentials(TestCVATProject.cvat_username, TestCVATProject.cvat_password)
+        cvat_project = CVATProject(url=url, cas_connection=self.cas_connection, credentials=credentials,
+                                   project_name=project_name, annotation_type=annotation_type,
+                                   labels=labels)
+
+        # Post the images to the CVATProject.
+        image_table_encoded = ImageTable(cas_table_encoded)
+        cvat_project.post_images(image_table_encoded)
+
+        # Save the project with no caslib and no relative path specified
+        cvat_project.save(replace=True)
 
     def test_cvat_project_resume(self):
 
