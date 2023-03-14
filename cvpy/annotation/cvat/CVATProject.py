@@ -310,7 +310,7 @@ class CVATProject(Project):
         # Drop the cas table that was created.
         self.cas_connection.table.dropTable(name=image_annotations_castable)
 
-    def save(self, caslib: str, relative_path: str, replace: bool = False) -> None:
+    def save(self, caslib: str = None, relative_path: str = None, replace: bool = False) -> None:
         """
         Saves a CVATProject in the specified caslib and relative path.
 
@@ -323,7 +323,21 @@ class CVATProject(Project):
         replace:
             When set to True, the CAS tables are replaced if they are already present in the specified path.
         """
+        # If caslib was not specified, set to default active caslib
+        if caslib is None:
+            caslibinfo = self.cas_connection.caslibinfo()['CASLibInfo']
+            caslib = caslibinfo[caslibinfo.Active == 1].Name.values[0]
 
+        # Create file path variable
+        path = f'{self.project_name}'
+        
+        # If relative path was specified, prepend to path variable
+        if relative_path is not None:
+            path = f'{relative_path}/{path}'
+        
+        # Create a sub directory for the path
+        self.cas_connection.addcaslibsubdir(path=path, name=caslib)
+        
         # Get a JSON representation of this project
         project_json = self.to_json()
 
@@ -334,11 +348,11 @@ class CVATProject(Project):
         project_table = self.cas_connection.CASTable(self.project_name)
 
         # Save the project table in the specified caslib and relative path
-        project_table.save(name=f'{relative_path}/{self.project_name}.sashdat', caslib=caslib, replace=replace)
+        project_table.save(name=f'{path}/{self.project_name}.sashdat', caslib=caslib, replace=replace)
 
         # Save the image tables from each task
         for task in self.get_tasks():
-            task.image_table.table.save(name=f'{relative_path}/{task.image_table_name}.sashdat', caslib=caslib,
+            task.image_table.table.save(name=f'{path}/{task.image_table_name}.sashdat', caslib=caslib,
                                         replace=replace)
 
     @staticmethod
