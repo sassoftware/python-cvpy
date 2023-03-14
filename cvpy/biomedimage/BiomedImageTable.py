@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from swat import CASTable
 
+import numpy as np
 from cvpy.base.ImageTable import ImageTable
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 
