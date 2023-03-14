@@ -328,3 +328,89 @@ class BiomedImage(object):
         conn.table.dropTable(morph_grad_2d)
 
         return ImageTable(morph_grad_3d)
+    
+    # ####### ------------ Moved from image.py ----------------#########
+    # @staticmethod
+    # def fetch_image_array(imdata, n=0, qry='', image='_image_', dim='_dimension_', res='_resolution_',
+    #                       ctype='_channelType_', ccount=1):
+
+    #     """
+    #     Fetch image array from a CAS table.
+
+    #     Parameters
+    #     ----------
+    #     imdata : :class:`str`
+    #         Specifies the image data.
+    #     n : :class:`int`
+    #         Specifies the number of additional images.
+    #     qry : :class:`str`
+    #         Specifies the query.
+    #     image : :class:`str`
+    #         Specifies the image format.
+    #     dim : :class:`str`
+    #         Specifies the image dimension.
+    #     res : :class:`str`
+    #         Specifies the image resolution.
+    #     ctype : :class:`str`
+    #         Specifies the channel type.
+    #     ccount : :class:`int`
+    #         Specifies the number of channels of the image.
+
+    #     Returns
+    #     -------
+    #     :class:`numpy.ndarray`
+    #     """
+
+    #     if (qry != ''):
+    #         example_rows = imdata.query(qry).to_frame(to=n + 1)
+    #     else:
+    #         example_rows = imdata.to_frame(to=n + 1)
+    #     medical_dimensions = example_rows[dim]
+    #     medical_formats = example_rows[ctype]
+    #     medical_binaries = example_rows[image]
+    #     medical_resolutions = example_rows[res]
+    #     return Image.get_image_array(medical_binaries, medical_dimensions, medical_resolutions, medical_formats, n,
+    #                                  ccount)
+
+    # @staticmethod
+    # def fetch_geometry_info(imdata, n=0, qry='', posCol='_position_', oriCol='_orientation_', spaCol='_spacing_',
+    #                         dimCol='_dimension_'):
+
+    #     """
+    #     Fetch geometry information from a CAS table.
+
+    #     Parameters
+    #     ----------
+    #     imdata : :class:`swat.CASTable <swat.cas.table.CASTable>`
+    #         Specifies the CASTable that contains the image.
+    #     n : :class:`int`
+    #         Specifies the number of images.
+    #     qry : :class:`str`
+    #         Specifies the query.
+    #     posCol : :class:`str`
+    #         Specifies the position column.
+    #     oriCol : :class:`str`
+    #         Specifies the orientation column.
+    #     spaCol : :class:`str`
+    #         Specifies the spacing column.
+    #     dimCol : :class:`str`
+    #         Specifies the dimension column.
+
+    #     Returns
+    #     -------
+    #     :class:`tuple`, (position, orientation, spacing)
+    #     """
+
+    #     # Check if geometry info exists in CAS table query before fetching
+    #     if not {'_position_', '_spacing_', '_orientation_'}.issubset(imdata.columns):
+    #         return ((), (), ())
+
+    #     if (qry != ''):
+    #         example_rows = imdata[[dimCol, posCol, oriCol, spaCol]].query(qry).to_frame(to=n)
+    #     else:
+    #         example_rows = imdata[[dimCol, posCol, oriCol, spaCol]].to_frame(to=n)
+    #     dim = example_rows[dimCol][0]
+    #     pos = struct.unpack('=%sd' % dim, example_rows[posCol][0][0:dim * 8])
+    #     ori = struct.unpack('=%sd' % (dim * dim), example_rows[oriCol][0][0:dim * dim * 8])
+    #     spa = struct.unpack('=%sd' % dim, example_rows[spaCol][0][0:dim * 8])
+    #     return pos, ori, spa
