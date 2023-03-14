@@ -21,11 +21,10 @@ import unittest
 import xmlrunner
 import numpy as np
 from swat import CAS, CASTable
-# from cvpy.image.Image import Image
+from cvpy.image.Image import Image
 from cvpy.base.ImageTable import ImageTable
 from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
-from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
-# from cvpy.biomedimage.BiomedImage import BiomedImage
+from cvpy.biomedimage.BiomedImage import BiomedImage
 
 
 class TestBiomedImage(unittest.TestCase):
@@ -45,7 +44,7 @@ class TestBiomedImage(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.s.close()
-    '''
+
     # Load a biomed image and quantify sphericity use default input background, use spacing, and FACE for label connectivity.
     def test_quantify_sphericity_from_casTable(self):
         # Load the input image
@@ -333,9 +332,7 @@ class TestBiomedImage(unittest.TestCase):
 
         # Compare the arrays
         return np.array_equal(export_img_arr, test_arr)
-    '''
-
-    '''
+    
     def test_morphological_gradient_3d_grayscale_image(self):
         # Load the input image
         input = self.s.CASTable('input')
@@ -374,7 +371,7 @@ class TestBiomedImage(unittest.TestCase):
 
         # Compare the arrays
         return np.array_equal(export_img_arr, test_arr)
-    '''
+
     def test_morphological_gradient_2d_image(self):
         # Load the input image
         input = self.s.CASTable('input')
@@ -392,7 +389,7 @@ class TestBiomedImage(unittest.TestCase):
 
         # Assert the output
         self.assertFalse(output.table)
-    '''
+
     def test_morphological_gradient_invalid_parameters(self):
         # Load the input image
         input = self.s.CASTable('input')
@@ -448,7 +445,7 @@ class TestBiomedImage(unittest.TestCase):
 
         # Assert the output
         self.assertTrue(output.table)
-    '''
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:

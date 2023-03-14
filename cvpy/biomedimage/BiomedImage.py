@@ -54,7 +54,7 @@ class BiomedImage(object):
     @cas_session.setter
     def cas_session(self, cas_session) -> None:
         self._cas_session = cas_session
-'''
+
     def quantify_sphericity(self, image_table: ImageTable, use_spacing: bool, input_background: float,
                             label_connectivity: LabelConnectivity, sphericity: CASTable) -> None:
         """
@@ -239,7 +239,7 @@ class BiomedImage(object):
 
         # Change column names in the ImageTable
         rename_columns()
-'''
+
     def morphological_gradient(self, images: ImageTable, kernel_width: int = 3,
                                kernel_height: int = 3, copy_vars: List[str] = None) -> ImageTable:
         """
