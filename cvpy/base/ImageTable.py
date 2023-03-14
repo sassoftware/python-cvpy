@@ -19,7 +19,7 @@ from typing import Dict
 
 from swat import CASTable, CAS
 
-from cvpy.base.ImageDataType import ImageDataType
+from cvpy.base.ImageType import ImageType
 from cvpy.utils.RandomNameGenerator import RandomNameGenerator
 
 
@@ -300,7 +300,7 @@ class ImageTable(object):
             image_type = ImageTable._get_image_type(cas_table)
 
         # Create NaturalImageTable or BiomedImageTable based on the image_type
-        if image_type == ImageDataType.NATURAL:
+        if image_type == ImageType.NATURAL:
             # Create NaturalImageTable
             return NaturalImageTable(cas_table)
         else:
@@ -311,7 +311,7 @@ class ImageTable(object):
     @staticmethod
     def _get_image_type(cas_table):
 
-        image_type = ImageDataType.NATURAL
+        image_type = ImageType.NATURAL
 
         image_count = cas_table.recordcount()['RecordCount'].N.values[0]
 
@@ -323,12 +323,12 @@ class ImageTable(object):
 
         # If table contains more biomed images than natural images, set image_type as biomed
         if biomed_image_count > int(image_count / 2):
-            image_type = ImageDataType.BIOMED
+            image_type = ImageType.BIOMED
 
         return image_type
 
     @staticmethod
-    def from_table(cas_table: CASTable, image_type: ImageDataType = None,
+    def from_table(cas_table: CASTable, image_type: ImageType = None,
                    image: str = None, dimension: str = None, resolution: str = None,
                    imageFormat: str = None, path: str = None, label: str = None,
                    id: str = None, size: str = None, type: str = None):
@@ -342,7 +342,7 @@ class ImageTable(object):
             image_type = ImageTable._get_image_type(cas_table)
 
         # Create NaturalImageTable or BiomedImageTable based on the image_type
-        if image_type == ImageDataType.NATURAL:
+        if image_type == ImageType.NATURAL:
             # Create NaturalImageTable
             return NaturalImageTable(cas_table, image=image, dimension=dimension, resolution=resolution,
                                      imageFormat=imageFormat, path=path, label=label, id=id, size=size, type=type)
