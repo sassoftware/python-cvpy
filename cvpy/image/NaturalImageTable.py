@@ -31,7 +31,7 @@ from enum import *
 
 class NaturalImageTable(ImageTable):
     """
-    Implement image processing functions.
+    Implement natural image processing functions.
 
      Parameters
      ----------
@@ -58,7 +58,7 @@ class NaturalImageTable(ImageTable):
 
      Returns
      -------
-     :class:`Image`
+     :class:`NaturalImageTable`
     """
 
     def __init__(self, table: CASTable = None, image: str = None, dimension: str = None, resolution: str = None,
@@ -163,7 +163,7 @@ class NaturalImageTable(ImageTable):
                         )],
             decode=decode,
             addColumns= add_columns,
-            casout=cas_table.name,
+            casout=cas_table,
             copyVars=copy_vars
         )
 
