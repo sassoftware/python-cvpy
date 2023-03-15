@@ -52,26 +52,27 @@ class TestImage(unittest.TestCase):
 
     def test_mask_encoded_image_encoded_mask(self):
         # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_natural_image.png', casout=img, decode=False)
+        image_table = ImageTable.load(self.s, path='TestMasking/simple_natural_image.png', 
+                                      load_parms={'caslib':'dlib'}, output_table_parms={'replace':True})
+
         self.s.image.processimages(
-            table={'name': 'image'},
-            casout={'name': 'image', 'replace': True},
+            table= image_table.table,
+            casout=image_table.table,
             steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
         )
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_mask_image.png', casout=smask, decode=False)
+        smask = ImageTable.load(self.s, path='TestMasking/simple_mask_image.png', 
+                                load_parms={'caslib':'dlib'}, output_table_parms={'replace':True})
+
         self.s.image.processimages(
-            table={'name': 'smask'},
-            casout={'name': 'smask', 'replace': True},
+            table=smask.table,
+            casout=smask.table,
             steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
         )
-        smask_table = ImageTable(smask)
-
+        
         # Masking
-        new_img = NaturalImageTable.mask_image(smask_table, decode=False)
+        new_img = image_table.mask_image(smask, decode=False)
 
         test_arr = np.asarray([
             [0, 0, 0, 0, 0],
@@ -81,21 +82,20 @@ class TestImage(unittest.TestCase):
             [0, 0, 75, 210, 0]
         ])
 
-        new_img_arr = np.asarray(new_img.Images.Image[0])
+        new_img_arr = np.asarray(self.s.image.fetchImages(table=new_img.table).Images.Image[0])
         self.assertTrue(np.array_equal(new_img_arr, test_arr))
 
     def test_mask_decoded_image_decoded_mask(self):
         # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_3x3.png", casout=img, decode=True)
+        img = ImageTable.load(self.s, path="imagetypes/gray_3x3.png", load_parms={'caslib':'dlib','decode':True}, 
+                              output_table_parms={'replace':True})
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_2_3x3.png", casout=smask, decode=True)
-        smask_table = ImageTable(smask)
+        smask = ImageTable.load(self.s, path="imagetypes/gray_2_3x3.png", load_parms={'caslib':'dlib','decode':True}, 
+                              output_table_parms={'replace':True})
 
         # Masking
-        new_img = NaturalImageTable.mask_image(smask_table, decode=False)
+        new_img = img.mask_image(smask, decode=False)
 
         test_arr = np.array(
             [[0, 0, 255],
@@ -103,31 +103,32 @@ class TestImage(unittest.TestCase):
              [0, 128, 0]]
         )
 
-        new_img_arr = np.asarray(new_img.Images.Image[0])
+        new_img_arr = np.asarray(self.s.image.fetchImages(table=new_img.table).Images.Image[0])
         self.assertTrue(np.array_equal(new_img_arr, test_arr))
 
     def test_mask_decoded_image_encoded_mask(self):
         # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_natural_image.png', casout=img, decode=True)
+        img = ImageTable.load(self.s, path='TestMasking/simple_natural_image.png', load_parms={'caslib':'dlib','decode':True}, 
+                              output_table_parms={'replace':True})
+
         self.s.image.processimages(
-            table={'name': 'image'},
-            casout={'name': 'image', 'replace': True},
+            table=img.table,
+            casout=img.table,
             steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_64F'}}]
         )
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_mask_image.png', casout=smask, decode=False)
+        smask = ImageTable.load(self.s, path='TestMasking/simple_mask_image.png', load_parms={'caslib':'dlib','decode':False}, 
+                              output_table_parms={'replace':True})
+
         self.s.image.processimages(
-            table={'name': 'smask'},
-            casout={'name': 'smask', 'replace': True},
+            table=smask.table,
+            casout=smask.table,
             steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_64F'}}]
         )
-        smask_table = ImageTable(smask)
 
         # Masking
-        new_img = NaturalImageTable.mask_image(smask_table, decode=False)
+        new_img = img.mask_image(smask, decode=False)
 
         test_arr = np.asarray([
             [0, 0, 0, 0, 0],
@@ -137,21 +138,20 @@ class TestImage(unittest.TestCase):
             [0, 0, 75, 210, 0]
         ])
 
-        new_img_arr = np.asarray(new_img.Images.Image[0])
+        new_img_arr = np.asarray(self.s.image.fetchImages(table=new_img.table).Images.Image[0])
         self.assertTrue(np.array_equal(new_img_arr, test_arr))
 
     def test_mask_encoded_image_decoded_mask(self):
         # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_3x3.png", casout=img, decode=False)
+        img = ImageTable.load(self.s, path="imagetypes/gray_3x3.png", load_parms={'caslib':'dlib','decode':False}, 
+                              output_table_parms={'replace':True})
 
         # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_2_3x3.png", casout=smask, decode=True)
-        smask_table = ImageTable(smask)
+        smask = ImageTable.load(self.s, path="imagetypes/gray_2_3x3.png", load_parms={'caslib':'dlib','decode':True}, 
+                              output_table_parms={'replace':True})
 
         # Masking
-        new_img = NaturalImageTable.mask_image(smask_table, decode=False)
+        new_img = img.mask_image(smask, decode=False)
 
         test_arr = np.array(
             [[0, 0, 255],
@@ -159,7 +159,7 @@ class TestImage(unittest.TestCase):
              [0, 128, 0]]
         )
 
-        new_img_arr = np.asarray(new_img.Images.Image[0])
+        new_img_arr = np.asarray(self.s.image.fetchImages(table=new_img.table).Images.Image[0])
         self.assertTrue(np.array_equal(new_img_arr, test_arr))
 
 

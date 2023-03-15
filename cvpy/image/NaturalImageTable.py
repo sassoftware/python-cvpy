@@ -70,31 +70,9 @@ class NaturalImageTable(ImageTable):
         self.connection.loadactionset('image')
         self.connection.loadactionset('fedsql')
 
-    @staticmethod
-    def __reverse(a, axis=0):
-
-        '''
-        Reverses a numpy array along a given axis.
-
-        Parameters
-        ----------
-        a : :class:`numpy.ndarray`
-            Specifies the array to be reversed.
-        axis : int
-            Specifies the axis along which the array should be reversed.
-
-        Returns
-        -------
-        :class:`numpy.ndarray`
-        '''
-
-        idx = [slice(None)] * len(a.shape)
-        idx[axis] = slice(None, None, -1)
-        return a[tuple(idx)]
-
     def mask_image(self, mask: ImageTable, decode: bool = False,
-                   add_columns: List(str) = None, copy_vars: List(str) = None,
-                   output_table_parms: Dict[str,str] = {}) -> ImageTable:
+                   add_columns: List[str] = None, copy_vars: List[str] = None,
+                   output_table_parms: Dict[str,str] = None) -> ImageTable:
         """
         Applies masking to an ImageTable.
 
@@ -114,6 +92,9 @@ class NaturalImageTable(ImageTable):
         ------------
         :class:`cvpy.ImageTable`
         """
+
+        if not output_table_parms:
+            output_table_parms = dict()
 
         # Create CAS Table
         if 'name' not in output_table_parms:
@@ -135,7 +116,7 @@ class NaturalImageTable(ImageTable):
             # SQL string to create the mask table
             fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
                 select a.seg, a.dim, a.res, a.form, b.* 
-                from {mask.table.name} as a right join {self.image.table.name} as b 
+                from "{mask.table.name}" as a right join "{self.table.name}" as b 
                 on a._id_=b._id_ '''
 
             # Dictionary for specifying information in our binary operation
@@ -144,14 +125,6 @@ class NaturalImageTable(ImageTable):
                                          dimension="dim",
                                          resolution="res", 
                                          imageFormat="form")
-
-            # Mini method for renaming columns in ImageTable object
-            # *This step must be completed AFTER the alter table command*
-            def rename_columns():
-                mask.image = "seg"
-                mask.dimension = "dim"
-                mask.resolution = "res"
-                mask.imageFormat = "form"
 
         ###############################################
         ############# Mask Tbl Encoded ################
@@ -163,16 +136,11 @@ class NaturalImageTable(ImageTable):
             # SQL string to create the mask table
             fed_sql_str = f'''create table _images_to_mask_ {{options replace=true}} as 
                 select a.seg, b.* 
-                from {mask.table.name} as a right join {self.image.table.name} as b 
+                from "{mask.table.name}" as a right join "{self.table.name}" as b 
                 on a._id_=b._id_ '''
 
             # Dictionary for specifying information in our binary operation
             binary_operation_dict = dict(binaryOperationType="MASK_SPECIFIC", image="seg")
-
-            # Mini method for renaming columns in ImageTable Object
-            # *This step must be completed AFTER the alter table command*
-            def rename_columns():
-                mask.image = "seg"
 
         ###############################################
         ############### Masking Step ##################
@@ -195,14 +163,11 @@ class NaturalImageTable(ImageTable):
                         )],
             decode=decode,
             addColumns= add_columns,
-            casout=cas_table,
+            casout=cas_table.name,
             copyVars=copy_vars
         )
 
         # Delete our temporary table
         self.connection.table.dropTable(_images_to_mask_)
-
-        # Change column names in the ImageTable
-        rename_columns()
 
         return ImageTable(cas_table)
