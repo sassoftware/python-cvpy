@@ -1,0 +1,4 @@
+.vscode
+sas_cvpy.egg-info/
+test-reports/
+__pycache__
