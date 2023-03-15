@@ -27,7 +27,7 @@ import numpy as np
 from mayavi import mlab
 import pandas as pd
 import matplotlib.pylab as plt
-from cvpy.image.Image import Image
+from cvpy.utils.ImageUtils import ImageUtils
 
 
 sys.stdout = stdout
@@ -92,7 +92,7 @@ def display_image_slice(images, dims, ress, fmts, poss, oris, scas, perm, image_
 
     '''
 
-    image = Image.get_image_array(images, dims, ress, fmts, image_index)
+    image = ImageUtils.get_image_array(images, dims, ress, fmts, image_index)
     geo_perm = np.zeros(3, dtype=np.int)
     for i in range(3):
         geo_perm[__mapping(i)] = __mapping(perm[i])
@@ -170,7 +170,7 @@ def display_3D_image_slices(self, image, hold=False, slice_index_x=0, slice_inde
     formats = rows["_channelType_"]
     binaries = rows["_image_"]
     resolutions = rows["_resolution_"]
-    image_array = Image.get_image_array( binaries, dimensions, resolutions, formats, 0)
+    image_array = ImageUtils.get_image_array( binaries, dimensions, resolutions, formats, 0)
     display_3D_image_slices_from_array(image_array, hold=False, slice_index_x=0, slice_index_y=0, slice_index_z=0)
 
 def display_3D_surface(surfaces, vdata, fdata, hold=False, color=(1, 0, 0), op=1):
