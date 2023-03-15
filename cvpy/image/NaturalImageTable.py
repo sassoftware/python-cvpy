@@ -70,28 +70,6 @@ class NaturalImageTable(ImageTable):
         self.connection.loadactionset('image')
         self.connection.loadactionset('fedsql')
 
-    @staticmethod
-    def __reverse(a, axis=0):
-
-        '''
-        Reverses a numpy array along a given axis.
-
-        Parameters
-        ----------
-        a : :class:`numpy.ndarray`
-            Specifies the array to be reversed.
-        axis : int
-            Specifies the axis along which the array should be reversed.
-
-        Returns
-        -------
-        :class:`numpy.ndarray`
-        '''
-
-        idx = [slice(None)] * len(a.shape)
-        idx[axis] = slice(None, None, -1)
-        return a[tuple(idx)]
-
     def mask_image(self, mask: ImageTable, decode: bool = False,
                    add_columns: List(str) = None, copy_vars: List(str) = None,
                    output_table_parms: Dict[str,str] = {}) -> ImageTable:

@@ -29,6 +29,28 @@ from cvpy.base.ImageDataType import ImageDataType
 class ImageUtils(object):
 
     @staticmethod
+    def __reverse(a, axis=0):
+
+        '''
+        Reverses a numpy array along a given axis.
+
+        Parameters
+        ----------
+        a : :class:`numpy.ndarray`
+            Specifies the array to be reversed.
+        axis : int
+            Specifies the axis along which the array should be reversed.
+
+        Returns
+        -------
+        :class:`numpy.ndarray`
+        '''
+
+        idx = [slice(None)] * len(a.shape)
+        idx[axis] = slice(None, None, -1)
+        return a[tuple(idx)]
+
+    @staticmethod
     def get_image_array_from_row(image_binary, dimension, resolution, myformat, channel_count=1):
 
         """
