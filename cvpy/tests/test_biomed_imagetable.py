@@ -18,13 +18,14 @@
 
 import sys
 import unittest
-import xmlrunner
+
 import numpy as np
+import xmlrunner
 from swat import CAS
-from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
-from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+
 from cvpy.base.ImageTable import ImageTable
 from cvpy.base.ImageType import ImageType
+from cvpy.biomedimage.LabelConnectivity import LabelConnectivity
 
 
 class TestBiomedImage(unittest.TestCase):
@@ -37,7 +38,7 @@ class TestBiomedImage(unittest.TestCase):
     def setUp(self) -> None:
         # Set up CAS connection
         self.s = CAS(TestBiomedImage.CAS_HOST, TestBiomedImage.CAS_PORT, TestBiomedImage.USERNAME,
-                     TestBiomedImage.PASSWORD)
+                     TestBiomedImage.PASSWORD, protocol=TestBiomedImage.CAS_PROTOCOL)
         self.s.loadactionset("image")
         self.s.addcaslib(name='dlib', activeOnAdd=False, path=TestBiomedImage.DATAPATH, dataSource='PATH',
                          subdirectories=True)
@@ -49,15 +50,15 @@ class TestBiomedImage(unittest.TestCase):
         # Load the image
         image = ImageTable.load(self.s, path='biomedimg/simple.png',
                                 load_parms={'caslib': 'dlib', 'decode': True,
-                                            'addColumns':{"WIDTH", "HEIGHT", "DEPTH", "CHANNELTYPE", "SPACING"},
-                                            'image_type':ImageType.BIOMED},
+                                            'addColumns': {"WIDTH", "HEIGHT", "DEPTH", "CHANNELTYPE", "SPACING"},
+                                            'image_type': ImageType.BIOMED},
                                 output_table_parms={'replace': True})
 
         image_array = image.fetch_image_array()
-        
+
         self.assertTrue(np.array_equal(image_array, np.array(
             [[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
-    
+
     def test_fetch_geometry_info_no_geometry(self):
         # Load the image
         image = ImageTable.load(self.s, path='biomedimg/simple.png',
@@ -67,15 +68,14 @@ class TestBiomedImage(unittest.TestCase):
 
         self.assertTrue(image.fetch_geometry_info() == ((), (), ()))
 
-    
     def test_fetch_geometry_info(self):
         # Load an image with geometry data
         imgray = ImageTable.load(self.s, path='biomedimg/simple.png',
                                  load_parms={'caslib': 'dlib', 'decode': True,
-                                             'addColumns':{'position', 'orientation', 'spacing'},
-                                             'image_type':ImageType.BIOMED},
+                                             'addColumns': {'position', 'orientation', 'spacing'},
+                                             'image_type': ImageType.BIOMED},
                                  output_table_parms={'replace': True})
-        
+
         self.assertTrue(imgray.fetch_geometry_info() == ((0, 0), (1.0, 0.0, 0.0, 1.0), (1.0, 1.0)))
 
     # Load a biomed image and quantify sphericity use default input background, use spacing,
@@ -84,17 +84,17 @@ class TestBiomedImage(unittest.TestCase):
         # Load the input image
         input = ImageTable.load(self.s, path='biomedimg/Prostate3T-01-0001.nii',
                                 load_parms={'caslib': 'dlib', 'decode': True})
-        
+
         # Compute the sphericity
         output = input.sphericity(use_spacing=True, input_background=0, label_connectivity=LabelConnectivity.FACE,
                                   output_table_parms={'replace': True})
-        
+
         image_rows = output.fetch()['Fetch']
 
         # Assert the sphericity result
         self.assertTrue(output is not None)
-        self.assertEqual(image_rows['SPHERICITY'][0], 0.5542345330101192)
-    
+        self.assertAlmostEqual(image_rows['SPHERICITY'][0], 0.5542345330101192)
+
     # Load a biomed image and quantify sphericity using custom input background of -20.
     def test_quantify_sphericity_from_casTable_custom_input_background(self):
         # Load the input image
@@ -145,7 +145,7 @@ class TestBiomedImage(unittest.TestCase):
     def test_morphological_gradient_2d_image(self):
         # Load the input image
         input = ImageTable.load(self.s, path='images/famous_selfie.jpg',
-                                load_parms={'caslib': 'dlib', 'image_type':ImageType.BIOMED})
+                                load_parms={'caslib': 'dlib', 'image_type': ImageType.BIOMED})
 
         # Compute Morphological Gradient
         output = input.morphological_gradient(output_table_parms={'replace': True})
@@ -194,6 +194,7 @@ if __name__ == '__main__':
         TestBiomedImage.DATAPATH = sys.argv.pop()
         TestBiomedImage.PASSWORD = sys.argv.pop()
         TestBiomedImage.USERNAME = sys.argv.pop()
+        TestBiomedImage.CAS_PROTOCOL = sys.argv.pop()
         TestBiomedImage.CAS_PORT = sys.argv.pop()
         TestBiomedImage.CAS_HOST = sys.argv.pop()
 

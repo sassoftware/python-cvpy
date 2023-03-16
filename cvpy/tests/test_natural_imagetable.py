@@ -16,15 +16,14 @@
 #  limitations under the License.
 #
 
-import os
-import unittest
-import xmlrunner
-import struct
-import swat
 import sys
+import unittest
+
 import numpy as np
+import swat
+import xmlrunner
+
 from cvpy.base.ImageTable import ImageTable
-from cvpy.image.NaturalImageTable import NaturalImageTable
 
 
 def load(self, path):
@@ -37,12 +36,13 @@ def load(self, path):
                             decode=True)
     return image
 
+
 class TestImage(unittest.TestCase):
 
     def setUp(self) -> None:
         # Set up CAS connection
         self.s = swat.CAS(TestImage.CAS_HOST, TestImage.CAS_PORT, TestImage.USERNAME,
-                     TestImage.PASSWORD)
+                          TestImage.PASSWORD, protocol=TestImage.CAS_PROTOCOL)
         self.s.loadactionset("image")
         self.s.addcaslib(name='dlib', activeOnAdd=False, path=TestImage.DATAPATH, dataSource='PATH',
                          subdirectories=True)
@@ -52,25 +52,25 @@ class TestImage(unittest.TestCase):
 
     def test_mask_encoded_image_encoded_mask(self):
         # Load the image
-        image_table = ImageTable.load(self.s, path='TestMasking/simple_natural_image.png', 
-                                      load_parms={'caslib':'dlib'}, output_table_parms={'replace':True})
+        image_table = ImageTable.load(self.s, path='TestMasking/simple_natural_image.png',
+                                      load_parms={'caslib': 'dlib'}, output_table_parms={'replace': True})
 
         self.s.image.processimages(
-            table= image_table.table,
+            table=image_table.table,
             casout=image_table.table,
             steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
         )
 
         # Load the mask image
-        smask = ImageTable.load(self.s, path='TestMasking/simple_mask_image.png', 
-                                load_parms={'caslib':'dlib'}, output_table_parms={'replace':True})
+        smask = ImageTable.load(self.s, path='TestMasking/simple_mask_image.png',
+                                load_parms={'caslib': 'dlib'}, output_table_parms={'replace': True})
 
         self.s.image.processimages(
             table=smask.table,
             casout=smask.table,
             steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
         )
-        
+
         # Masking
         new_img = image_table.mask_image(smask, decode=False)
 
@@ -87,12 +87,12 @@ class TestImage(unittest.TestCase):
 
     def test_mask_decoded_image_decoded_mask(self):
         # Load the image
-        img = ImageTable.load(self.s, path="imagetypes/gray_3x3.png", load_parms={'caslib':'dlib','decode':True}, 
-                              output_table_parms={'replace':True})
+        img = ImageTable.load(self.s, path="imagetypes/gray_3x3.png", load_parms={'caslib': 'dlib', 'decode': True},
+                              output_table_parms={'replace': True})
 
         # Load the mask image
-        smask = ImageTable.load(self.s, path="imagetypes/gray_2_3x3.png", load_parms={'caslib':'dlib','decode':True}, 
-                              output_table_parms={'replace':True})
+        smask = ImageTable.load(self.s, path="imagetypes/gray_2_3x3.png", load_parms={'caslib': 'dlib', 'decode': True},
+                                output_table_parms={'replace': True})
 
         # Masking
         new_img = img.mask_image(smask, decode=False)
@@ -108,8 +108,9 @@ class TestImage(unittest.TestCase):
 
     def test_mask_decoded_image_encoded_mask(self):
         # Load the image
-        img = ImageTable.load(self.s, path='TestMasking/simple_natural_image.png', load_parms={'caslib':'dlib','decode':True}, 
-                              output_table_parms={'replace':True})
+        img = ImageTable.load(self.s, path='TestMasking/simple_natural_image.png',
+                              load_parms={'caslib': 'dlib', 'decode': True},
+                              output_table_parms={'replace': True})
 
         self.s.image.processimages(
             table=img.table,
@@ -118,8 +119,9 @@ class TestImage(unittest.TestCase):
         )
 
         # Load the mask image
-        smask = ImageTable.load(self.s, path='TestMasking/simple_mask_image.png', load_parms={'caslib':'dlib','decode':False}, 
-                              output_table_parms={'replace':True})
+        smask = ImageTable.load(self.s, path='TestMasking/simple_mask_image.png',
+                                load_parms={'caslib': 'dlib', 'decode': False},
+                                output_table_parms={'replace': True})
 
         self.s.image.processimages(
             table=smask.table,
@@ -143,12 +145,12 @@ class TestImage(unittest.TestCase):
 
     def test_mask_encoded_image_decoded_mask(self):
         # Load the image
-        img = ImageTable.load(self.s, path="imagetypes/gray_3x3.png", load_parms={'caslib':'dlib','decode':False}, 
-                              output_table_parms={'replace':True})
+        img = ImageTable.load(self.s, path="imagetypes/gray_3x3.png", load_parms={'caslib': 'dlib', 'decode': False},
+                              output_table_parms={'replace': True})
 
         # Load the mask image
-        smask = ImageTable.load(self.s, path="imagetypes/gray_2_3x3.png", load_parms={'caslib':'dlib','decode':True}, 
-                              output_table_parms={'replace':True})
+        smask = ImageTable.load(self.s, path="imagetypes/gray_2_3x3.png", load_parms={'caslib': 'dlib', 'decode': True},
+                                output_table_parms={'replace': True})
 
         # Masking
         new_img = img.mask_image(smask, decode=False)
@@ -168,6 +170,7 @@ if __name__ == '__main__':
         TestImage.DATAPATH = sys.argv.pop()
         TestImage.PASSWORD = sys.argv.pop()
         TestImage.USERNAME = sys.argv.pop()
+        TestImage.CAS_PROTOCOL = sys.argv.pop()
         TestImage.CAS_PORT = sys.argv.pop()
         TestImage.CAS_HOST = sys.argv.pop()
 

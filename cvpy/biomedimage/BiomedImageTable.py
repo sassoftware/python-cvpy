@@ -192,6 +192,10 @@ class BiomedImageTable(ImageTable):
 
         """
 
+        # If output_table_parms is not passed, set it as an empty dict
+        if not output_table_parms:
+            output_table_parms = dict()
+
         random_name_generator = RandomNameGenerator()
 
         # Quantify the volume and perimeter of the given component.
@@ -262,6 +266,10 @@ class BiomedImageTable(ImageTable):
         >>> output_table = biomed.morphological_gradient(kernel_width,...)
         """
 
+        # If output_table_parms is not passed, set it as an empty dict
+        if not output_table_parms:
+            output_table_parms = dict()
+
         random_name_generator = RandomNameGenerator()
 
         if copy_vars is None:
@@ -288,9 +296,6 @@ class BiomedImageTable(ImageTable):
         # Compute morphological gradient of 2d images
         name_morph_grad_2d = random_name_generator.generate_name()
         morph_grad_2d = self.connection.CASTable(name=name_morph_grad_2d, replace=True)
-        print(name_morph_grad_2d)
-        print(morph_grad_2d)
-        print(type(morph_grad_2d))
         self.connection.image.processImages(table=image_2d,
                                             steps=[
                                                 {'options': {

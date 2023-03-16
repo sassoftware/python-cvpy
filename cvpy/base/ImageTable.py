@@ -290,13 +290,18 @@ class ImageTable(object):
         # Create a cas table
         cas_table = connection.CASTable(**output_table_parms)
 
+        # Get user specified image_type
+        image_type = None
+        if 'image_type' in load_parms:
+            image_type = load_parms.get('image_type')
+            # Remove image_type from load_parms since it is used for calling loadimages
+            del load_parms['image_type']
+
         # Load the images
         r = connection.loadimages(path=path, casout=cas_table, **load_parms)
 
-        # Calculate the image_type of the table
-        if load_parms and 'image_type' in load_parms:
-            image_type = load_parms.get('image_type')
-        else:
+        # Calculate the image_type of the table if not specified by the user
+        if not image_type:
             image_type = ImageTable._get_image_type(cas_table)
 
         # Create NaturalImageTable or BiomedImageTable based on the image_type
