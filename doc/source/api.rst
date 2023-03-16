@@ -7,18 +7,23 @@ API Reference
 
 .. currentmodule:: cvpy
 
-Biomedical Images
------------------
+Biomedical Image Table
+----------------------
 
-.. currentmodule:: cvpy.biomedimage.BiomedImage
+.. currentmodule:: cvpy.biomedimage.BiomedImageTable
     
 .. autosummary::
     :toctree: generated/
 
-    BiomedImage
-    BiomedImage.quantify_sphericity
-    BiomedImage.mask_image
-    BiomedImage.morphological_gradient
+    BiomedImageTable
+    ImageTable.as_dict
+    BiomedImageTable.fetch_image_array
+    BiomedImageTable.fetch_geometry_info
+    BiomedImageTable.from_table
+    ImageTable.has_decoded_images
+    BiomedImageTable.load
+    BiomedImageTable.sphericity
+    BiomedImageTable.morphological_gradient
 
 CAS Thread Tuner
 ----------------
@@ -43,28 +48,8 @@ CAS Thread Tuner Results
     CASThreadTunerResults
     CASThreadTunerResults.plot_exec_times
 
-Image
------
-
-.. currentmodule:: cvpy.image.Image
-
-.. autosummary::
-    :toctree: generated/
-
-    Image
-    Image.convert_to_CAS_column
-    Image.convert_wide_to_numpy
-    Image.convert_numpy_to_wide
-    Image.fetch_geometry_info
-    Image.fetch_image_array
-    Image.get_image_array_from_row
-    Image.get_image_array
-    Image.get_image_array_const_ctype
-    Image.mask_image
-
-
-ImageTable
-----------
+Image Table
+-----------
 
 .. currentmodule:: cvpy.base.ImageTable
 
@@ -74,6 +59,40 @@ ImageTable
     ImageTable
     ImageTable.as_dict
     ImageTable.has_decoded_images
+    ImageTable.load
+    ImageTable.from_table
+
+Image Utilities
+---------------
+
+.. currentmodule:: cvpy.utils.ImageUtils
+
+.. autosummary::
+    :toctree: generated/
+
+    ImageUtils
+    ImageUtils.convert_numpy_to_wide
+    ImageUtils.convert_to_CAS_column
+    ImageUtils.convert_wide_to_numpy
+    ImageUtils.get_image_array
+    ImageUtils.get_image_array_const_ctype
+    ImageUtils.get_image_array_from_row
+
+
+Natural Image Table
+-------------------
+
+.. currentmodule:: cvpy.image.NaturalImageTable
+
+.. autosummary::
+    :toctree: generated/
+
+    NaturalImageTable
+    NaturalImageTable.as_dict
+    NaturalImageTable.has_decoded_images
+    NaturalImageTable.from_table
+    NaturalImageTable.load
+    NaturalImageTable.mask_image
 
 
 Visualization Reference
@@ -101,10 +120,12 @@ Projects
     :toctree: generated/
 
     Project
-    Project.post_images
+    Project.as_dict
     Project.get_annotations
-    Project.save
+    Project.post_images
     Project.resume
+    Project.save
+    Project.to_json
 
 .. currentmodule:: cvpy.annotation.cvat.CVATProject
 
@@ -112,10 +133,25 @@ Projects
     :toctree: generated/
 
     CVATProject
-    CVATProject.post_images
+    CVATProject.as_dict
+    CVATProject.from_json
     CVATProject.get_annotations
+    CVATProject.post_images
     CVATProject.save
     CVATProject.resume
+    CVATProject.to_json
+
+Tasks
+~~~~~
+
+.. currentmodule:: cvpy.annotation.cvat.CVATTask
+
+.. autosummary::
+    :toctree: generated/
+
+    CVATTask
+    CVATTask.from_dict
+    
 
 Authentication
 ~~~~~~~~~~~~~~
@@ -126,3 +162,13 @@ Authentication
     :toctree: generated/
 
     Credentials
+
+.. currentmodule:: cvpy.annotation.cvat.CVATAuthenticator
+
+.. autosummary::
+    :toctree: generated/
+
+    CVATAuthenticator
+    CVATAuthenticator.authenticate
+    CVATAuthenticator.generate_cvat_token
+    
