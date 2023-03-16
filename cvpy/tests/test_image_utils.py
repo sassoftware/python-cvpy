@@ -23,8 +23,7 @@ import struct
 import swat
 import sys
 import numpy as np
-from cvpy.base.ImageTable import ImageTable
-from cvpy.image.Image import Image
+from cvpy.utils.ImageUtils import ImageUtils
 from cvpy.base.ImageDataType import ImageDataType
 
 
@@ -121,21 +120,7 @@ class TestImage(unittest.TestCase):
         self.s.close()
 
     def test_convert_to_CAS_column(self):
-        self.assertTrue(Image.convert_to_CAS_column("id") == "_id_")
-
-    def test_fetch_image_array(self):
-        # Load the image
-        image = self.s.CASTable('image', replace=True)
-        self.s.image.loadImages(path='biomedimg/simple.png',
-                            casOut=dict(name='image', replace='TRUE'),
-                            addColumns={"WIDTH", "HEIGHT", "DEPTH", "CHANNELTYPE", "SPACING"},
-                            caslib='dlib',
-                            decode=True)
-
-        self.assertTrue(np.array_equal(Image.fetch_image_array(image), np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
-
-        # Close the connection
-        self.s.close()
+        self.assertTrue(ImageUtils.convert_to_CAS_column("id") == "_id_")
 
     def test_get_image_array(self):
         # Load the image
@@ -152,7 +137,7 @@ class TestImage(unittest.TestCase):
         medicalBinaries = imageRows["_image_"]
         medicalResolutions = imageRows["_resolution_"]
 
-        medicalImageArray = Image.get_image_array(medicalBinaries, medicalDimensions, medicalResolutions, medicalFormats, 0)
+        medicalImageArray = ImageUtils.get_image_array(medicalBinaries, medicalDimensions, medicalResolutions, medicalFormats, 0)
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
         # Close the connection
@@ -178,7 +163,7 @@ class TestImage(unittest.TestCase):
         resolution = np.array(struct.unpack('=%sq' % dimension, medicalResolutions[n][0:dimension * 8]))
         resolution = resolution[::-1]
         myformat = medicalFormats[n]
-        medicalImageArray = Image.get_image_array_from_row(medicalBinaries[n], dimension, resolution, myformat, 1)
+        medicalImageArray = ImageUtils.get_image_array_from_row(medicalBinaries[n], dimension, resolution, myformat, 1)
 
         self.assertTrue(np.array_equal(medicalImageArray, np.array([[0, 0, 0, 0, 0], [0, 255, 0, 0, 0], [0, 255, 0, 150, 0], [0, 0, 0, 0, 50], [0, 0, 0, 0, 0]])))
 
@@ -195,7 +180,7 @@ class TestImage(unittest.TestCase):
         for (img_dtype, np_dtype) in zip(img_dtypes, np_dtypes):
             image = np.arange(0,width*width).reshape([width,width]).astype(np_dtype)
             resolution = image.shape[:2]
-            imageArray = Image.get_image_array_from_row(bytes(image), 2, resolution, img_dtype, 1)
+            imageArray = ImageUtils.get_image_array_from_row(bytes(image), 2, resolution, img_dtype, 1)
             test_pass = test_pass and np.array_equal(image, imageArray)
             test_pass = test_pass and (imageArray.dtype == np_dtype)
 
@@ -205,39 +190,11 @@ class TestImage(unittest.TestCase):
         for (img_dtype, np_dtype) in zip(img_dtypes, np_dtypes):
             image = np.arange(0,width*width*3).reshape([width,width,3]).astype(np_dtype)
             resolution = image.shape[:2]
-            imageArray = Image.get_image_array_from_row(bytes(np.flip(image, 2)), 2, resolution, img_dtype, 3)
+            imageArray = ImageUtils.get_image_array_from_row(bytes(np.flip(image, 2)), 2, resolution, img_dtype, 3)
             test_pass = test_pass and np.array_equal(image, imageArray)
             test_pass = test_pass and (imageArray.dtype == np_dtype)
 
         self.assertTrue(test_pass)
-
-    def test_fetch_geometry_info_no_geometry(self):
-        # Load the image
-        image = self.s.CASTable("image", replace=True)
-        self.s.image.loadImages(path='biomedimg/simple.png',
-                                casOut=image,
-                                caslib='dlib',
-                                decode=True)
-
-        self.assertTrue(Image.fetch_geometry_info(image) == ((),(),()))
-
-        # Close the connection
-        self.s.close()
-
-    def test_fetch_geometry_info(self):
-        # Load an image with geometry data
-        imgray = self.s.CASTable("imgray", replace=True)
-        self.s.image.loadimages(path="biomedimg/simple.png",
-                                casout=imgray,
-                                decode=True,
-                                caslib="dlib",
-                                addcolumns={"position", "orientation", "spacing"},
-                                )
-
-        self.assertTrue(Image.fetch_geometry_info(imgray) == ((0, 0), (1.0, 0.0, 0.0, 1.0), (1.0, 1.0)))
-
-        # Close the connection
-        self.s.close()
     
     def test_get_image_array_const_ctype(self):
         self.s.loadactionset('biomedimage')
@@ -254,7 +211,7 @@ class TestImage(unittest.TestCase):
         medical_binaries = example_rows['_image_']
         medical_resolutions = example_rows['_resolution_']
         
-        image_array = Image.get_image_array_const_ctype(medical_binaries, medical_dimensions, medical_resolutions, ctype='8U', n=0, channel_count=1)
+        image_array = ImageUtils.get_image_array_const_ctype(medical_binaries, medical_dimensions, medical_resolutions, ctype='8U', n=0, channel_count=1)
         
         self.assertTrue(np.array_equal(image_array, np.array([[0, 0, 0, 0, 0],[0, 255, 0, 0, 0],[0, 255, 0, 150, 0],[0, 0, 0, 0, 50],[0, 0, 0, 0, 0]])))
 
@@ -271,13 +228,13 @@ class TestImage(unittest.TestCase):
         (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 3, ImageDataType.CV_8UC3.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
-        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+        output_array = ImageUtils.convert_wide_to_numpy(wide_byte_buffer)
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
-        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+        output_wide_byte_buffer = ImageUtils.convert_numpy_to_wide(output_array)
 
         # Compare these buffers to make sure they are equal
         self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
@@ -295,13 +252,13 @@ class TestImage(unittest.TestCase):
         (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 1, ImageDataType.CV_8UC1.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
-        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+        output_array = ImageUtils.convert_wide_to_numpy(wide_byte_buffer)
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
-        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+        output_wide_byte_buffer = ImageUtils.convert_numpy_to_wide(output_array)
 
         # Compare these buffers to make sure they are equal
         self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
@@ -319,13 +276,13 @@ class TestImage(unittest.TestCase):
         (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 1, ImageDataType.CV_32FC1.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
-        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+        output_array = ImageUtils.convert_wide_to_numpy(wide_byte_buffer)
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
-        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+        output_wide_byte_buffer = ImageUtils.convert_numpy_to_wide(output_array)
 
         # Compare these buffers to make sure they are equal
         self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
@@ -343,13 +300,13 @@ class TestImage(unittest.TestCase):
         (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 3, ImageDataType.CV_32FC3.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
-        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+        output_array = ImageUtils.convert_wide_to_numpy(wide_byte_buffer)
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
-        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+        output_wide_byte_buffer = ImageUtils.convert_numpy_to_wide(output_array)
 
         # Compare these buffers to make sure they are equal
         self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
@@ -367,13 +324,13 @@ class TestImage(unittest.TestCase):
         (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 1, ImageDataType.CV_64FC1.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
-        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+        output_array = ImageUtils.convert_wide_to_numpy(wide_byte_buffer)
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
-        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+        output_wide_byte_buffer = ImageUtils.convert_numpy_to_wide(output_array)
 
         # Compare these buffers to make sure they are equal
         self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
@@ -391,159 +348,19 @@ class TestImage(unittest.TestCase):
         (numpy_image_array, wide_byte_buffer) = create_numpy_array_and_wide_image(image, 3, ImageDataType.CV_64FC3.value)
 
         # Use the convert_wide_to_numpy() function to convert the wide image back to numpy
-        output_array = Image.convert_wide_to_numpy(wide_byte_buffer)
+        output_array = ImageUtils.convert_wide_to_numpy(wide_byte_buffer)
 
         # Compare these arrays to make sure they are equal
         self.assertTrue(np.array_equal(numpy_image_array, output_array))
 
         # Use the convert_numpy_to_wide() function to convert the wide image back to numpy
-        output_wide_byte_buffer = Image.convert_numpy_to_wide(output_array)
+        output_wide_byte_buffer = ImageUtils.convert_numpy_to_wide(output_array)
 
         # Compare these buffers to make sure they are equal
         self.assertTrue(wide_byte_buffer == output_wide_byte_buffer)
 
         # Close the connection
         self.s.close()
-
-    def test_mask_encoded_image_encoded_mask(self):
-        # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_natural_image.png', casout=img, decode=False)
-        self.s.image.processimages(
-            table={'name': 'image'},
-            casout={'name': 'image', 'replace': True},
-            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
-        )
-        img_table = ImageTable(img)
-
-        # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_mask_image.png', casout=smask, decode=False)
-        self.s.image.processimages(
-            table={'name': 'smask'},
-            casout={'name': 'smask', 'replace': True},
-            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_32F'}}]
-        )
-        smask_table = ImageTable(smask)
-
-        # New Image Table
-        new_img = self.s.CASTable('new_img', replace=True)
-
-        # Construct Image object
-        image = Image(cas_session=self.s)
-
-        # Masking
-        image.mask_image(img_table, smask_table, new_img, decode=False)
-
-        test_arr = np.asarray([
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 64, 32, 0],
-            [0, 0, 75, 210, 0]
-        ])
-
-        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
-        self.assertTrue(np.array_equal(new_img_arr, test_arr))
-
-    def test_mask_decoded_image_decoded_mask(self):
-        # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_3x3.png", casout=img, decode=True)
-        img_table = ImageTable(img)
-
-        # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_2_3x3.png", casout=smask, decode=True)
-        smask_table = ImageTable(smask)
-
-        # New Image Table
-        new_img = self.s.CASTable('new_img', replace=True)
-
-        # Construct Image object
-        image = Image(cas_session=self.s)
-
-        # Masking
-        image.mask_image(img_table, smask_table, new_img, decode=False)
-
-        test_arr = np.array(
-            [[0, 0, 255],
-             [0, 255, 255],
-             [0, 128, 0]]
-        )
-
-        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
-        self.assertTrue(np.array_equal(new_img_arr, test_arr))
-
-    def test_mask_decoded_image_encoded_mask(self):
-        # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_natural_image.png', casout=img, decode=True)
-        self.s.image.processimages(
-            table={'name': 'image'},
-            casout={'name': 'image', 'replace': True},
-            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_64F'}}]
-        )
-        img_table = ImageTable(img)
-
-        # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path='TestMasking/simple_mask_image.png', casout=smask, decode=False)
-        self.s.image.processimages(
-            table={'name': 'smask'},
-            casout={'name': 'smask', 'replace': True},
-            steps=[{'step': {'stepType': 'RESCALE', 'type': 'TO_64F'}}]
-        )
-        smask_table = ImageTable(smask)
-
-        # New Image Table
-        new_img = self.s.CASTable('new_img', replace=True)
-
-        # Construct Image object
-        image = Image(cas_session=self.s)
-
-        # Masking
-        image.mask_image(img_table, smask_table, new_img, decode=False)
-
-        test_arr = np.asarray([
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 64, 32, 0],
-            [0, 0, 75, 210, 0]
-        ])
-
-        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
-        self.assertTrue(np.array_equal(new_img_arr, test_arr))
-
-    def test_mask_encoded_image_decoded_mask(self):
-        # Load the image
-        img = self.s.CASTable('image', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_3x3.png", casout=img, decode=False)
-        img_table = ImageTable(img)
-
-        # Load the mask image
-        smask = self.s.CASTable('smask', replace=True)
-        self.s.image.loadimages(caslib='dlib', path="imagetypes/gray_2_3x3.png", casout=smask, decode=True)
-        smask_table = ImageTable(smask)
-
-        # New Image Table
-        new_img = self.s.CASTable('new_img', replace=True)
-
-        # Construct Image object
-        image = Image(cas_session=self.s)
-
-        # Masking
-        image.mask_image(img_table, smask_table, new_img, decode=False)
-
-        test_arr = np.array(
-            [[0, 0, 255],
-             [0, 255, 255],
-             [0, 128, 0]]
-        )
-
-        new_img_arr = np.asarray(self.s.image.fetchImages(table='new_img').Images.Image[0])
-        self.assertTrue(np.array_equal(new_img_arr, test_arr))
 
 
 if __name__ == '__main__':
