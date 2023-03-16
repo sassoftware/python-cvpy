@@ -23,6 +23,8 @@ import xmlrunner
 from swat import CAS
 
 from cvpy.base.ImageTable import ImageTable
+from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+from cvpy.image.NaturalImageTable import NaturalImageTable
 from cvpy.tests.casutils import assert_contains_message
 
 
@@ -31,11 +33,12 @@ class TestImageTable(unittest.TestCase):
     CAS_PORT = None
     USERNAME = None
     PASSWORD = None
+    PROTOCOL = None
     DATAPATH = None
 
     def setUp(self) -> None:
         self.s = CAS(TestImageTable.CAS_HOST, TestImageTable.CAS_PORT, TestImageTable.USERNAME,
-                     TestImageTable.PASSWORD)
+                     TestImageTable.PASSWORD, protocol=TestImageTable.PROTOCOL)
         self.s.loadactionset('image')
         self.s.addcaslib(name='dlib', activeOnAdd=False, path=TestImageTable.DATAPATH, dataSource='PATH',
                          subdirectories=True)
@@ -141,7 +144,8 @@ class TestImageTable(unittest.TestCase):
 
         assert_contains_message(r, '5 of 5 images were processed successfully')
 
-    def test_imagetable_column_validations(self):
+    # Validate imagetable column names and datatypes
+    def _test_imagetable_column_validations(self):
         cdata_decoded = self.s.CASTable('cdata_decoded')
         self.s.image.loadimages(path='images',
                                 labellevels=5,
@@ -193,6 +197,76 @@ class TestImageTable(unittest.TestCase):
             except Exception as e:
                 assert str(e) == invalid_dtype_msg
 
+    #
+    def test_imagetable_load_natural_images(self):
+        load_parms = {'caslib': 'dlib'}
+        image_table = ImageTable.load(self.s, path='images', load_parms=load_parms)
+        assert type(image_table) == NaturalImageTable
+
+    # Create imagetable by loading natural images from a path with output table parms
+    def test_imagetable_load_natural_images_output_table_parms(self):
+        load_parms = {'caslib': 'dlib'}
+
+        cas_table_name = 'imgs'
+        output_table_parms = {'name': cas_table_name, 'caslib': 'dlib', 'replace': True}
+        image_table = ImageTable.load(self.s, path='images', load_parms=load_parms,
+                                      output_table_parms=output_table_parms)
+        assert image_table.table.name == cas_table_name
+        assert image_table.table.caslib == 'dlib'
+        assert type(image_table) == NaturalImageTable
+
+    # Create imagetable by loading biomed images from a path
+    def test_imagetable_load_biomed_images(self):
+        load_parms = {'caslib': 'dlib'}
+        image_table = ImageTable.load(self.s, path='biomedimg', load_parms=load_parms)
+        assert type(image_table) == BiomedImageTable
+
+    # Create imagetable by loading natural images from a path with output table parms
+    def test_imagetable_load_biomed_images_output_table_parms(self):
+        load_parms = {'caslib': 'dlib'}
+
+        cas_table_name = 'imgs'
+        output_table_parms = {'name': cas_table_name, 'caslib': 'dlib', 'replace': True}
+        image_table = ImageTable.load(self.s, path='biomedimg', load_parms=load_parms,
+                                      output_table_parms=output_table_parms)
+        assert image_table.table.name == cas_table_name
+        assert image_table.table.caslib == 'dlib'
+        assert type(image_table) == BiomedImageTable
+
+    def test_imagetable_from_table_natural_images(self):
+        cas_table = self.s.CASTable('imgs')
+
+        self.s.image.loadimages(path='images', labellevels=5, casout=cas_table, caslib='dlib', decode=False)
+
+        image_table = ImageTable.from_table(cas_table)
+
+        assert image_table.table.name == cas_table.name
+        assert type(image_table) == NaturalImageTable
+
+    def test_imagetable_from_table_biomed_images(self):
+        cas_table = self.s.CASTable('imgs')
+
+        self.s.image.loadimages(path='biomedimg', labellevels=5, casout=cas_table, caslib='dlib', decode=False)
+
+        image_table = ImageTable.from_table(cas_table)
+
+        assert image_table.table.name == cas_table.name
+        assert type(image_table) == BiomedImageTable
+
+    def test_imagetable_from_table_custom_col_names(self):
+        cas_table = self.s.CASTable('imgs')
+
+        self.s.image.loadimages(path='images', labellevels=5, casout=cas_table, caslib='dlib', decode=False)
+
+        self.s.altertable(name=cas_table, columns=[dict(name='_image_', rename='image_new'),
+                                                   dict(name='_size_', rename='size_new'),
+                                                   dict(name='_path_', rename='path_new')])
+
+        image_table = ImageTable.from_table(cas_table, image='image_new', size='size_new', path='path_new')
+
+        assert image_table.table.name == cas_table.name
+        assert type(image_table) == NaturalImageTable
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -200,6 +274,7 @@ if __name__ == '__main__':
         TestImageTable.CAS_PORT = sys.argv.pop(1)
         TestImageTable.USERNAME = sys.argv.pop(1)
         TestImageTable.PASSWORD = sys.argv.pop(1)
+        TestImageTable.PROTOCOL = sys.argv.pop(1)
         TestImageTable.DATAPATH = sys.argv.pop(1)
 
     unittest.main(
