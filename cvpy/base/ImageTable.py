@@ -15,7 +15,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-from swat import CASTable
+from typing import Dict
+
+from swat import CASTable, CAS
+
+from cvpy.base.ImageType import ImageType
+from cvpy.utils.RandomNameGenerator import RandomNameGenerator
 
 
 class ImageTable(object):
@@ -60,6 +65,8 @@ class ImageTable(object):
     INT64_TYPE = 'int64'
     CHAR_TYPE = 'char'
 
+    BIOMED_IMAGE_FORMATS = ['dcm', 'nii', 'nrd']
+
     def __init__(self, table: CASTable, image: str = None, dimension: str = None, resolution: str = None,
                  imageFormat: str = None, path: str = None, label: str = None, id: str = None, size: str = None,
                  type: str = None):
@@ -95,6 +102,11 @@ class ImageTable(object):
 
         self._type = None
         self.type = type
+
+        self._connection = None
+
+        if self.table:
+            self.connection = self.table.get_connection()
 
     # Function to validate and set column attribute on ImageTable
     def validate_set_column(self, column, column_name, default_column_name, valid_column_datatypes):
@@ -219,6 +231,14 @@ class ImageTable(object):
     def type(self, type) -> None:
         self.validate_set_column('type', type, ImageTable.TYPE_COL, [ImageTable.CHAR_TYPE])
 
+    @property
+    def connection(self) -> CAS:
+        return self._connection
+
+    @connection.setter
+    def connection(self, connection) -> None:
+        self._connection = connection
+
     def as_dict(self) -> dict:
         '''
         Create a dictionary representation of this object.
@@ -230,7 +250,7 @@ class ImageTable(object):
         '''
         d = {}
         for k, v in vars(self).items():
-            if k != '_column_dtype_lookup':
+            if k not in ['_column_dtype_lookup', '_connection']:
                 d[k[1:]] = v
         return d
 
@@ -244,3 +264,94 @@ class ImageTable(object):
             Returns True if the table contains decoded images. Otherwise, returns False.
         '''
         return (self.dimension is not None) and (self.resolution is not None) and (self.imageFormat is not None)
+
+    @staticmethod
+    def load(connection: CAS, path: str, load_parms: Dict[str, str] = None,
+             output_table_parms: Dict[str, str] = None):
+
+        # Imports statements are specified here to prevent circular import issue
+        from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+        from cvpy.image.NaturalImageTable import NaturalImageTable
+
+        # If load_parms or output_table_parms are not passed, set them to empty dicts
+        if not load_parms:
+            load_parms = dict()
+
+        if not output_table_parms:
+            output_table_parms = dict()
+
+        # Load the image actionset
+        connection.loadactionset('image')
+
+        # Calculate the table name to use
+        if 'name' not in output_table_parms:
+            output_table_parms['name'] = RandomNameGenerator().generate_name()
+
+        # Create a cas table
+        cas_table = connection.CASTable(**output_table_parms)
+
+        # Get user specified image_type
+        image_type = None
+        if 'image_type' in load_parms:
+            image_type = load_parms.get('image_type')
+            # Remove image_type from load_parms since it is used for calling loadimages
+            del load_parms['image_type']
+
+        # Load the images
+        r = connection.loadimages(path=path, casout=cas_table, **load_parms)
+
+        # Calculate the image_type of the table if not specified by the user
+        if not image_type:
+            image_type = ImageTable._get_image_type(cas_table)
+
+        # Create NaturalImageTable or BiomedImageTable based on the image_type
+        if image_type == ImageType.NATURAL:
+            # Create NaturalImageTable
+            return NaturalImageTable(cas_table)
+        else:
+            # Create BiomedImageTable
+            return BiomedImageTable(cas_table)
+
+    # Returns the image_type of the images in a CASTable
+    @staticmethod
+    def _get_image_type(cas_table):
+
+        image_type = ImageType.NATURAL
+
+        image_count = cas_table.recordcount()['RecordCount'].N.values[0]
+
+        # Create a query for biomed images as: _type_ = "nii" or _type_ = "nrd", ...
+        query = ' or '.join([f'_type_ = "{x}"' for x in ImageTable.BIOMED_IMAGE_FORMATS])
+
+        # Find number of biomed images in the table
+        biomed_image_count = cas_table.query(query).recordcount()['RecordCount'].N.values[0]
+
+        # If table contains more biomed images than natural images, set image_type as biomed
+        if biomed_image_count > int(image_count / 2):
+            image_type = ImageType.BIOMED
+
+        return image_type
+
+    @staticmethod
+    def from_table(cas_table: CASTable, image_type: ImageType = None,
+                   image: str = None, dimension: str = None, resolution: str = None,
+                   imageFormat: str = None, path: str = None, label: str = None,
+                   id: str = None, size: str = None, type: str = None):
+
+        # Imports statements are specified here to prevent circular import issue
+        from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+        from cvpy.image.NaturalImageTable import NaturalImageTable
+
+        # Calculate the image_type of the table
+        if not image_type:
+            image_type = ImageTable._get_image_type(cas_table)
+
+        # Create NaturalImageTable or BiomedImageTable based on the image_type
+        if image_type == ImageType.NATURAL:
+            # Create NaturalImageTable
+            return NaturalImageTable(cas_table, image=image, dimension=dimension, resolution=resolution,
+                                     imageFormat=imageFormat, path=path, label=label, id=id, size=size, type=type)
+        else:
+            # Create BiomedImageTable
+            return BiomedImageTable(cas_table, image=image, dimension=dimension, resolution=resolution,
+                                    imageFormat=imageFormat, path=path, label=label, id=id, size=size, type=type)
