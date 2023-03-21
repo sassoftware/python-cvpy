@@ -356,7 +356,7 @@ class CVATProject(Project):
                                         replace=replace)
 
     @staticmethod
-    def resume(project_name: str, cas_connection: CAS, caslib: str, relative_path: str) -> CVATProject:
+    def resume(project_name: str, cas_connection: CAS, caslib: str = None, relative_path: str = None) -> CVATProject:
         """
         Resumes a CVATProject by reading it from the specified caslib and relative path.
 
@@ -367,15 +367,28 @@ class CVATProject(Project):
         cas_connection:
             Specifies the CAS connection in which the project will be resumed.
         caslib:
-            Specifies the caslib under which CAS tables were saved.
+            Specifies the caslib under which CAS tables were saved. If this is not specified, the active caslib will be used.
         relative_path:
-            Specifies the path relative to caslib where project was saved.
+            Specifies the path relative to caslib where project was saved. If this is not specified, the active caslib path will be used.
 
         Returns
         -------
         project:
             A CVATProject object with all of the properties set from the specified JSON string.
         """
+
+        # Check which parameters were specified
+        if caslib == None:
+            # Set caslib to the active caslib
+            caslibinfo = cas_connection.caslibinfo()['CASLibInfo']
+            caslib = caslibinfo[caslibinfo.Active == 1].Name.values[0]
+
+        if relative_path != None:
+            # Add the project name to the relative path
+            relative_path = f"{relative_path}/{project_name}"
+        else:
+            # Set relative path accordingly
+            relative_path = project_name
 
         # Load the project table
         project_table = cas_connection.CASTable(project_name)
