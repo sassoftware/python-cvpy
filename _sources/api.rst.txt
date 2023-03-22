@@ -5,23 +5,106 @@
 API Reference
 =============
 
-.. currentmodule:: cvpy
+**********
+Annotation
+**********
 
-Biomedical Images
------------------
+Base
+====
 
-.. currentmodule:: cvpy.biomedimage.BiomedImage
+Credentials
+-----------
+
+.. currentmodule:: cvpy.annotation.base.Credentials
+
+.. autosummary::
+    :toctree: generated/
+
+    Credentials
+
+CVAT
+====
+
+.. currentmodule:: cvpy.annotation.cvat
+
+CVAT Project
+------------
+
+.. currentmodule:: cvpy.annotation.cvat.CVATProject
+
+.. autosummary::
+    :toctree: generated/
+
+    CVATProject
+    CVATProject.get_annotations
+    CVATProject.post_images
+    CVATProject.save
+    CVATProject.resume
+
+CVAT Authentication
+-------------------
+
+.. currentmodule:: cvpy.annotation.cvat.CVATAuthenticator
+
+.. autosummary::
+    :toctree: generated/
+
+    CVATAuthenticator
+    CVATAuthenticator.generate_cvat_token
+
+******
+Tables
+******
+
+Biomedical Image Table
+======================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImageTable
     
 .. autosummary::
     :toctree: generated/
 
-    BiomedImage
-    BiomedImage.quantify_sphericity
-    BiomedImage.mask_image
-    BiomedImage.morphological_gradient
+    BiomedImageTable
+    BiomedImageTable.as_dict
+    BiomedImageTable.fetch_image_array
+    BiomedImageTable.fetch_geometry_info
+    BiomedImageTable.has_decoded_images
+    BiomedImageTable.sphericity
+    BiomedImageTable.morphological_gradient
+
+Image Table
+===========
+
+.. currentmodule:: cvpy.base.ImageTable
+
+.. autosummary::
+    :toctree: generated/
+
+    ImageTable
+    ImageTable.as_dict
+    ImageTable.has_decoded_images
+    ImageTable.load
+    ImageTable.from_table
+
+Natural Image Table
+===================
+
+.. currentmodule:: cvpy.image.NaturalImageTable
+
+.. autosummary::
+    :toctree: generated/
+
+    NaturalImageTable
+    NaturalImageTable.as_dict
+    NaturalImageTable.has_decoded_images
+    NaturalImageTable.mask_image
+
+*********
+Utilities
+*********
 
 CAS Thread Tuner
-----------------
+================
 
 .. currentmodule:: cvpy.utils.CASThreadTuner
 
@@ -33,7 +116,7 @@ CAS Thread Tuner
 
 
 CAS Thread Tuner Results
-------------------------
+========================
 
 .. currentmodule:: cvpy.base.CASThreadTunerResults
 
@@ -43,41 +126,25 @@ CAS Thread Tuner Results
     CASThreadTunerResults
     CASThreadTunerResults.plot_exec_times
 
-Image
------
+Image Utilities
+===============
 
-.. currentmodule:: cvpy.image.Image
-
-.. autosummary::
-    :toctree: generated/
-
-    Image
-    Image.convert_to_CAS_column
-    Image.convert_wide_to_numpy
-    Image.convert_numpy_to_wide
-    Image.fetch_geometry_info
-    Image.fetch_image_array
-    Image.get_image_array_from_row
-    Image.get_image_array
-    Image.get_image_array_const_ctype
-    Image.mask_image
-
-
-ImageTable
-----------
-
-.. currentmodule:: cvpy.base.ImageTable
+.. currentmodule:: cvpy.utils.ImageUtils
 
 .. autosummary::
     :toctree: generated/
 
-    ImageTable
-    ImageTable.as_dict
-    ImageTable.has_decoded_images
+    ImageUtils
+    ImageUtils.convert_numpy_to_wide
+    ImageUtils.convert_to_CAS_column
+    ImageUtils.convert_wide_to_numpy
+    ImageUtils.get_image_array
+    ImageUtils.get_image_array_const_ctype
+    ImageUtils.get_image_array_from_row
 
-
-Visualization Reference
------------------------
+*************
+Visualization
+*************
 
 .. currentmodule:: cvpy.visualization
 
@@ -88,41 +155,3 @@ Visualization Reference
     display_3D_image_slices_from_array
     display_3D_image_slices
     display_3D_surface
-
-Annotations
------------
-
-Projects
-~~~~~~~~
-
-.. currentmodule:: cvpy.annotation.base.Project
-
-.. autosummary::
-    :toctree: generated/
-
-    Project
-    Project.post_images
-    Project.get_annotations
-    Project.save
-    Project.resume
-
-.. currentmodule:: cvpy.annotation.cvat.CVATProject
-
-.. autosummary::
-    :toctree: generated/
-
-    CVATProject
-    CVATProject.post_images
-    CVATProject.get_annotations
-    CVATProject.save
-    CVATProject.resume
-
-Authentication
-~~~~~~~~~~~~~~
-
-.. currentmodule:: cvpy.annotation.base.Credentials
-
-.. autosummary::
-    :toctree: generated/
-
-    Credentials

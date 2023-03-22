@@ -18,7 +18,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="cvpy.biomedimage.BiomedImage.BiomedImage" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html" />
+    <link rel="next" title="cvpy.annotation.base.Credentials.Credentials" href="generated/cvpy.annotation.base.Credentials.Credentials.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -47,67 +47,74 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#biomedical-images">Biomedical Images</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html">cvpy.biomedimage.BiomedImage.BiomedImage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html">cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html">cvpy.biomedimage.BiomedImage.BiomedImage.mask_image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html">cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#annotation">Annotation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base">Base</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#credentials">Credentials</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#cas-thread-tuner">CAS Thread Tuner</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.html">cvpy.utils.CASThreadTuner.CASThreadTuner</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count.html">cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cvat">CVAT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cvat-project">CVAT Project</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cvat-authentication">CVAT Authentication</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#cas-thread-tuner-results">CAS Thread Tuner Results</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.html">cvpy.base.CASThreadTunerResults.CASThreadTunerResults</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times.html">cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#image">Image</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.html">cvpy.image.Image.Image</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_to_CAS_column.html">cvpy.image.Image.Image.convert_to_CAS_column</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_wide_to_numpy.html">cvpy.image.Image.Image.convert_wide_to_numpy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_numpy_to_wide.html">cvpy.image.Image.Image.convert_numpy_to_wide</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_geometry_info.html">cvpy.image.Image.Image.fetch_geometry_info</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_image_array.html">cvpy.image.Image.Image.fetch_image_array</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_from_row.html">cvpy.image.Image.Image.get_image_array_from_row</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array.html">cvpy.image.Image.Image.get_image_array</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_const_ctype.html">cvpy.image.Image.Image.get_image_array_const_ctype</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.image.Image.Image.mask_image.html">cvpy.image.Image.Image.mask_image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#biomedical-image-table">Biomedical Image Table</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.html">cvpy.biomedimage.BiomedImageTable.BiomedImageTable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.as_dict.html">cvpy.biomedimage.BiomedImageTable.BiomedImageTable.as_dict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_image_array.html">cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_image_array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_geometry_info.html">cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_geometry_info</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.has_decoded_images.html">cvpy.biomedimage.BiomedImageTable.BiomedImageTable.has_decoded_images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.sphericity.html">cvpy.biomedimage.BiomedImageTable.BiomedImageTable.sphericity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient.html">cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#imagetable">ImageTable</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.html">cvpy.base.ImageTable.ImageTable</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.as_dict.html">cvpy.base.ImageTable.ImageTable.as_dict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.has_decoded_images.html">cvpy.base.ImageTable.ImageTable.has_decoded_images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-table">Image Table</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.html">cvpy.base.ImageTable.ImageTable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.as_dict.html">cvpy.base.ImageTable.ImageTable.as_dict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.has_decoded_images.html">cvpy.base.ImageTable.ImageTable.has_decoded_images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.load.html">cvpy.base.ImageTable.ImageTable.load</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.from_table.html">cvpy.base.ImageTable.ImageTable.from_table</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#visualization-reference">Visualization Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#natural-image-table">Natural Image Table</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.html">cvpy.image.NaturalImageTable.NaturalImageTable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.as_dict.html">cvpy.image.NaturalImageTable.NaturalImageTable.as_dict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.has_decoded_images.html">cvpy.image.NaturalImageTable.NaturalImageTable.has_decoded_images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.mask_image.html">cvpy.image.NaturalImageTable.NaturalImageTable.mask_image</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cas-thread-tuner">CAS Thread Tuner</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.html">cvpy.utils.CASThreadTuner.CASThreadTuner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count.html">cvpy.utils.CASThreadTuner.CASThreadTuner.tune_thread_count</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#cas-thread-tuner-results">CAS Thread Tuner Results</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.html">cvpy.base.CASThreadTunerResults.CASThreadTunerResults</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times.html">cvpy.base.CASThreadTunerResults.CASThreadTunerResults.plot_exec_times</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#image-utilities">Image Utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.html">cvpy.utils.ImageUtils.ImageUtils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.convert_numpy_to_wide.html">cvpy.utils.ImageUtils.ImageUtils.convert_numpy_to_wide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.convert_to_CAS_column.html">cvpy.utils.ImageUtils.ImageUtils.convert_to_CAS_column</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.convert_wide_to_numpy.html">cvpy.utils.ImageUtils.ImageUtils.convert_wide_to_numpy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.get_image_array.html">cvpy.utils.ImageUtils.ImageUtils.get_image_array</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.get_image_array_const_ctype.html">cvpy.utils.ImageUtils.ImageUtils.get_image_array_const_ctype</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.get_image_array_from_row.html">cvpy.utils.ImageUtils.ImageUtils.get_image_array_from_row</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_image_slice.html">cvpy.visualization.display_image_slice</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices_from_array.html">cvpy.visualization.display_3D_image_slices_from_array</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_image_slices.html">cvpy.visualization.display_3D_image_slices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/cvpy.visualization.display_3D_surface.html">cvpy.visualization.display_3D_surface</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#annotations">Annotations</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#projects">Projects</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.html">cvpy.annotation.base.Project.Project</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.post_images.html">cvpy.annotation.base.Project.Project.post_images</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.get_annotations.html">cvpy.annotation.base.Project.Project.get_annotations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.save.html">cvpy.annotation.base.Project.Project.save</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.resume.html">cvpy.annotation.base.Project.Project.resume</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.html">cvpy.annotation.cvat.CVATProject.CVATProject</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.post_images.html">cvpy.annotation.cvat.CVATProject.CVATProject.post_images</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations.html">cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.save.html">cvpy.annotation.cvat.CVATProject.CVATProject.save</a></li>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.resume.html">cvpy.annotation.cvat.CVATProject.CVATProject.resume</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#authentication">Authentication</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="generated/cvpy.annotation.base.Credentials.Credentials.html">cvpy.annotation.base.Credentials.Credentials</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -141,27 +148,136 @@
              
   <section id="api-reference">
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
-<section id="biomedical-images">
-<h2>Biomedical Images<a class="headerlink" href="#biomedical-images" title="Permalink to this heading">¶</a></h2>
+<section id="annotation">
+<h2>Annotation<a class="headerlink" href="#annotation" title="Permalink to this heading">¶</a></h2>
+<section id="base">
+<h3>Base<a class="headerlink" href="#base" title="Permalink to this heading">¶</a></h3>
+<section id="credentials">
+<h4>Credentials<a class="headerlink" href="#credentials" title="Permalink to this heading">¶</a></h4>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html#cvpy.biomedimage.BiomedImage.BiomedImage" title="cvpy.biomedimage.BiomedImage.BiomedImage"><strong>BiomedImage</strong></a>([cas_session])</p></td>
-<td><p>Implement biomedical image processing functions.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity.html#cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity" title="cvpy.biomedimage.BiomedImage.BiomedImage.quantify_sphericity"><strong>BiomedImage.quantify_sphericity</strong></a>(image_table, ...)</p></td>
-<td><p>Quantify the sphericity for the given component from a CAS table.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.mask_image.html#cvpy.biomedimage.BiomedImage.BiomedImage.mask_image" title="cvpy.biomedimage.BiomedImage.BiomedImage.mask_image"><strong>BiomedImage.mask_image</strong></a>(image, mask, casout)</p></td>
-<td><p>Applies masking to an ImageTable.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient.html#cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient" title="cvpy.biomedimage.BiomedImage.BiomedImage.morphological_gradient"><strong>BiomedImage.morphological_gradient</strong></a>(images[, ...])</p></td>
-<td><p>Compute the morphological gradient for each 3D grayscale image in the image table.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Credentials.Credentials.html#cvpy.annotation.base.Credentials.Credentials" title="cvpy.annotation.base.Credentials.Credentials"><strong>Credentials</strong></a>([username, password, token, ...])</p></td>
+<td><p>Construct an object that contains authentication information.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
+</section>
+<section id="cvat">
+<h3>CVAT<a class="headerlink" href="#cvat" title="Permalink to this heading">¶</a></h3>
+<section id="cvat-project">
+<h4>CVAT Project<a class="headerlink" href="#cvat-project" title="Permalink to this heading">¶</a></h4>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.html#cvpy.annotation.cvat.CVATProject.CVATProject" title="cvpy.annotation.cvat.CVATProject.CVATProject"><strong>CVATProject</strong></a>([cas_connection, url, ...])</p></td>
+<td><p>Defines a class to interact with a CVAT Project.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations.html#cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations" title="cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations"><strong>CVATProject.get_annotations</strong></a>(image_table, ...)</p></td>
+<td><p>Fetch annotations from CVAT corresponding to the images in a CAS table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.post_images.html#cvpy.annotation.cvat.CVATProject.CVATProject.post_images" title="cvpy.annotation.cvat.CVATProject.CVATProject.post_images"><strong>CVATProject.post_images</strong></a>(image_table)</p></td>
+<td><p>Create a CVAT task under the project and upload images from a CAS table to that task.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.save.html#cvpy.annotation.cvat.CVATProject.CVATProject.save" title="cvpy.annotation.cvat.CVATProject.CVATProject.save"><strong>CVATProject.save</strong></a>([caslib, relative_path, ...])</p></td>
+<td><p>Saves a CVATProject in the specified caslib and relative path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.resume.html#cvpy.annotation.cvat.CVATProject.CVATProject.resume" title="cvpy.annotation.cvat.CVATProject.CVATProject.resume"><strong>CVATProject.resume</strong></a>(project_name, ...)</p></td>
+<td><p>Resumes a CVATProject by reading it from the specified caslib and relative path.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="cvat-authentication">
+<h4>CVAT Authentication<a class="headerlink" href="#cvat-authentication" title="Permalink to this heading">¶</a></h4>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator.html#cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator" title="cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator"><strong>CVATAuthenticator</strong></a>()</p></td>
+<td><p>Defines a class with methods for CVAT authentication.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator.generate_cvat_token.html#cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator.generate_cvat_token" title="cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator.generate_cvat_token"><strong>CVATAuthenticator.generate_cvat_token</strong></a>()</p></td>
+<td><p>Authenticate a user against a CVAT server.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="tables">
+<h2>Tables<a class="headerlink" href="#tables" title="Permalink to this heading">¶</a></h2>
+<section id="biomedical-image-table">
+<h3>Biomedical Image Table<a class="headerlink" href="#biomedical-image-table" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.html#cvpy.biomedimage.BiomedImageTable.BiomedImageTable" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable"><strong>BiomedImageTable</strong></a>([table, image, dimension, ...])</p></td>
+<td><p>Implement biomedical image processing functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.as_dict.html#cvpy.biomedimage.BiomedImageTable.BiomedImageTable.as_dict" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.as_dict"><strong>BiomedImageTable.as_dict</strong></a>()</p></td>
+<td><p>Create a dictionary representation of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_image_array.html#cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_image_array" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_image_array"><strong>BiomedImageTable.fetch_image_array</strong></a>([n, qry, ...])</p></td>
+<td><p>Fetch image array from this BiomedImageTable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_geometry_info.html#cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_geometry_info" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch_geometry_info"><strong>BiomedImageTable.fetch_geometry_info</strong></a>([n, ...])</p></td>
+<td><p>Fetch geometry information from this BiomedImageTable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.has_decoded_images.html#cvpy.biomedimage.BiomedImageTable.BiomedImageTable.has_decoded_images" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.has_decoded_images"><strong>BiomedImageTable.has_decoded_images</strong></a>()</p></td>
+<td><p>Check if this table contains decoded images or encoded images.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.sphericity.html#cvpy.biomedimage.BiomedImageTable.BiomedImageTable.sphericity" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.sphericity"><strong>BiomedImageTable.sphericity</strong></a>(use_spacing, ...)</p></td>
+<td><p>Quantify the sphericity for the given component from this BiomedImageTable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient.html#cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient"><strong>BiomedImageTable.morphological_gradient</strong></a>([...])</p></td>
+<td><p>Compute the morphological gradient for each 3D grayscale image in this BiomedImageTable.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="image-table">
+<h3>Image Table<a class="headerlink" href="#image-table" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><strong>ImageTable</strong></a>(table[, image, dimension, ...])</p></td>
+<td><p>Base class for NaturalImageTable and BiomedImageTable classes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.as_dict.html#cvpy.base.ImageTable.ImageTable.as_dict" title="cvpy.base.ImageTable.ImageTable.as_dict"><strong>ImageTable.as_dict</strong></a>()</p></td>
+<td><p>Create a dictionary representation of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.has_decoded_images.html#cvpy.base.ImageTable.ImageTable.has_decoded_images" title="cvpy.base.ImageTable.ImageTable.has_decoded_images"><strong>ImageTable.has_decoded_images</strong></a>()</p></td>
+<td><p>Check if this table contains decoded images or encoded images.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.load.html#cvpy.base.ImageTable.ImageTable.load" title="cvpy.base.ImageTable.ImageTable.load"><strong>ImageTable.load</strong></a>(connection, path[, ...])</p></td>
+<td><p>Loads images in an ImageTable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.from_table.html#cvpy.base.ImageTable.ImageTable.from_table" title="cvpy.base.ImageTable.ImageTable.from_table"><strong>ImageTable.from_table</strong></a>(cas_table[, ...])</p></td>
+<td><p>Creates an ImageTable from a CASTable.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="natural-image-table">
+<h3>Natural Image Table<a class="headerlink" href="#natural-image-table" title="Permalink to this heading">¶</a></h3>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.html#cvpy.image.NaturalImageTable.NaturalImageTable" title="cvpy.image.NaturalImageTable.NaturalImageTable"><strong>NaturalImageTable</strong></a>([table, image, dimension, ...])</p></td>
+<td><p>Implement natural image processing functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.as_dict.html#cvpy.image.NaturalImageTable.NaturalImageTable.as_dict" title="cvpy.image.NaturalImageTable.NaturalImageTable.as_dict"><strong>NaturalImageTable.as_dict</strong></a>()</p></td>
+<td><p>Create a dictionary representation of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.has_decoded_images.html#cvpy.image.NaturalImageTable.NaturalImageTable.has_decoded_images" title="cvpy.image.NaturalImageTable.NaturalImageTable.has_decoded_images"><strong>NaturalImageTable.has_decoded_images</strong></a>()</p></td>
+<td><p>Check if this table contains decoded images or encoded images.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.NaturalImageTable.NaturalImageTable.mask_image.html#cvpy.image.NaturalImageTable.NaturalImageTable.mask_image" title="cvpy.image.NaturalImageTable.NaturalImageTable.mask_image"><strong>NaturalImageTable.mask_image</strong></a>(mask[, decode, ...])</p></td>
+<td><p>Applies masking to an ImageTable.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading">¶</a></h2>
 <section id="cas-thread-tuner">
-<h2>CAS Thread Tuner<a class="headerlink" href="#cas-thread-tuner" title="Permalink to this heading">¶</a></h2>
+<h3>CAS Thread Tuner<a class="headerlink" href="#cas-thread-tuner" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.utils.CASThreadTuner.CASThreadTuner.html#cvpy.utils.CASThreadTuner.CASThreadTuner" title="cvpy.utils.CASThreadTuner.CASThreadTuner"><strong>CASThreadTuner</strong></a>()</p></td>
@@ -174,7 +290,7 @@
 </table>
 </section>
 <section id="cas-thread-tuner-results">
-<h2>CAS Thread Tuner Results<a class="headerlink" href="#cas-thread-tuner-results" title="Permalink to this heading">¶</a></h2>
+<h3>CAS Thread Tuner Results<a class="headerlink" href="#cas-thread-tuner-results" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.CASThreadTunerResults.CASThreadTunerResults.html#cvpy.base.CASThreadTunerResults.CASThreadTunerResults" title="cvpy.base.CASThreadTunerResults.CASThreadTunerResults"><strong>CASThreadTunerResults</strong></a>([cas_server_mode, ...])</p></td>
@@ -186,61 +302,37 @@
 </tbody>
 </table>
 </section>
-<section id="image">
-<h2>Image<a class="headerlink" href="#image" title="Permalink to this heading">¶</a></h2>
+<section id="image-utilities">
+<h3>Image Utilities<a class="headerlink" href="#image-utilities" title="Permalink to this heading">¶</a></h3>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.html#cvpy.image.Image.Image" title="cvpy.image.Image.Image"><strong>Image</strong></a>([cas_session])</p></td>
-<td><p>Implement image processing functions.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.html#cvpy.utils.ImageUtils.ImageUtils" title="cvpy.utils.ImageUtils.ImageUtils"><strong>ImageUtils</strong></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_to_CAS_column.html#cvpy.image.Image.Image.convert_to_CAS_column" title="cvpy.image.Image.Image.convert_to_CAS_column"><strong>Image.convert_to_CAS_column</strong></a>(s)</p></td>
-<td><p>Convert a string to CAS column name.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_wide_to_numpy.html#cvpy.image.Image.Image.convert_wide_to_numpy" title="cvpy.image.Image.Image.convert_wide_to_numpy"><strong>Image.convert_wide_to_numpy</strong></a>(wide_image)</p></td>
-<td><p>Convert a wide image to a numpy image array.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.convert_numpy_to_wide.html#cvpy.image.Image.Image.convert_numpy_to_wide" title="cvpy.image.Image.Image.convert_numpy_to_wide"><strong>Image.convert_numpy_to_wide</strong></a>(numpy_array)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.convert_numpy_to_wide.html#cvpy.utils.ImageUtils.ImageUtils.convert_numpy_to_wide" title="cvpy.utils.ImageUtils.ImageUtils.convert_numpy_to_wide"><strong>ImageUtils.convert_numpy_to_wide</strong></a>(numpy_array)</p></td>
 <td><p>Convert a numpy image array to a wide image.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_geometry_info.html#cvpy.image.Image.Image.fetch_geometry_info" title="cvpy.image.Image.Image.fetch_geometry_info"><strong>Image.fetch_geometry_info</strong></a>(imdata[, n, qry, ...])</p></td>
-<td><p>Fetch geometry information from a CAS table.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.convert_to_CAS_column.html#cvpy.utils.ImageUtils.ImageUtils.convert_to_CAS_column" title="cvpy.utils.ImageUtils.ImageUtils.convert_to_CAS_column"><strong>ImageUtils.convert_to_CAS_column</strong></a>(s)</p></td>
+<td><p>Convert a string to CAS column name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.fetch_image_array.html#cvpy.image.Image.Image.fetch_image_array" title="cvpy.image.Image.Image.fetch_image_array"><strong>Image.fetch_image_array</strong></a>(imdata[, n, qry, ...])</p></td>
-<td><p>Fetch image array from a CAS table.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.convert_wide_to_numpy.html#cvpy.utils.ImageUtils.ImageUtils.convert_wide_to_numpy" title="cvpy.utils.ImageUtils.ImageUtils.convert_wide_to_numpy"><strong>ImageUtils.convert_wide_to_numpy</strong></a>(wide_image)</p></td>
+<td><p>Convert a wide image to a numpy image array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_from_row.html#cvpy.image.Image.Image.get_image_array_from_row" title="cvpy.image.Image.Image.get_image_array_from_row"><strong>Image.get_image_array_from_row</strong></a>(image_binary, ...)</p></td>
-<td><p>Get a 3D image from a row.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array.html#cvpy.image.Image.Image.get_image_array" title="cvpy.image.Image.Image.get_image_array"><strong>Image.get_image_array</strong></a>(image_binaries, ...[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.get_image_array.html#cvpy.utils.ImageUtils.ImageUtils.get_image_array" title="cvpy.utils.ImageUtils.ImageUtils.get_image_array"><strong>ImageUtils.get_image_array</strong></a>(image_binaries, ...)</p></td>
 <td><p>Get an image from a fetched array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.get_image_array_const_ctype.html#cvpy.image.Image.Image.get_image_array_const_ctype" title="cvpy.image.Image.Image.get_image_array_const_ctype"><strong>Image.get_image_array_const_ctype</strong></a>(...[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.get_image_array_const_ctype.html#cvpy.utils.ImageUtils.ImageUtils.get_image_array_const_ctype" title="cvpy.utils.ImageUtils.ImageUtils.get_image_array_const_ctype"><strong>ImageUtils.get_image_array_const_ctype</strong></a>(...)</p></td>
 <td><p>Get an image array with a constant channel type from a CAS table.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.image.Image.Image.mask_image.html#cvpy.image.Image.Image.mask_image" title="cvpy.image.Image.Image.mask_image"><strong>Image.mask_image</strong></a>(image, mask, casout[, ...])</p></td>
-<td><p>Applies masking to an ImageTable.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.utils.ImageUtils.ImageUtils.get_image_array_from_row.html#cvpy.utils.ImageUtils.ImageUtils.get_image_array_from_row" title="cvpy.utils.ImageUtils.ImageUtils.get_image_array_from_row"><strong>ImageUtils.get_image_array_from_row</strong></a>(...[, ...])</p></td>
+<td><p>Get a 3D image from a row.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="imagetable">
-<h2>ImageTable<a class="headerlink" href="#imagetable" title="Permalink to this heading">¶</a></h2>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.html#cvpy.base.ImageTable.ImageTable" title="cvpy.base.ImageTable.ImageTable"><strong>ImageTable</strong></a>(table[, image, dimension, ...])</p></td>
-<td><p>Interface with a CASTable of images.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.as_dict.html#cvpy.base.ImageTable.ImageTable.as_dict" title="cvpy.base.ImageTable.ImageTable.as_dict"><strong>ImageTable.as_dict</strong></a>()</p></td>
-<td><p>Create a dictionary representation of this object.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.base.ImageTable.ImageTable.has_decoded_images.html#cvpy.base.ImageTable.ImageTable.has_decoded_images" title="cvpy.base.ImageTable.ImageTable.has_decoded_images"><strong>ImageTable.has_decoded_images</strong></a>()</p></td>
-<td><p>Check if this table contains decoded images or encoded images.</p></td>
-</tr>
-</tbody>
-</table>
 </section>
-<section id="visualization-reference">
-<h2>Visualization Reference<a class="headerlink" href="#visualization-reference" title="Permalink to this heading">¶</a></h2>
+<section id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.visualization.display_image_slice.html#cvpy.visualization.display_image_slice" title="cvpy.visualization.display_image_slice"><strong>display_image_slice</strong></a>(images, dims, ress, ...)</p></td>
@@ -258,60 +350,6 @@
 </tbody>
 </table>
 </section>
-<section id="annotations">
-<h2>Annotations<a class="headerlink" href="#annotations" title="Permalink to this heading">¶</a></h2>
-<section id="projects">
-<h3>Projects<a class="headerlink" href="#projects" title="Permalink to this heading">¶</a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.html#cvpy.annotation.base.Project.Project" title="cvpy.annotation.base.Project.Project"><strong>Project</strong></a>([cas_connection, url, credentials, ...])</p></td>
-<td><p>Defines a base class to interface with a project in an annotation tool.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.post_images.html#cvpy.annotation.base.Project.Project.post_images" title="cvpy.annotation.base.Project.Project.post_images"><strong>Project.post_images</strong></a>(image_table)</p></td>
-<td><p>Create a CVAT task under the project and upload images from a CAS table to that task.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.get_annotations.html#cvpy.annotation.base.Project.Project.get_annotations" title="cvpy.annotation.base.Project.Project.get_annotations"><strong>Project.get_annotations</strong></a>(annotated_table, ...)</p></td>
-<td><p>Fetch annotations from CVAT that correspond to the images in a CAS table.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.save.html#cvpy.annotation.base.Project.Project.save" title="cvpy.annotation.base.Project.Project.save"><strong>Project.save</strong></a>(caslib, relative_path[, replace])</p></td>
-<td><p>Save an annotation session.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Project.Project.resume.html#cvpy.annotation.base.Project.Project.resume" title="cvpy.annotation.base.Project.Project.resume"><strong>Project.resume</strong></a>(project_name, cas_connection, ...)</p></td>
-<td><p>Resume an annotation session.</p></td>
-</tr>
-</tbody>
-</table>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.html#cvpy.annotation.cvat.CVATProject.CVATProject" title="cvpy.annotation.cvat.CVATProject.CVATProject"><strong>CVATProject</strong></a>([cas_connection, url, ...])</p></td>
-<td><p>Defines a class to interact with a CVAT Project.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.post_images.html#cvpy.annotation.cvat.CVATProject.CVATProject.post_images" title="cvpy.annotation.cvat.CVATProject.CVATProject.post_images"><strong>CVATProject.post_images</strong></a>(image_table)</p></td>
-<td><p>Create a CVAT task under the project and upload images from a CAS table to that task.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations.html#cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations" title="cvpy.annotation.cvat.CVATProject.CVATProject.get_annotations"><strong>CVATProject.get_annotations</strong></a>(image_table, ...)</p></td>
-<td><p>Fetch annotations from CVAT corresponding to the images in a CAS table.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.save.html#cvpy.annotation.cvat.CVATProject.CVATProject.save" title="cvpy.annotation.cvat.CVATProject.CVATProject.save"><strong>CVATProject.save</strong></a>(caslib, relative_path[, ...])</p></td>
-<td><p>Saves a CVATProject in the specified caslib and relative path.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.cvat.CVATProject.CVATProject.resume.html#cvpy.annotation.cvat.CVATProject.CVATProject.resume" title="cvpy.annotation.cvat.CVATProject.CVATProject.resume"><strong>CVATProject.resume</strong></a>(project_name, ...)</p></td>
-<td><p>Resumes a CVATProject by reading it from the specified caslib and relative path.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="authentication">
-<h3>Authentication<a class="headerlink" href="#authentication" title="Permalink to this heading">¶</a></h3>
-<table class="autosummary longtable docutils align-default">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/cvpy.annotation.base.Credentials.Credentials.html#cvpy.annotation.base.Credentials.Credentials" title="cvpy.annotation.base.Credentials.Credentials"><strong>Credentials</strong></a>([username, password, token, ...])</p></td>
-<td><p>Construct an object that contains authentication information.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
 </section>
 
 
@@ -319,7 +357,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="generated/cvpy.biomedimage.BiomedImage.BiomedImage.html" class="btn btn-neutral float-right" title="cvpy.biomedimage.BiomedImage.BiomedImage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/cvpy.annotation.base.Credentials.Credentials.html" class="btn btn-neutral float-right" title="cvpy.annotation.base.Credentials.Credentials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

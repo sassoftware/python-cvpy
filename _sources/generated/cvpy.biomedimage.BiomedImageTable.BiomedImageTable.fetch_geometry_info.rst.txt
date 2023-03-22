@@ -1,0 +1,6 @@
+﻿cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch\_geometry\_info
+========================================================================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImageTable
+
+.. automethod:: BiomedImageTable.fetch_geometry_info

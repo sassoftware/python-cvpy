@@ -1,0 +1,6 @@
+﻿cvpy.image.NaturalImageTable.NaturalImageTable.has\_decoded\_images
+===================================================================
+
+.. currentmodule:: cvpy.image.NaturalImageTable
+
+.. automethod:: NaturalImageTable.has_decoded_images

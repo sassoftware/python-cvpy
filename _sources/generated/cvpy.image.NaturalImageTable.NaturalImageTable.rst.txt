@@ -1,0 +1,59 @@
+﻿cvpy.image.NaturalImageTable.NaturalImageTable
+==============================================
+
+.. currentmodule:: cvpy.image.NaturalImageTable
+
+.. autoclass:: NaturalImageTable
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NaturalImageTable.__init__
+      ~NaturalImageTable.as_dict
+      ~NaturalImageTable.from_table
+      ~NaturalImageTable.has_decoded_images
+      ~NaturalImageTable.load
+      ~NaturalImageTable.mask_image
+      ~NaturalImageTable.validate_set_column
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NaturalImageTable.BIOMED_IMAGE_FORMATS
+      ~NaturalImageTable.CHAR_TYPE
+      ~NaturalImageTable.DIMENSION_COL
+      ~NaturalImageTable.FORMAT_COL
+      ~NaturalImageTable.ID_COL
+      ~NaturalImageTable.IMAGE_COL
+      ~NaturalImageTable.INT64_TYPE
+      ~NaturalImageTable.LABEL_COL
+      ~NaturalImageTable.PATH_COL
+      ~NaturalImageTable.RESOLUTION_COL
+      ~NaturalImageTable.SIZE_COL
+      ~NaturalImageTable.TYPE_COL
+      ~NaturalImageTable.VARBINARY_IMAGE_TYPE
+      ~NaturalImageTable.VARBINARY_TYPE
+      ~NaturalImageTable.VARCHAR_TYPE
+      ~NaturalImageTable.connection
+      ~NaturalImageTable.dimension
+      ~NaturalImageTable.id
+      ~NaturalImageTable.image
+      ~NaturalImageTable.imageFormat
+      ~NaturalImageTable.label
+      ~NaturalImageTable.path
+      ~NaturalImageTable.resolution
+      ~NaturalImageTable.size
+      ~NaturalImageTable.table
+      ~NaturalImageTable.type
+   
+   

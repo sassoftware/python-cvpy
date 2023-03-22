@@ -1,0 +1,6 @@
+﻿cvpy.base.ImageTable.ImageTable.from\_table
+===========================================
+
+.. currentmodule:: cvpy.base.ImageTable
+
+.. automethod:: ImageTable.from_table

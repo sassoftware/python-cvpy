@@ -1,0 +1,6 @@
+﻿cvpy.image.NaturalImageTable.NaturalImageTable.as\_dict
+=======================================================
+
+.. currentmodule:: cvpy.image.NaturalImageTable
+
+.. automethod:: NaturalImageTable.as_dict

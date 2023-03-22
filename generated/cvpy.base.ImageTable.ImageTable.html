@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="cvpy.base.ImageTable.ImageTable.as_dict" href="cvpy.base.ImageTable.ImageTable.as_dict.html" />
-    <link rel="prev" title="cvpy.image.Image.Image.mask_image" href="cvpy.image.Image.Image.mask_image.html" /> 
+    <link rel="prev" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient" href="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,21 +47,22 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../api.html#biomedical-images">Biomedical Images</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner">CAS Thread Tuner</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#cas-thread-tuner-results">CAS Thread Tuner Results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#image">Image</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#imagetable">ImageTable</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cvpy.base.ImageTable.ImageTable</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cvpy.base.ImageTable.ImageTable"><strong>ImageTable</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#annotation">Annotation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#tables">Tables</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../api.html#biomedical-image-table">Biomedical Image Table</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../api.html#image-table">Image Table</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">cvpy.base.ImageTable.ImageTable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.as_dict.html">cvpy.base.ImageTable.ImageTable.as_dict</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.has_decoded_images.html">cvpy.base.ImageTable.ImageTable.has_decoded_images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.load.html">cvpy.base.ImageTable.ImageTable.load</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.from_table.html">cvpy.base.ImageTable.ImageTable.from_table</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.as_dict.html">cvpy.base.ImageTable.ImageTable.as_dict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.has_decoded_images.html">cvpy.base.ImageTable.ImageTable.has_decoded_images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api.html#natural-image-table">Natural Image Table</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#visualization-reference">Visualization Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#annotations">Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#utilities">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#visualization">Visualization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -97,7 +98,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="cvpy.base.ImageTable.ImageTable">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cvpy.base.ImageTable.</span></span><span class="sig-name descname"><span class="pre">ImageTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://sassoftware.github.io/python-swat/generated/swat.cas.table.CASTable.html#swat.cas.table.CASTable" title="(in SWAT v1.12.1)"><span class="pre">CASTable</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imageFormat</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cvpy.base.ImageTable.ImageTable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interface with a CASTable of images.</p>
+<dd><p>Base class for NaturalImageTable and BiomedImageTable classes.</p>
 <dl class="simple">
 <dt>table:</dt><dd><p>Specifies the input table that contains image data.</p>
 </dd>
@@ -134,8 +135,14 @@
 <tr class="row-even"><td><p><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.as_dict.html#cvpy.base.ImageTable.ImageTable.as_dict" title="cvpy.base.ImageTable.ImageTable.as_dict"><strong>as_dict</strong></a>()</p></td>
 <td><p>Create a dictionary representation of this object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.has_decoded_images.html#cvpy.base.ImageTable.ImageTable.has_decoded_images" title="cvpy.base.ImageTable.ImageTable.has_decoded_images"><strong>has_decoded_images</strong></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.from_table.html#cvpy.base.ImageTable.ImageTable.from_table" title="cvpy.base.ImageTable.ImageTable.from_table"><strong>from_table</strong></a>(cas_table[, image_type, image, ...])</p></td>
+<td><p>Creates an ImageTable from a CASTable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.has_decoded_images.html#cvpy.base.ImageTable.ImageTable.has_decoded_images" title="cvpy.base.ImageTable.ImageTable.has_decoded_images"><strong>has_decoded_images</strong></a>()</p></td>
 <td><p>Check if this table contains decoded images or encoded images.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="cvpy.base.ImageTable.ImageTable.load.html#cvpy.base.ImageTable.ImageTable.load" title="cvpy.base.ImageTable.ImageTable.load"><strong>load</strong></a>(connection, path[, load_parms, ...])</p></td>
+<td><p>Loads images in an ImageTable.</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>validate_set_column</strong>(column, column_name, ...)</p></td>
 <td><p></p></td>
@@ -145,46 +152,52 @@
 <p class="rubric">Attributes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><strong>CHAR_TYPE</strong></p></td>
+<tr class="row-odd"><td><p><strong>BIOMED_IMAGE_FORMATS</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>DIMENSION_COL</strong></p></td>
+<tr class="row-even"><td><p><strong>CHAR_TYPE</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>FORMAT_COL</strong></p></td>
+<tr class="row-odd"><td><p><strong>DIMENSION_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>ID_COL</strong></p></td>
+<tr class="row-even"><td><p><strong>FORMAT_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>IMAGE_COL</strong></p></td>
+<tr class="row-odd"><td><p><strong>ID_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>INT64_TYPE</strong></p></td>
+<tr class="row-even"><td><p><strong>IMAGE_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>LABEL_COL</strong></p></td>
+<tr class="row-odd"><td><p><strong>INT64_TYPE</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>PATH_COL</strong></p></td>
+<tr class="row-even"><td><p><strong>LABEL_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>RESOLUTION_COL</strong></p></td>
+<tr class="row-odd"><td><p><strong>PATH_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>SIZE_COL</strong></p></td>
+<tr class="row-even"><td><p><strong>RESOLUTION_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>TYPE_COL</strong></p></td>
+<tr class="row-odd"><td><p><strong>SIZE_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>VARBINARY_IMAGE_TYPE</strong></p></td>
+<tr class="row-even"><td><p><strong>TYPE_COL</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>VARBINARY_TYPE</strong></p></td>
+<tr class="row-odd"><td><p><strong>VARBINARY_IMAGE_TYPE</strong></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><strong>VARCHAR_TYPE</strong></p></td>
+<tr class="row-even"><td><p><strong>VARBINARY_TYPE</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>VARCHAR_TYPE</strong></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>connection</strong></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>dimension</strong></p></td>
@@ -227,7 +240,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cvpy.image.Image.Image.mask_image.html" class="btn btn-neutral float-left" title="cvpy.image.Image.Image.mask_image" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient.html" class="btn btn-neutral float-left" title="cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological_gradient" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="cvpy.base.ImageTable.ImageTable.as_dict.html" class="btn btn-neutral float-right" title="cvpy.base.ImageTable.ImageTable.as_dict" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

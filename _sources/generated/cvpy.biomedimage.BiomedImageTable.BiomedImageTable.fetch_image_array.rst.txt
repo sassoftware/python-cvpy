@@ -1,0 +1,6 @@
+﻿cvpy.biomedimage.BiomedImageTable.BiomedImageTable.fetch\_image\_array
+======================================================================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImageTable
+
+.. automethod:: BiomedImageTable.fetch_image_array

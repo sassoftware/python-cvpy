@@ -1,0 +1,6 @@
+﻿cvpy.biomedimage.BiomedImageTable.BiomedImageTable.morphological\_gradient
+==========================================================================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImageTable
+
+.. automethod:: BiomedImageTable.morphological_gradient

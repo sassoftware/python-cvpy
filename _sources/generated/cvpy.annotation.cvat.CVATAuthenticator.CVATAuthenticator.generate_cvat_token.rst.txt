@@ -1,0 +1,6 @@
+﻿cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator.generate\_cvat\_token
+==============================================================================
+
+.. currentmodule:: cvpy.annotation.cvat.CVATAuthenticator
+
+.. automethod:: CVATAuthenticator.generate_cvat_token

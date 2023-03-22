@@ -15,7 +15,9 @@
    
       ~ImageTable.__init__
       ~ImageTable.as_dict
+      ~ImageTable.from_table
       ~ImageTable.has_decoded_images
+      ~ImageTable.load
       ~ImageTable.validate_set_column
    
    
@@ -26,6 +28,7 @@
 
    .. autosummary::
    
+      ~ImageTable.BIOMED_IMAGE_FORMATS
       ~ImageTable.CHAR_TYPE
       ~ImageTable.DIMENSION_COL
       ~ImageTable.FORMAT_COL
@@ -40,6 +43,7 @@
       ~ImageTable.VARBINARY_IMAGE_TYPE
       ~ImageTable.VARBINARY_TYPE
       ~ImageTable.VARCHAR_TYPE
+      ~ImageTable.connection
       ~ImageTable.dimension
       ~ImageTable.id
       ~ImageTable.image

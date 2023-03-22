@@ -1,0 +1,30 @@
+﻿cvpy.annotation.cvat.CVATAuthenticator.CVATAuthenticator
+========================================================
+
+.. currentmodule:: cvpy.annotation.cvat.CVATAuthenticator
+
+.. autoclass:: CVATAuthenticator
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CVATAuthenticator.__init__
+      ~CVATAuthenticator.authenticate
+      ~CVATAuthenticator.generate_cvat_token
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CVATAuthenticator.MAX_ATTEMPTS
+   
+   

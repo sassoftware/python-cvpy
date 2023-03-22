@@ -1,0 +1,62 @@
+﻿cvpy.biomedimage.BiomedImageTable.BiomedImageTable
+==================================================
+
+.. currentmodule:: cvpy.biomedimage.BiomedImageTable
+
+.. autoclass:: BiomedImageTable
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BiomedImageTable.__init__
+      ~BiomedImageTable.as_dict
+      ~BiomedImageTable.fetch_geometry_info
+      ~BiomedImageTable.fetch_image_array
+      ~BiomedImageTable.from_table
+      ~BiomedImageTable.has_decoded_images
+      ~BiomedImageTable.load
+      ~BiomedImageTable.morphological_gradient
+      ~BiomedImageTable.sphericity
+      ~BiomedImageTable.validate_set_column
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BiomedImageTable.BIOMED_IMAGE_FORMATS
+      ~BiomedImageTable.CHAR_TYPE
+      ~BiomedImageTable.DIMENSION_COL
+      ~BiomedImageTable.FORMAT_COL
+      ~BiomedImageTable.ID_COL
+      ~BiomedImageTable.IMAGE_COL
+      ~BiomedImageTable.INT64_TYPE
+      ~BiomedImageTable.LABEL_COL
+      ~BiomedImageTable.PATH_COL
+      ~BiomedImageTable.RESOLUTION_COL
+      ~BiomedImageTable.SIZE_COL
+      ~BiomedImageTable.TYPE_COL
+      ~BiomedImageTable.VARBINARY_IMAGE_TYPE
+      ~BiomedImageTable.VARBINARY_TYPE
+      ~BiomedImageTable.VARCHAR_TYPE
+      ~BiomedImageTable.connection
+      ~BiomedImageTable.dimension
+      ~BiomedImageTable.id
+      ~BiomedImageTable.image
+      ~BiomedImageTable.imageFormat
+      ~BiomedImageTable.label
+      ~BiomedImageTable.path
+      ~BiomedImageTable.resolution
+      ~BiomedImageTable.size
+      ~BiomedImageTable.table
+      ~BiomedImageTable.type
+   
+   

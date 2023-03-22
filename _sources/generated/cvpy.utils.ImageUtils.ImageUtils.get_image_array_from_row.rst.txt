@@ -1,0 +1,6 @@
+﻿cvpy.utils.ImageUtils.ImageUtils.get\_image\_array\_from\_row
+=============================================================
+
+.. currentmodule:: cvpy.utils.ImageUtils
+
+.. automethod:: ImageUtils.get_image_array_from_row

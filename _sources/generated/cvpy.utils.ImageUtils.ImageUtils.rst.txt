@@ -1,0 +1,28 @@
+﻿cvpy.utils.ImageUtils.ImageUtils
+================================
+
+.. currentmodule:: cvpy.utils.ImageUtils
+
+.. autoclass:: ImageUtils
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ImageUtils.__init__
+      ~ImageUtils.convert_numpy_to_wide
+      ~ImageUtils.convert_to_CAS_column
+      ~ImageUtils.convert_wide_to_numpy
+      ~ImageUtils.get_image_array
+      ~ImageUtils.get_image_array_const_ctype
+      ~ImageUtils.get_image_array_from_row
+   
+   
+
+   
+   
+   

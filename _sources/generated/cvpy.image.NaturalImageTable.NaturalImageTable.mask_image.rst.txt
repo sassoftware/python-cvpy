@@ -1,0 +1,6 @@
+﻿cvpy.image.NaturalImageTable.NaturalImageTable.mask\_image
+==========================================================
+
+.. currentmodule:: cvpy.image.NaturalImageTable
+
+.. automethod:: NaturalImageTable.mask_image
