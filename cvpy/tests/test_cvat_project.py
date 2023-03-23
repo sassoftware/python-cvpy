@@ -36,7 +36,7 @@ class TestCVATProject(unittest.TestCase):
     def tearDown(self) -> None:
         self.cas_connection.dropcaslib(caslib=self.caslib_name)
         self.cas_connection.close()
-
+    
     # Create an instance of CVATProject
     def test_cvat_project(self):
         url = TestCVATProject.cvat_url
@@ -285,13 +285,9 @@ class TestCVATProject(unittest.TestCase):
 
         # Save the project with no caslib and no relative path specified
         cvat_project.save(replace=True)
-
-    def test_cvat_project_resume(self):
-
-        # Resume a test project
-        cvat_project = CVATProject.resume(project_name='MyDemoProject', cas_connection=self.cas_connection,
-                                          caslib=self.caslib_name, relative_path='cvpy')
-
+    
+    # Function used for testing CVAT resume scenerios
+    def _verify_cvat_project_attributes(self, cvat_project):
         # Verify all project attributes are set correctly
         assert cvat_project.project_version == 1
         assert cvat_project.project_name == 'MyDemoProject'
@@ -313,6 +309,38 @@ class TestCVATProject(unittest.TestCase):
             assert task.image_table_name == 'cas_table_encoded'
             assert task.image_table.table.tableinfo().TableInfo.Rows.values[0] == 5
 
+    def test_cvat_project_resume(self):
+        # Create project
+        cvat_project_relativepath_caslib = CVATProject.resume(project_name='MyDemoProject', cas_connection=self.cas_connection,
+                                          caslib=self.caslib_name, relative_path='cvpy')
+        # Assertion
+        self._verify_cvat_project_attributes(cvat_project_relativepath_caslib)
+
+    def test_cvat_project_resume_default_caslib(self):
+        # Set Active caslib
+        self.cas_connection.setsessopt(caslib='dlib')
+        # Create project
+        cvat_project_relativepath_only = CVATProject.resume(project_name='MyDemoProject', cas_connection=self.cas_connection,
+                                          relative_path='cvpy')
+        # Assertions
+        self._verify_cvat_project_attributes(cvat_project_relativepath_only)
+        
+    def test_cvat_project_resume_default_path(self):
+        # Create Project
+        cvat_project_caslib_only = CVATProject.resume(project_name='MyDemoProject', cas_connection=self.cas_connection,
+                                          caslib=self.caslib_name)
+        # Assertions
+        self._verify_cvat_project_attributes(cvat_project_caslib_only)
+
+    def test_cvat_project_resume_default_caslib_default_path(self):
+        # Set Active caslib
+        self.cas_connection.setsessopt(caslib='dlib')
+        # Create Project
+        cvat_project_neither_relativepath_caslib = CVATProject.resume(project_name='MyDemoProject', cas_connection=self.cas_connection)
+        # Assertions
+        self._verify_cvat_project_attributes(cvat_project_neither_relativepath_caslib)
+        
+    
     def test_cvat_project_get_annotation_classification(self):
 
         # Load the images to post to CVAT.
@@ -642,7 +670,7 @@ class TestCVATProject(unittest.TestCase):
         self.assertAlmostEqual(fifth_image['_Object0_xMax'], 1656.623047, 2)
         self.assertAlmostEqual(fifth_image['_Object0_yMax'], 1238.960938, 2)
         self.assertTrue(np.isnan(fifth_image['_Object1_xMin']))
-
+    
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         TestCVATProject.cas_host = sys.argv.pop(1)
