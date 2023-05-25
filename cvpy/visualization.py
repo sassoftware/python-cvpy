@@ -93,7 +93,7 @@ def display_image_slice(images, dims, ress, fmts, poss, oris, scas, perm, image_
     '''
 
     image = ImageUtils.get_image_array(images, dims, ress, fmts, image_index)
-    geo_perm = np.zeros(3, dtype=np.int)
+    geo_perm = np.zeros(3, dtype=int)
     for i in range(3):
         geo_perm[__mapping(i)] = __mapping(perm[i])
     image = np.transpose(image, perm)
