@@ -18,6 +18,7 @@
 from typing import Dict
 
 from swat import CASTable, CAS
+from swat.cas.datamsghandlers import Image
 
 from cvpy.base.ImageType import ImageType
 from cvpy.utils.RandomNameGenerator import RandomNameGenerator
@@ -406,3 +407,63 @@ class ImageTable(object):
             # Create BiomedImageTable
             return BiomedImageTable(cas_table, image=image, dimension=dimension, resolution=resolution,
                                     imageFormat=imageFormat, path=path, label=label, id=id, size=size, type=type)
+
+    
+    @staticmethod
+    def load_client_images(connection: CAS, path: str, output_table_parms: Dict[str, str] = None, subdirs = True):
+
+        """
+        Uploads images from the client to the server for analysis and manipulation.
+
+        Parameters
+        ----------
+        connection:
+            The connection to which the output CASTable will be associated with.
+        path:
+            The path of the image to upload or a directory containing images.
+        output_table_parms:
+            Dictionary containing the parameters that will be passed into the output table.
+        subdirs:
+            Whether or not subdirectories will be searched for images.
+
+        Returns
+        -------
+        :class:`NaturalImageTable` or `BiomedImageTable`:
+            Returns an instance of NaturalImageTable or BiomedImageTable based on the image type contained in the table.
+        """
+
+        from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+        from cvpy.image.NaturalImageTable import NaturalImageTable
+
+        # If output_table_parms is None, set to empty dict, and generate a name if none is given
+        if not output_table_parms:
+            output_table_parms = dict()
+        if 'name' not in output_table_parms:
+            output_table_parms['name'] = RandomNameGenerator().generate_name()
+
+        # Create a Data Message Handler object for the image using the path
+        dmh = Image(path, subdirs=subdirs)
+
+        # Create a CASTable containing the images in the Data Message Handler
+        table = connection.addtable(table=output_table_parms['name'], **dmh.args.addtable).casTable
+        connection.CASTable(**output_table_parms)
+
+        # Set the type to 'image' so the data from the table can be read as such
+        connection.altertable(table=output_table_parms['name'], columns=[{'name': '_image_', 'binaryType': 'image'}])
+
+        # Print a message stating how many images were added from the path and where they are being stored
+        amount = len(connection.fetchimages(output_table_parms['name']).Images.Image)
+        print("NOTE: Loaded " + str(amount) + " image(s) from " + path + " into Cloud Analytic Services table " + output_table_parms['name'] + ".")
+
+        # Find the image type stored in the table
+        # This is a temporary fix and will be removed after the actions are modified to accept varchar type column
+        image_type = ImageTable._get_image_type(table)
+
+        # Drop the '_type_' column due to conflict between it and other functions
+        connection.altertable(table=output_table_parms['name'], drop='_type_')
+
+        # Return the table as a Natural or Biomed Image Table based on the type
+        if image_type == ImageType.NATURAL:
+            return NaturalImageTable(table)
+        else:
+            return BiomedImageTable(table)
