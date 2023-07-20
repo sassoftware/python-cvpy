@@ -266,7 +266,7 @@ class TestImageTable(unittest.TestCase):
 
         assert image_table.table.name == cas_table.name
         assert type(image_table) == NaturalImageTable
-    
+
     # Load client images and server images using load_client_images and loadImages and compare results
     def test_imagetable_load_client_images(self):
         # Path to the directory the function will load images from
@@ -275,7 +275,7 @@ class TestImageTable(unittest.TestCase):
         # Test loading images fron both client and server and ensure images match
         ImageTable.load_client_images(
             output_table_parms={'name': 'imgsClient', 'caslib': 'CASUSER(user)'},
-            path=path,
+            data=path,
             connection=self.s,
             subdirs=False
         )
@@ -293,13 +293,14 @@ class TestImageTable(unittest.TestCase):
             referenceImages={'table': 'imgsServer'},
             paironpath=False
         )
+
         assert result.pop('OutputCasTables')['Rows'][0] == 5
     
     def test_imagetable_load_client_images_nonexistent_path(self):
         # Attempt to load images from a nonexistent path
         ImageTable.load_client_images(
             output_table_parms={'name': 'imgsClientNonexistent', 'caslib': 'CASUSER(user)'},
-            path='path/does/not/exist',
+            data='path/does/not/exist',
             connection=self.s,
             subdirs=False
         )
@@ -311,7 +312,7 @@ class TestImageTable(unittest.TestCase):
         # Attempt to load images from an empty path
         ImageTable.load_client_images(
             output_table_parms={'name': 'imgsClientEmpty', 'caslib': 'CASUSER(user)'},
-            path='',
+            data='',
             connection=self.s,
             subdirs=False
         )
@@ -326,7 +327,7 @@ class TestImageTable(unittest.TestCase):
         # Load biomed images from the path
         biomed = ImageTable.load_client_images(
             output_table_parms={'name': 'biomedTable'},
-            path=bioPath,
+            data=bioPath,
             connection=self.s,
             subdirs=False,
         )
@@ -341,7 +342,7 @@ class TestImageTable(unittest.TestCase):
         # Load natural images from the path
         natural = ImageTable.load_client_images(
             output_table_parms={'name': 'imgsClient', 'caslib': 'CASUSER(user)'},
-            path=natPath,
+            data=natPath,
             connection=self.s,
             subdirs=False
         )
@@ -352,7 +353,7 @@ class TestImageTable(unittest.TestCase):
     def test_imagetable_load_client_images_nonexistent_caslib(self):
         ImageTable.load_client_images(
             output_table_parms={'name': 'libNonexistent', 'caslib': 'doesNotExist'},
-            path='',
+            data='',
             connection=self.s,
             subdirs=False
         )
@@ -362,7 +363,7 @@ class TestImageTable(unittest.TestCase):
     def test_imagetable_load_client_images_empty_caslib(self):
         ImageTable.load_client_images(
             output_table_parms={'name': 'libEmpty', 'caslib': ''},
-            path='',
+            data='',
             connection=self.s,
             subdirs=False
         )
@@ -372,7 +373,7 @@ class TestImageTable(unittest.TestCase):
     def test_imagetable_load_client_images_none_type_caslib(self):
         ImageTable.load_client_images(
             output_table_parms={'name': 'libNone', 'caslib': None},
-            path='',
+            data='',
             connection=self.s,
             subdirs=False
         )

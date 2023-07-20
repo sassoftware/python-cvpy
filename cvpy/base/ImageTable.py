@@ -410,20 +410,21 @@ class ImageTable(object):
 
     
     @staticmethod
-    def load_client_images(connection: CAS, path: str, output_table_parms: Dict[str, str] = None, subdirs = True):
+    def load_client_images(connection: CAS, data, output_table_parms: Dict[str, str] = None, subdirs = True):
 
         """
         Uploads images from the client to the server for analysis and manipulation.
 
         Parameters
         ----------
-        connection:
+        connection : CAS
             The connection to which the output CASTable will be associated with.
-        path:
-            The path of the image to upload or a directory containing images.
-        output_table_parms:
+        data : str, pathlib.Path, or iterable of images
+            The data from which images will be drawn from. This can be the path to a
+            directory or an iterable of image objects
+        output_table_parms : dict
             Dictionary containing the parameters that will be passed into the output table.
-        subdirs:
+        subdirs : bool
             Whether or not subdirectories will be searched for images.
 
         Returns
@@ -440,20 +441,26 @@ class ImageTable(object):
             output_table_parms = dict()
         if 'name' not in output_table_parms:
             output_table_parms['name'] = RandomNameGenerator().generate_name()
+        if 'replace' not in output_table_parms:
+            output_table_parms['replace'] = False
 
         # Create a Data Message Handler object for the image using the path
-        dmh = Image(path, subdirs=subdirs)
+        dmh = Image(data, subdirs=subdirs)
 
         # Create a CASTable containing the images in the Data Message Handler
-        table = connection.addtable(table=output_table_parms['name'], **dmh.args.addtable).casTable
+        table = connection.addtable(table=output_table_parms['name'], replace=output_table_parms['replace'], **dmh.args.addtable).casTable
         connection.CASTable(**output_table_parms)
 
         # Set the type to 'image' so the data from the table can be read as such
         connection.altertable(table=output_table_parms['name'], columns=[{'name': '_image_', 'binaryType': 'image'}])
 
         # Print a message stating how many images were added from the path and where they are being stored
-        amount = len(connection.fetchimages(output_table_parms['name']).Images.Image)
-        print("NOTE: Loaded " + str(amount) + " image(s) from " + path + " into Cloud Analytic Services table " + output_table_parms['name'] + ".")
+        amount = table.shape[0]
+
+        if isinstance(data, str):
+            print("NOTE: Loaded " + str(amount) + " image(s) from " + data + " into Cloud Analytic Services table " + output_table_parms['name'] + ".")
+        else:
+            print("NOTE: Loaded " + str(amount) + " image(s) into Cloud Analytic Services table " + output_table_parms['name'] + ".")
 
         # Find the image type stored in the table
         # This is a temporary fix and will be removed after the actions are modified to accept varchar type column
