@@ -230,7 +230,7 @@ class ImageTable(object):
 
     @type.setter
     def type(self, type) -> None:
-        self.validate_set_column('type', type, ImageTable.TYPE_COL, [ImageTable.CHAR_TYPE])
+        self.validate_set_column('type', type, ImageTable.TYPE_COL, [ImageTable.CHAR_TYPE, ImageTable.VARCHAR_TYPE])
 
     @property
     def connection(self) -> CAS:
@@ -465,9 +465,6 @@ class ImageTable(object):
         # Find the image type stored in the table
         # This is a temporary fix and will be removed after the actions are modified to accept varchar type column
         image_type = ImageTable._get_image_type(table)
-
-        # Drop the '_type_' column due to conflict between it and other functions
-        connection.altertable(table=output_table_parms['name'], drop='_type_')
 
         # Return the table as a Natural or Biomed Image Table based on the type
         if image_type == ImageType.NATURAL:
