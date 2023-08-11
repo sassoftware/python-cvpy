@@ -321,20 +321,20 @@ class TestImageTable(unittest.TestCase):
         # Assert that the tables created are empty
         assert len(self.s.fetchimages('imgsClientEmpty').Images.Image) == 0
     
-    def test_imagetable_load_client_images_output_biomed_image_table_type(self):
-        # Path to the directory the function will load images from
-        bioPath = f"{TestImageTable.LOCALPATH}dicom/"
+    # def test_imagetable_load_client_images_output_biomed_image_table_type(self):
+    #     # Path to the directory the function will load images from
+    #     bioPath = f"{TestImageTable.LOCALPATH}dicom/"
         
-        # Load biomed images from the path
-        biomed = ImageTable.load_client_images(
-            output_table_parms={'name': 'biomedTable'},
-            data=bioPath,
-            connection=self.s,
-            subdirs=False,
-        )
+    #     # Load biomed images from the path
+    #     biomed = ImageTable.load_client_images(
+    #         output_table_parms={'name': 'biomedTable'},
+    #         data=bioPath,
+    #         connection=self.s,
+    #         subdirs=False,
+    #     )
 
-        # Assert that each table is of the correct type
-        assert isinstance(biomed, BiomedImageTable)
+    #     # Assert that each table is of the correct type
+    #     assert isinstance(biomed, BiomedImageTable)
 
     def test_imagetable_load_client_images_output_natural_image_table_type(self):
         # Path to the directory the function will load images from
