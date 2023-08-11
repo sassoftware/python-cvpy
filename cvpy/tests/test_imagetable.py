@@ -35,6 +35,7 @@ class TestImageTable(unittest.TestCase):
     PASSWORD = None
     PROTOCOL = None
     DATAPATH = None
+    LOCALPATH = None
 
     def setUp(self) -> None:
         self.s = CAS(TestImageTable.CAS_HOST, TestImageTable.CAS_PORT, TestImageTable.USERNAME,
@@ -267,6 +268,119 @@ class TestImageTable(unittest.TestCase):
         assert image_table.table.name == cas_table.name
         assert type(image_table) == NaturalImageTable
 
+    # Load client images and server images using load_client_images and loadImages and compare results
+    def test_imagetable_load_client_images(self):
+        # Path to the directory the function will load images from
+        path = f"{TestImageTable.LOCALPATH}images/"
+
+        # Test loading images fron both client and server and ensure images match
+        ImageTable.load_client_images(
+            output_table_parms={'name': 'imgsClient', 'caslib': 'CASUSER(user)'},
+            data=path,
+            connection=self.s,
+            subdirs=False
+        )
+        self.s.CASTable('imgsServer', replace=True)
+        self.s.image.loadimages(
+            path="images/",
+            caslib="dlib",
+            casout={'name' : 'imgsServer'}
+        )
+
+        # Check if the images from both tables match
+        result = self.s.image.compareImages(
+            casout={'name': 'compare', 'replace': True},
+            sourceImages={'table': 'imgsClient'},
+            referenceImages={'table': 'imgsServer'},
+            paironpath=False
+        )
+
+        assert result.pop('OutputCasTables')['Rows'][0] == 5
+    
+    def test_imagetable_load_client_images_nonexistent_path(self):
+        # Attempt to load images from a nonexistent path
+        ImageTable.load_client_images(
+            output_table_parms={'name': 'imgsClientNonexistent', 'caslib': 'CASUSER(user)'},
+            data='path/does/not/exist',
+            connection=self.s,
+            subdirs=False
+        )
+
+        # Assert that the tables created are empty
+        assert len(self.s.fetchimages('imgsClientNonexistent').Images.Image) == 0
+    
+    def test_imagetable_load_client_images_empty_path(self):
+        # Attempt to load images from an empty path
+        ImageTable.load_client_images(
+            output_table_parms={'name': 'imgsClientEmpty', 'caslib': 'CASUSER(user)'},
+            data='',
+            connection=self.s,
+            subdirs=False
+        )
+
+        # Assert that the tables created are empty
+        assert len(self.s.fetchimages('imgsClientEmpty').Images.Image) == 0
+    
+    # def test_imagetable_load_client_images_output_biomed_image_table_type(self):
+    #     # Path to the directory the function will load images from
+    #     bioPath = f"{TestImageTable.LOCALPATH}dicom/"
+        
+    #     # Load biomed images from the path
+    #     biomed = ImageTable.load_client_images(
+    #         output_table_parms={'name': 'biomedTable'},
+    #         data=bioPath,
+    #         connection=self.s,
+    #         subdirs=False,
+    #     )
+
+    #     # Assert that each table is of the correct type
+    #     assert isinstance(biomed, BiomedImageTable)
+
+    def test_imagetable_load_client_images_output_natural_image_table_type(self):
+        # Path to the directory the function will load images from
+        natPath = f"{TestImageTable.LOCALPATH}images/"
+
+        # Load natural images from the path
+        natural = ImageTable.load_client_images(
+            output_table_parms={'name': 'imgsClient', 'caslib': 'CASUSER(user)'},
+            data=natPath,
+            connection=self.s,
+            subdirs=False
+        )
+
+        # Assert that each table is of the correct type
+        assert isinstance(natural, NaturalImageTable)
+    
+    def test_imagetable_load_client_images_nonexistent_caslib(self):
+        ImageTable.load_client_images(
+            output_table_parms={'name': 'libNonexistent', 'caslib': 'doesNotExist'},
+            data='',
+            connection=self.s,
+            subdirs=False
+        )
+
+        assert len(self.s.tableinfo(caslib='CASUSER').pop('TableInfo')['Name']) == 1
+    
+    def test_imagetable_load_client_images_empty_caslib(self):
+        ImageTable.load_client_images(
+            output_table_parms={'name': 'libEmpty', 'caslib': ''},
+            data='',
+            connection=self.s,
+            subdirs=False
+        )
+
+        assert len(self.s.tableinfo(caslib='CASUSER').pop('TableInfo')['Name']) == 1
+
+    def test_imagetable_load_client_images_none_type_caslib(self):
+        ImageTable.load_client_images(
+            output_table_parms={'name': 'libNone', 'caslib': None},
+            data='',
+            connection=self.s,
+            subdirs=False
+        )
+        
+        assert len(self.s.tableinfo(caslib='CASUSER').pop('TableInfo')['Name']) == 1
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -276,6 +390,7 @@ if __name__ == '__main__':
         TestImageTable.PASSWORD = sys.argv.pop(1)
         TestImageTable.PROTOCOL = sys.argv.pop(1)
         TestImageTable.DATAPATH = sys.argv.pop(1)
+        TestImageTable.LOCALPATH = sys.argv.pop(1)
 
     unittest.main(
         testRunner=xmlrunner.XMLTestRunner(output='test-reports'),

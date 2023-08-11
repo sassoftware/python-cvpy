@@ -18,6 +18,7 @@
 from typing import Dict
 
 from swat import CASTable, CAS
+from swat.cas.datamsghandlers import Image
 
 from cvpy.base.ImageType import ImageType
 from cvpy.utils.RandomNameGenerator import RandomNameGenerator
@@ -229,7 +230,7 @@ class ImageTable(object):
 
     @type.setter
     def type(self, type) -> None:
-        self.validate_set_column('type', type, ImageTable.TYPE_COL, [ImageTable.CHAR_TYPE])
+        self.validate_set_column('type', type, ImageTable.TYPE_COL, [ImageTable.CHAR_TYPE, ImageTable.VARCHAR_TYPE])
 
     @property
     def connection(self) -> CAS:
@@ -406,3 +407,67 @@ class ImageTable(object):
             # Create BiomedImageTable
             return BiomedImageTable(cas_table, image=image, dimension=dimension, resolution=resolution,
                                     imageFormat=imageFormat, path=path, label=label, id=id, size=size, type=type)
+
+    
+    @staticmethod
+    def load_client_images(connection: CAS, data, output_table_parms: Dict[str, str] = None, subdirs = True):
+
+        """
+        Uploads images from the client to the server for analysis and manipulation.
+
+        Parameters
+        ----------
+        connection : CAS
+            The connection to which the output CASTable will be associated with.
+        data : str, pathlib.Path, or iterable of images
+            The data from which images will be drawn from. This can be the path to a
+            directory or an iterable of image objects
+        output_table_parms : dict
+            Dictionary containing the parameters that will be passed into the output table.
+        subdirs : bool
+            Whether or not subdirectories will be searched for images.
+
+        Returns
+        -------
+        :class:`NaturalImageTable` or `BiomedImageTable`:
+            Returns an instance of NaturalImageTable or BiomedImageTable based on the image type contained in the table.
+        """
+
+        from cvpy.biomedimage.BiomedImageTable import BiomedImageTable
+        from cvpy.image.NaturalImageTable import NaturalImageTable
+
+        # If output_table_parms is None, set to empty dict, and generate a name if none is given
+        if not output_table_parms:
+            output_table_parms = dict()
+        if 'name' not in output_table_parms:
+            output_table_parms['name'] = RandomNameGenerator().generate_name()
+        if 'replace' not in output_table_parms:
+            output_table_parms['replace'] = False
+
+        # Create a Data Message Handler object for the image using the path
+        dmh = Image(data, subdirs=subdirs)
+
+        # Create a CASTable containing the images in the Data Message Handler
+        table = connection.addtable(table=output_table_parms['name'], replace=output_table_parms['replace'], **dmh.args.addtable).casTable
+        connection.CASTable(**output_table_parms)
+
+        # Set the type to 'image' so the data from the table can be read as such
+        connection.altertable(table=output_table_parms['name'], columns=[{'name': '_image_', 'binaryType': 'image'}])
+
+        # Print a message stating how many images were added from the path and where they are being stored
+        amount = table.shape[0]
+
+        if isinstance(data, str):
+            print("NOTE: Loaded " + str(amount) + " image(s) from " + data + " into Cloud Analytic Services table " + output_table_parms['name'] + ".")
+        else:
+            print("NOTE: Loaded " + str(amount) + " image(s) into Cloud Analytic Services table " + output_table_parms['name'] + ".")
+
+        # Find the image type stored in the table
+        # This is a temporary fix and will be removed after the actions are modified to accept varchar type column
+        image_type = ImageTable._get_image_type(table)
+
+        # Return the table as a Natural or Biomed Image Table based on the type
+        if image_type == ImageType.NATURAL:
+            return NaturalImageTable(table)
+        else:
+            return BiomedImageTable(table)
