@@ -2,7 +2,7 @@
 
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
-`python-cvpy` is a high-level Python library for working with SAS Viya Computer Vision that offers image and biomedical analytics. It provides Python-facing abstractions and utilities around SAS image-oriented action sets, with emphasis on image retrieval, array conversion, visualization, annotation workflows, and CAS execution utilities.
+`python-cvpy` is a high-level Python library for working with SAS Viya Computer Vision that offers image and biomedical image analytics. It provides Python-facing abstractions and utilities around SAS image action sets, with emphasis on image retrieval, array conversion, visualization, annotation workflows, and CAS execution utilities.
 
 The package is distributed on PyPI as `sas-cvpy` and is intended for use alongside SAS Viya and the [SAS SWAT](https://github.com/sassoftware/python-swat) Python client.
 

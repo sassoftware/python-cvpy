@@ -4,29 +4,11 @@
 
 The utility APIs provide lower-level helpers used across image analytics workflows.
 
-## Key APIs
-
-Published utilities include:
-
-- `cvpy.utils.CASThreadTuner`
-  - `tune_thread_count`
-
-- `cvpy.base.CASThreadTunerResults`
-  - `plot_exec_times`
-
-- `cvpy.utils.ImageUtils`
-  - `convert_numpy_to_wide`
-  - `convert_to_CAS_column`
-  - `convert_wide_to_numpy`
-  - `get_image_array`
-  - `get_image_array_const_ctype`
-  - `get_image_array_from_row`
-
 ## Responsibilities
 
 These helpers support:
 
-- conversion between numpy arrays and SAS/CAS-compatible layouts
+- conversion between numpy arrays and CAS tables
 - extraction of image content from CAS row or column structures
 - thread tuning and performance-oriented experimentation for CAS workloads
 
