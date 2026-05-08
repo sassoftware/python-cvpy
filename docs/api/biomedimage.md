@@ -2,19 +2,7 @@
 
 ## Overview
 
-The biomedical image API area supports SAS biomedical image table workflows, including geometry-aware image access and morphology-oriented operations.
-
-## Key classes
-
-Published APIs include:
-
-- `cvpy.biomedimage.BiomedImageTable`
-  - `as_dict`
-  - `fetch_image_array`
-  - `fetch_geometry_info`
-  - `has_decoded_images`
-  - `sphericity`
-  - `morphological_gradient`
+The biomedical image API supports SAS biomedical image table workflows, including geometry-aware image access and morphology-oriented operations.
 
 ## Responsibilities
 
@@ -27,7 +15,7 @@ These APIs are intended to support:
 
 ## Usage notes
 
-Biomedical image workflows often require careful handling of:
+Biomedical image analysis pipelines often require careful handling of:
 
 - dimensions
 - orientations
@@ -35,4 +23,5 @@ Biomedical image workflows often require careful handling of:
 - geometry metadata
 - slice and volume semantics
 
-These APIs are designed to make those interactions easier from Python when the underlying data resides in CAS.
+These APIs are designed to make those interactions easier from Python when the
+underlying data resides in CAS.

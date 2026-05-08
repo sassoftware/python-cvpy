@@ -2,7 +2,7 @@
 
 ## Overview
 
-The annotation area provides models and integrations for annotation-centric workflows, including CVAT-related functionality.
+The annotation API provides utility modules for CVAT annotation tool.
 
 ## Responsibilities
 
@@ -13,19 +13,6 @@ This part of the package is intended to support:
 - CVAT authentication
 - project-based annotation workflows
 - retrieval and persistence of annotation state
-
-## Documented APIs
-
-Examples from the published API reference include:
-
-- `cvpy.annotation.base.Credentials`
-- `cvpy.annotation.cvat.CVATProject`
-  - `get_annotations`
-  - `post_images`
-  - `save`
-  - `resume`
-- `cvpy.annotation.cvat.CVATAuthenticator`
-  - `generate_cvat_token`
 
 ## Typical workflow
 
