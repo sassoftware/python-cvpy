@@ -1,61 +1,95 @@
-# CVPy - SAS Viya Computer Vision API for Python
+# python-cvpy
+
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
+
+`python-cvpy` is a high-level Python library for working with SAS Viya Computer Vision that offers image and biomedical image analytics. It provides Python-facing abstractions and utilities around SAS image action sets, with emphasis on image retrieval, array conversion, visualization, annotation workflows, and CAS execution utilities.
+
+The package is distributed on PyPI as `sas-cvpy` and is intended for use alongside SAS Viya and the [SAS SWAT](https://github.com/sassoftware/python-swat) Python client.
+
 
 ## Overview
 
-CVPy is a Python package that makes SAS image analytics more accessible to Python users in a variety of different ways. This high-level Python library provides helpful APIs that assist with the processing, analyzing, and visualization of images. This allows users of the image and biomedimage action set in SAS Viya to have more flexibilty when working in Python.
+`python-cvpy` is designed to make SAS image analytics more accessible from Python by exposing higher-level APIs over CAS-backed image data and related workflows.
 
-Currently available within CVPy are visualization APIs that allow users to easily be able to move images out of CAS and into common open source tools such as Mayavi and Matplotlib. These APIs streamline the visualization of image data fetched from a CAS table and can assist with further image analysis.
+The library primarily targets the following usage patterns:
 
-### Prerequisites
+- interacting with SAS Viya image and biomedical image tables
+- converting CAS image data tables into Python/numpy-friendly structures
+- visualizing 2D and 3D image content using open-source Python tooling
+- supporting image annotation-related workflows, including CVAT integration
+- assisting with CAS performance tuning for image workloads
 
-- Python version 3 or greater is required
-- Install SAS Scripting Wrapper for Analytics Transfer (SWAT) for Python using pip install swat or conda install -c sas-institute swat
-- Access to a SAS Viya 3.5 environment with Visual Data Mining and Machine Learning (VDMML) is required
-- A user login to your SAS Viya back-end is required. See your system administrator for details if you do not have a SAS Viya account.
-- Install Mayavi for scientific data visualization in Python
+## Requirements
 
-### Create a New Python Environment [Optional]
+To use `python-cvpy`, you typically need:
 
-Follow the steps below to create a new Python 3.8 environment for your CVPy installation named "cvpy".
+- Python 3
+- access to a SAS Viya environment
+- the `swat` Python package
+- valid SAS backend credentials
 
-`conda create --name cvpy python=3.8`
+Some features also require visualization dependencies such as:
 
-`activate cvpy`
+- `numpy`
+- `pandas`
+- `matplotlib`
+- `mayavi`
+- `PyQt5`
 
-### Mayavi Installation
+## Installation
 
-Mayavi is a heavy, complex package that is required by CVPy. If you do not already have Mayavi installed, follow the steps below to install it.
+Install from PyPI:
 
-`pip install mayavi`
+```bash
+pip install sas-cvpy
+```
 
-Install PyQt, a GUI toolkit needed to run Mayavi.
+Or install from source:
 
-`pip install PyQt5`
+```bash
+git clone https://github.com/sassoftware/python-cvpy.git
+cd python-cvpy
+pip install .
+```
 
-### CVPy Installation
+## Documentation
 
-To install CVPy, use the following command:
+Additional documentation is organized by topic:
 
-`pip install sas-cvpy`
+- [Installation](docs/installation.md)
+- [Architecture](docs/architecture.md)
+- [API Overview](docs/api/overview.md)
+- [Annotation APIs](docs/api/annotation.md)
+- [Image APIs](docs/api/image.md)
+- [Biomedical Image APIs](docs/api/biomedimage.md)
+- [Utilities](docs/api/utils.md)
+- [Visualization](docs/api/visualization.md)
 
-### Install and Run Jupyter Notebook
+Generated API documentation is also available at:
 
-To install and start Jupyter Notebook, run the following steps:
+- https://sassoftware.github.io/python-cvpy/
 
-`pip install jupyter`
+## Examples
 
-`jupyter notebook`
+Example material is available in the repository under:
+
+- `examples/biomedimage`
+- `examples/thread_optimization`
 
 ## Contributing
 
-We welcome your contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to submit contributions to this project.
+Contributions are welcome. Please review:
+
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [SUPPORT.md](SUPPORT.md)
 
 ## License
 
-This project is licensed under the [Apache 2.0 License](LICENSE).
+This project is licensed under the [Apache License 2.0](LICENSE).
 
 ## Additional Resources
 
-* [Python-CVPy API Documentation](https://sassoftware.github.io/python-cvpy/)
-* [Biomedimage action set](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_biomedimage_toc.htm)
-* [Image action set](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_image_toc.htm)
+- [SAS SWAT for Python](https://github.com/sassoftware/python-swat)
+- [SAS Viya documentation](https://support.sas.com/documentation/onlinedoc/viya/index.html)
+- [Image action set documentation](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_image_toc.htm)
+- [Biomedimage action set documentation](https://go.documentation.sas.com/?cdcId=pgmsascdc&cdcVersion=default&docsetId=casactml&docsetTarget=casactml_biomedimage_toc.htm)
